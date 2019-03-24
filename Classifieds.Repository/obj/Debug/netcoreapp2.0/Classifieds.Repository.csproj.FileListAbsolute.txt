@@ -1,0 +1,12 @@
+C:\Users\pmolefe.BEC\source\repos\Classifieds\Classifieds.Repository\obj\Debug\netcoreapp2.0\Classifieds.Repository.csprojResolveAssemblyReference.cache
+C:\Users\pmolefe.BEC\source\repos\Classifieds\Classifieds.Repository\obj\Debug\netcoreapp2.0\Classifieds.Repository.csproj.CoreCompileInputs.cache
+C:\Users\pmolefe.BEC\source\repos\Classifieds\Classifieds.Repository\obj\Debug\netcoreapp2.0\Classifieds.Repository.AssemblyInfoInputs.cache
+C:\Users\pmolefe.BEC\source\repos\Classifieds\Classifieds.Repository\obj\Debug\netcoreapp2.0\Classifieds.Repository.AssemblyInfo.cs
+C:\Users\pmolefe.BEC\source\repos\Classifieds\Classifieds.Repository\bin\Debug\netcoreapp2.0\Classifieds.Repository.deps.json
+C:\Users\pmolefe.BEC\source\repos\Classifieds\Classifieds.Repository\bin\Debug\netcoreapp2.0\Classifieds.Repository.dll
+C:\Users\pmolefe.BEC\source\repos\Classifieds\Classifieds.Repository\bin\Debug\netcoreapp2.0\Classifieds.Repository.pdb
+C:\Users\pmolefe.BEC\source\repos\Classifieds\Classifieds.Repository\bin\Debug\netcoreapp2.0\Classifieds.Domain.dll
+C:\Users\pmolefe.BEC\source\repos\Classifieds\Classifieds.Repository\bin\Debug\netcoreapp2.0\Classifieds.Domain.pdb
+C:\Users\pmolefe.BEC\source\repos\Classifieds\Classifieds.Repository\obj\Debug\netcoreapp2.0\Classifieds.Repository.csproj.CopyComplete
+C:\Users\pmolefe.BEC\source\repos\Classifieds\Classifieds.Repository\obj\Debug\netcoreapp2.0\Classifieds.Repository.dll
+C:\Users\pmolefe.BEC\source\repos\Classifieds\Classifieds.Repository\obj\Debug\netcoreapp2.0\Classifieds.Repository.pdb

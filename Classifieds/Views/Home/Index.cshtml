@@ -1,0 +1,16 @@
+﻿@model IEnumerable<Menu>
+@using Classifieds.Web.Models
+
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="container">
+
+
+    @foreach (var menu in ViewBag.Menus)
+    {
+        <div class="col-sm-3 float-left">@menu.Name</div>
+    }
+    @Html.Raw("</div>")
+</div>
