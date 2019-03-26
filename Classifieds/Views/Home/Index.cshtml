@@ -1,16 +1,38 @@
-﻿@model IEnumerable<Menu>
-@using Classifieds.Web.Models
+﻿@model IEnumerable<Classifieds.Domain.Model.Menu>
 
 @{
     ViewData["Title"] = "Home Page";
 }
 
-<div class="container">
-
-
-    @foreach (var menu in ViewBag.Menus)
+<div id="pg-home" class="container">
+    @{int colCount = 0; }
+    @Html.Raw("<div class='row'>")
+    @foreach (var menu in Model)
     {
-        <div class="col-sm-3 float-left">@menu.Name</div>
-    }
-    @Html.Raw("</div>")
-</div>
+        @if (colCount == 4)
+        {
+            @Html.Raw("<div class='row'>")
+            colCount = 0;
+        }
+        colCount++;
+        <div class="col-sm-3 float-left category">
+            <div class="clearfix">
+                <img src="~/images/home/@menu.Icon" class="float-left" width="45" height="45"/>
+                <h4 class="pt-2 pb-2 text-capitalize">
+                    @Html.ActionLink((String)menu.Name, "", "")
+
+                </h4>
+            </div>
+            @foreach (var subMenu in menu.SubMenus)
+            {
+                <p class="text-capitalize">@Html.ActionLink((String)subMenu.Name, "", "")</p>
+            }
+        </div>
+        @if (colCount == 4)
+        {
+            @Html.Raw("</div>")
+        }
+
+     }
+
+    </div>

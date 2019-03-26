@@ -44,7 +44,7 @@ namespace Classifieds.Domain.Model
         [ForeignKey("ParentID")]
         public virtual Menu Parent { set; get; }
 
-        public virtual List<Menu> SubMenus { set; get; }
+        public virtual IEnumerable<Menu> SubMenus { set; get; }
 
     }
 }

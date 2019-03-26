@@ -15,5 +15,9 @@ namespace Classifieds.Service.Impl
         {
             this.menuRepository = menuRepository;
         }
+        public IEnumerable<Menu> findByType(String[] types)
+        {
+            return menuRepository.findByType(types);
+        }
     }
 }

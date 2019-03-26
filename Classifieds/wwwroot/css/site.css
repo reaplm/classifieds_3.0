@@ -1,5 +1,4 @@
 ﻿body {
-    padding-top: 50px;
     padding-bottom: 20px;
 }
 
@@ -9,5 +8,26 @@
     padding-left: 15px;
     padding-right: 15px;
 }
+/*==================================HEADER MENU================================*/
+.navbar {
+    text-transform: Capitalize;
+    font-size: 9pt;
+    color: #fff;
+}
+.navbar a, .navbar a:visited {
+    color: #666;
+}
 
+.navbar a:hover, .navbar a.active {
+    color: #f7547a;
+    text-decoration: underline;
+}
 
+/*==================================HOME PAGE=================================*/
+#pg-home .category a, #pg-home .category a:visited {
+    color: #666;
+}
+#pg-home .category h4 {
+    display: inline-block;
+}
+/*===========================================================================*/

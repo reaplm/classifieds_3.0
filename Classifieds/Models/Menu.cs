@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -33,6 +34,6 @@ namespace Classifieds.Web.Models
         public int? ParentID { set; get; }
         public virtual Menu Parent { set; get; }
 
-        public virtual List<Menu> SubMenus { set; get; }
+        public IEnumerable<Menu> SubMenus { set; get; }
     }
 }

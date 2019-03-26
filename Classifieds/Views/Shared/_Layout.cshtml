@@ -17,7 +17,7 @@
     </environment>
 </head>
 <body>
-    <nav class="navbar">
+    <nav class="navbar" >
         <div class="container">
             <div class="navbar-header">
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
@@ -30,9 +30,18 @@
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    <li><a asp-area="" asp-controller="Home" asp-action="Index">Home</a></li>
-                    <li><a asp-area="" asp-controller="Home" asp-action="Classfieds">Classifieds</a></li>
-                    <li><a asp-area="" asp-controller="Home" asp-action="Login">Login</a></li>
+                    <li><a asp-area="" asp-controller="Home" asp-action="Index"  
+                           class="@(ViewContext.RouteData.Values["Action"].ToString().Equals("Index")? "active":"")">
+                        Home</a>
+                    </li>
+                    <li><a asp-area="" asp-controller="Home" asp-action="Classifieds"
+                        class="@(ViewContext.RouteData.Values["Action"].ToString().Equals("Classifieds")? "active":"")">
+                        Classifieds</a>
+                    </li>
+                    <li><a asp-area="" asp-controller="Home" asp-action="Login"
+                           class="@(ViewContext.RouteData.Values["Action"].ToString().Equals("Login")? "active":"")">
+                           Login</a>
+                    </li>
                 </ul>
             </div>
         </div>

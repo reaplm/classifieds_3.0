@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Classifieds.Models;
 using Classifieds.Service;
+using Classifieds.Domain.Model;
 
 namespace Classifieds.Controllers
 {
@@ -22,9 +23,9 @@ namespace Classifieds.Controllers
         {
            
             ViewBag.Title = "Adpost Home";
-            ViewBag.Menus = menuService.findAll();
+            IEnumerable<Menu> Menus = menuService.findByType(new String[] { "HOME" }) as IEnumerable<Menu>;
 
-            return View();
+            return View(Menus);
             
         }
 

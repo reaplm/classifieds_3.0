@@ -7,5 +7,6 @@ namespace Classifieds.Service
 {
     public interface IMenuService : IGenericService<Menu>
     {
+        IEnumerable<Menu> findByType(String[] types);
     }
 }

@@ -28,13 +28,13 @@ namespace Classifieds.XUnitTest.Repository
             
 
             var menuRepo = new MenuRepo(mockContext);
-            menuRepo.create(new Menu { ID = 5, Name = "menu 5" });
+            menuRepo.create(new Menu { ID = 6, Name = "menu 6" });
             mockContext.SaveChanges();
 
             var menu = menuRepo.find(5L);
 
-            Assert.Equal(5, mockContext.Menus.Count());
-            Assert.Equal("menu 5", mockContext.Menus.Find(5L).Name);
+            Assert.Equal(6, mockContext.Menus.Count());
+            Assert.Equal("menu 6", mockContext.Menus.Find(6L).Name);
 
         }
         [Fact]
@@ -79,13 +79,23 @@ namespace Classifieds.XUnitTest.Repository
             var repo = new MenuRepo(mockContext);
             var menus = repo.findAll();
 
-            Assert.Equal(4, menus.Count());
+            Assert.Equal(5, menus.Count());
             Assert.Equal("vehicles", menus.ElementAt(0).Name);
             Assert.Equal("gardening", menus.ElementAt(1).Name);
             Assert.Equal("travel", menus.ElementAt(2).Name);
             Assert.Equal("fashion", menus.ElementAt(3).Name);
         }
-       
+       [Fact]
+        public void testFindByType()
+        {
+            var menuRepo = new MenuRepo(mockContext);
+            var menus = menuRepo.findByType(new String[] { "HOME" });
+            IEnumerable<Menu> subMenu = menus.ElementAt(0).SubMenus;
+
+            Assert.Equal(2, menus.Count());
+            Assert.Single(subMenu);
+
+        }
         private void initContext()
         {
             
@@ -97,10 +107,11 @@ namespace Classifieds.XUnitTest.Repository
 
             var menus = new List<Menu>
             {
-                new Menu{ID=1, Name="vehicles"},
-                new Menu{ID=2, Name="gardening"},
-                new Menu{ID=3, Name="travel"},
-                new Menu{ID=4, Name="fashion"}
+                new Menu{ID=1, Name="vehicles",Type="HOME"},
+                new Menu{ID=2, Name="gardening", Type="HOME"},
+                new Menu{ID=3, Name="travel",Type="SIDEBAR"},
+                new Menu{ID=4, Name="fashion",Type="SUBMENU"},
+                new Menu{ID=5, Name="cars",Type="SUBMENU",ParentID=1}
             };
 
             context.AddRange(menus);

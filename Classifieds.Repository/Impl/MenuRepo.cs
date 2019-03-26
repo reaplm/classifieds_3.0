@@ -1,7 +1,8 @@
 ﻿using Classifieds.Domain.Model;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
-using System.Text;
+using System.Linq;
 
 namespace Classifieds.Repository.Impl
 {
@@ -13,6 +14,12 @@ namespace Classifieds.Repository.Impl
         {
             this.context = context;
 
+        }
+        public IEnumerable<Menu> findByType(String[] types)
+        {
+            var menus = context.Menus.Where(m => types.Contains(m.Type))
+                .Include(x => x.SubMenus);
+            return menus;
         }
     }
 }
