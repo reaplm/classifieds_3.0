@@ -34,7 +34,9 @@ namespace Classifieds
             services.AddDbContext<ApplicationContext>(options => options.UseMySQL(connectionString));
             services.AddScoped<IMenuService, MenuService>();
             services.AddScoped<IMenuRepo, MenuRepo>();
-            
+            services.AddScoped<IAdvertService, AdvertService>();
+            services.AddScoped<IAdvertRepo, AdvertRepo>();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -57,6 +59,8 @@ namespace Classifieds
                 routes.MapRoute(
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
+
+              
             });
         }
     }

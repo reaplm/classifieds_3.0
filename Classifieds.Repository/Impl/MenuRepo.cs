@@ -15,6 +15,10 @@ namespace Classifieds.Repository.Impl
             this.context = context;
 
         }
+        public override IEnumerable<Menu> findAll()
+        {
+            return context.Menus.Include(x => x.SubMenus);
+        }
         public IEnumerable<Menu> findByType(String[] types)
         {
             var menus = context.Menus.Where(m => types.Contains(m.Type))

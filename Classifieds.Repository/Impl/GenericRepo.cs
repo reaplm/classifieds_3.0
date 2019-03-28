@@ -6,7 +6,7 @@ using System.Text;
 
 namespace Classifieds.Repository.Impl
 {
-    public class GenericRepo<T> where T : class
+    public abstract class GenericRepo<T> where T : class
     {
 
         private ApplicationContext context;
@@ -45,11 +45,7 @@ namespace Classifieds.Repository.Impl
             return context.Set<T>().Find(id);
         }
 
-        public IEnumerable<T> findAll()
-        {
-            IEnumerable<T> list = dbSet.ToList();
-            return list;
-        }
+        public abstract IEnumerable<T> findAll();
 
         private bool disposed = false;
         protected virtual void Dispose(bool disposing)

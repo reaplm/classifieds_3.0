@@ -10,6 +10,7 @@ namespace Classifieds.Repository
     public class ApplicationContext : DbContext
     {
         public virtual DbSet<Menu> Menus { set; get; }
+        public virtual DbSet<Advert> Adverts { set; get; }
 
         public ApplicationContext(DbContextOptions<ApplicationContext> options) : base(options)
         {

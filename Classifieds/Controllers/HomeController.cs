@@ -29,11 +29,9 @@ namespace Classifieds.Controllers
             
         }
 
-        public IActionResult Classifieds()
+        public void Classifieds()
         {
-            ViewData["Message"] = "Your application description page.";
-
-            return View();
+            RedirectToAction("Index", "Classifieds");
         }
 
         public IActionResult Login()

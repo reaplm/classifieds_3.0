@@ -1,0 +1,14 @@
+﻿@model IEnumerable<Classifieds.Domain.Model.Advert>
+@{
+    ViewData["Title"] = "Index";
+}
+<div class="col-layout">
+    @foreach (var advert in Model)
+    {
+        <h4>@advert.Detail.Title</h4>
+        <p>@advert.Detail.Body</p>
+
+    }
+</div>
+
+

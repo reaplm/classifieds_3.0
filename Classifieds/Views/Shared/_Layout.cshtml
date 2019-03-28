@@ -31,16 +31,20 @@
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
                     <li><a asp-area="" asp-controller="Home" asp-action="Index"  
-                           class="@(ViewContext.RouteData.Values["Action"].ToString().Equals("Index")? "active":"")">
+                           class="@((ViewContext.RouteData.Values["Controller"].ToString().Equals("Home") 
+                               && ViewContext.RouteData.Values["Action"].ToString().Equals("Index"))? "active":"")">
                         Home</a>
                     </li>
-                    <li><a asp-area="" asp-controller="Home" asp-action="Classifieds"
-                        class="@(ViewContext.RouteData.Values["Action"].ToString().Equals("Classifieds")? "active":"")">
+                    <li><a asp-area="" asp-controller="Classifieds" asp-action="Index"
+                           class="@((ViewContext.RouteData.Values["Controller"].ToString().Equals("Classifieds") 
+                               && ViewContext.RouteData.Values["Action"].ToString().Equals("Index"))? "active":"")">
+                        
                         Classifieds</a>
                     </li>
-                    <li><a asp-area="" asp-controller="Home" asp-action="Login"
-                           class="@(ViewContext.RouteData.Values["Action"].ToString().Equals("Login")? "active":"")">
-                           Login</a>
+                    <li><a asp-area="" asp-controller="Login" asp-action="Index"
+                                class="@((ViewContext.RouteData.Values["Controller"].ToString().Equals("User") 
+                               && ViewContext.RouteData.Values["Action"].ToString().Equals("Index"))? "active":"")">
+                                                   Login</a>
                     </li>
                 </ul>
             </div>
