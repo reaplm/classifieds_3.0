@@ -36,6 +36,8 @@ namespace Classifieds
             services.AddScoped<IMenuRepo, MenuRepo>();
             services.AddScoped<IAdvertService, AdvertService>();
             services.AddScoped<IAdvertRepo, AdvertRepo>();
+            services.AddScoped<IUserService, UserService>();
+            services.AddScoped<IUserRepo, UserRepo>();
 
         }
 
