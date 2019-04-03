@@ -9,17 +9,17 @@ using Classifieds.Repository.Impl;
 
 namespace Classifieds.XUnitTest.Repository
 {
-    public class TestUserRepo
+    public class TestUserRepo : IDisposable
     {
         private ApplicationContext mockContext;
 
         public TestUserRepo()
         {
-            initContext();
+            InitContext();
         }
 
         [Fact]
-        public void testFindAll()
+        public void TestFindAll()
         {
             var repo = new UserRepo(mockContext);
             var users = repo.findAll() as IEnumerable<User>;
@@ -29,7 +29,33 @@ namespace Classifieds.XUnitTest.Repository
             Assert.NotNull(users.ElementAt(1).UserDetail);
             Assert.NotNull(users.ElementAt(2).UserDetail);
         }
-         private void initContext()
+         [Fact]
+         public void TestAuthenticateUser()
+         {
+             var repo = new UserRepo(mockContext);
+             User user = repo.authenticateUser("user2@email", "6cb75f652a9b52798eb6cf2201057c73");
+
+
+             Assert.Equal(2, user.ID);
+            Assert.Equal("user2@email", user.Email);
+
+         }
+        [Fact]
+        public void TestAuthenticateUser_InvalidOperationException()
+        {
+            var repo = new UserRepo(mockContext);
+
+            Assert.Throws<InvalidOperationException>(() => 
+                repo.authenticateUser("my@email", "7c6a180b36896a0a8c02787eeafb0e4c"));
+            
+        }
+        //Hash: 7c6a180b36896a0a8c02787eeafb0e4c
+        //String: password1
+
+        //Hash: 6cb75f652a9b52798eb6cf2201057c73
+        //String: password2
+
+        private void InitContext()
         {
             var builder = new DbContextOptionsBuilder<ApplicationContext>()
                 .UseInMemoryDatabase("TestDB");
@@ -38,9 +64,9 @@ namespace Classifieds.XUnitTest.Repository
 
             List<User> users = new List<User>
             {
-                new User{ID=1,Email="my@email",Password="Pass1",RegDate=new DateTime(2019,1,15)},
-                new User{ID=2,Email="my@email",Password="Pass2",RegDate=new DateTime(2018,10,2)},
-                new User{ID=3,Email="my@email",Password="Pass3",RegDate=new DateTime(2018,2,22)}
+                new User{ID=1,Email="my@email",Password="7c6a180b36896a0a8c02787eeafb0e4c",RegDate=new DateTime(2019,1,15)},
+                new User{ID=2,Email="user2@email",Password="6cb75f652a9b52798eb6cf2201057c73",RegDate=new DateTime(2018,10,2)},
+                new User{ID=3,Email="my@email",Password="7c6a180b36896a0a8c02787eeafb0e4c",RegDate=new DateTime(2018,2,22)}
             };
 
             List<UserDetail> userDetails = new List<UserDetail>
@@ -55,6 +81,13 @@ namespace Classifieds.XUnitTest.Repository
             int changed = context.SaveChanges();
             mockContext = context;
             
+        }
+
+        public void Dispose()
+        {
+            mockContext.Users.RemoveRange(mockContext.Users);
+            mockContext.UserDetails.RemoveRange(mockContext.UserDetails);
+            int changed = mockContext.SaveChanges();
         }
     }
 }

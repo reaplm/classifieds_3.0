@@ -15,14 +15,13 @@ namespace Classifieds.XUnitTest.Controller
 {
     public class TestClassifiedsController
     {
-        private IAdvertService advertService;
 
         public TestClassifiedsController()
         {
             
         }
         [Fact]
-        public void testIndex()
+        public void TestIndex()
         {
             IEnumerable<Advert> adverts = new List<Advert>
             {
@@ -42,7 +41,7 @@ namespace Classifieds.XUnitTest.Controller
 
         }
         [Fact]
-        public void testCategory()
+        public void TestCategory()
         {
             IEnumerable<Advert> adverts = new List<Advert>
             {

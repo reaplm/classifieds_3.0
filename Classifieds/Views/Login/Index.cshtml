@@ -1,11 +1,11 @@
-﻿@model Classifieds.Web.Models.User
+﻿@model Classifieds.Web.Models.UserViewModel
 @{
     ViewData["Title"] = "Index";
 }
 
 <div id="pg-login" class="container">
 
-    @using (Html.BeginForm("Index", "Login", "", FormMethod.Post, true,
+    @using (Html.BeginForm("Login", "Login", "", FormMethod.Post, true,
     htmlAttributes: new { @class = "form-horizontal text-center mt-5", @id = "login" })){
     @Html.AntiForgeryToken()
     <div class="form-group has-danger">
@@ -17,8 +17,7 @@
     </div>
     <div class="form-group has-danger">
         @Html.LabelFor(Model => Model.Password)
-        @Html.TextBoxFor(Model => Model.Password, "",
-            htmlAttributes: new { @id = "password", @class= "rounded-box size-lg form-control" })
+        @Html.PasswordFor(Model => Model.Password, new { @id = "password", @class= "rounded-box size-lg form-control" })
         @Html.ValidationMessageFor(Model => Model.Password, "",
                        htmlAttributes: new { @class = "form-control-danger" })
     </div>

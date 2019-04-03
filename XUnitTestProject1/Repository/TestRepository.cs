@@ -11,6 +11,9 @@ using Xunit;
 
 namespace Classifieds.XUnitTest.Repository
 {
+    /// <summary>
+    /// Test class for Classifieds.Repository.GenericRepo using Menu objects
+    /// </summary>
     public class TestRepository : IDisposable
     {
         private DbSet<Menu> mockSet;
@@ -21,12 +24,9 @@ namespace Classifieds.XUnitTest.Repository
             initContext();
             mockSet = mockContext.Set<Menu>();
         }
-
         [Fact]
         public void testRepository_Create()
         {
-            
-
             var menuRepo = new MenuRepo(mockContext);
             menuRepo.create(new Menu { ID = 6, Name = "menu 6" });
             mockContext.SaveChanges();
@@ -59,7 +59,7 @@ namespace Classifieds.XUnitTest.Repository
             menuRepo.delete(2);
             menuRepo.save();
 
-            Assert.Equal(3, mockContext.Menus.Count());
+            Assert.Equal(4, mockContext.Menus.Count());
         }
 
         [Fact]
@@ -96,6 +96,11 @@ namespace Classifieds.XUnitTest.Repository
             Assert.Single(subMenu);
 
         }
+        /**
+         * Create a context and initialize the database with test Data
+         * This method runs before each test.
+         * 
+         * */
         private void initContext()
         {
             
@@ -118,10 +123,16 @@ namespace Classifieds.XUnitTest.Repository
             int changed = context.SaveChanges();
             mockContext = context;
         }
-
+        /**
+         * Clear the database in preparation for the next test.
+         * Since each test executes the initContext method, it
+         * is necessary to clear the database before the next 
+         * test, otherwise the tests fail during insert stage.
+         **/
         public void Dispose()
         {
-            
+            mockContext.Menus.RemoveRange(mockContext.Menus);
+            int changed = mockContext.SaveChanges();
         }
     }
     

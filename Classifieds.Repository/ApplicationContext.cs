@@ -11,6 +11,7 @@ namespace Classifieds.Repository
     {
         public virtual DbSet<Menu> Menus { set; get; }
         public virtual DbSet<Advert> Adverts { set; get; }
+        public virtual DbSet<AdvertDetail> AdvertDetails { set; get; }
         public virtual DbSet<User> Users { set; get; }
         public virtual DbSet<UserDetail> UserDetails { set; get; }
 

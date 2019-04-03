@@ -20,8 +20,10 @@ namespace Classifieds.Domain.Model
         [Column(name: "activation_code")]
         public String ActivationCode { set; get; }
 
+        [Column(name: "email")]
         public String Email { set; get; }
 
+        [Column(name: "password")]
         public String Password { set; get; }
 
         public int? Notified { set; get; }

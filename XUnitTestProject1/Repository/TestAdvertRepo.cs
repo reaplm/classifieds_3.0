@@ -11,7 +11,7 @@ using Xunit;
 namespace Classifieds.XUnitTest.Repository
 {
 
-    public class TestAdvertRepo
+    public class TestAdvertRepo : IDisposable
     {
         private ApplicationContext mockContext;
         private DbSet<Advert> mockSet;
@@ -27,10 +27,7 @@ namespace Classifieds.XUnitTest.Repository
             var repo = new AdvertRepo(mockContext);
             IEnumerable<Advert> adverts = repo.findByCategory(6);
 
-            IEnumerable<long> advertID = new List<long> { 2, 3, 4 };
-
             Assert.Equal(3, adverts.Count());
-            //Assert.True(adverts.All(advertID.Contains((x => x.ID)));
         }
 
         private void initContext()
@@ -78,6 +75,13 @@ namespace Classifieds.XUnitTest.Repository
             int changed = context.SaveChanges();
             mockContext = context;
 
+        }
+        public void Dispose()
+        {
+            mockContext.Menus.RemoveRange(mockContext.Menus);
+            mockContext.Adverts.RemoveRange(mockContext.Adverts);
+            mockContext.AdvertDetails.RemoveRange(mockContext.AdvertDetails);
+            int changed = mockContext.SaveChanges();
         }
     }
 }
