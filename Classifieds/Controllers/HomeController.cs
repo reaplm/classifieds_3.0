@@ -7,25 +7,30 @@ using Microsoft.AspNetCore.Mvc;
 using Classifieds.Models;
 using Classifieds.Service;
 using Classifieds.Domain.Model;
+using AutoMapper;
+using Classifieds.Web.Models;
 
 namespace Classifieds.Controllers
 {
     public class HomeController : Controller
     {
         private IMenuService menuService;
+        private IMapper mapper;
 
-        public HomeController(IMenuService menuService)
+        public HomeController(IMenuService menuService, IMapper mapper)
         {
             this.menuService = menuService;
+            this.mapper = mapper;
         }
 
         public IActionResult Index()
         {
            
             ViewBag.Title = "Adpost Home";
-            IEnumerable<Menu> Menus = menuService.findByType(new String[] { "HOME" }) as IEnumerable<Menu>;
+            IEnumerable<MenuViewModel> menus = mapper.Map<IEnumerable<MenuViewModel>>
+                (menuService.findByType(new String[] { "HOME" }));
 
-            return View(Menus);
+            return View(menus);
             
         }
 

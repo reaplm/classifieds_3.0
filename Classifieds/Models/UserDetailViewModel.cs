@@ -23,6 +23,6 @@ namespace Classifieds.Web.Models
         public String MobileNo { set; get; }
 
         public long UserID { set; get; }
-        public User User { set; get; }
+        public UserViewModel User { set; get; }
     }
 }

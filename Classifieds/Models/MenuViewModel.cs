@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Classifieds.Web.Models
 {
-    public class Menu
+    public class MenuViewModel
     {
 
         public int ID { set; get; }
@@ -32,8 +32,8 @@ namespace Classifieds.Web.Models
         public String Url { set; get; }
 
         public int? ParentID { set; get; }
-        public virtual Menu Parent { set; get; }
+        public virtual MenuViewModel Parent { set; get; }
 
-        public IEnumerable<Menu> SubMenus { set; get; }
+        public IEnumerable<MenuViewModel> SubMenus { set; get; }
     }
 }

@@ -28,6 +28,6 @@ namespace Classifieds.Web.Models
     
         public long MenuID { set; get; }
       
-        public Menu Menu { set; get; }
+        public MenuViewModel Menu { set; get; }
     }
 }
