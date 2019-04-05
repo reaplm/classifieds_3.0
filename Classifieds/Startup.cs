@@ -9,8 +9,10 @@ using Classifieds.Repository.Impl;
 using Classifieds.Service;
 using Classifieds.Service.Impl;
 using Classifieds.Web.Models;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -30,7 +32,6 @@ namespace Classifieds
         public void ConfigureServices(IServiceCollection services)
         {
             //AutoMapper
-            //services.AddAutoMapper();
             var config = new AutoMapper.MapperConfiguration(cfg =>
             {
                 cfg.CreateMap<UserViewModel, User>();
@@ -40,6 +41,8 @@ namespace Classifieds
             IMapper mapper = config.CreateMapper();
             services.AddSingleton(mapper);
 
+            //Authentication
+            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie();
             services.AddMvc();
 
             //Dependency Injection
@@ -69,6 +72,9 @@ namespace Classifieds
 
             app.UseStaticFiles();
 
+            //Authentication
+            app.UseAuthentication();
+
             app.UseMvc(routes =>
             {
                 routes.MapRoute(
@@ -77,6 +83,8 @@ namespace Classifieds
 
               
             });
+
+            
         }
     }
 }

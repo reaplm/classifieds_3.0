@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 using AutoMapper;
 using Classifieds.Web.Models;
 
-namespace Classifieds.XUnitTest
+namespace Classifieds.XUnitTest.Controller
 {
     public class TestHomeController
     {

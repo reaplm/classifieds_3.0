@@ -12,6 +12,12 @@ using Microsoft.AspNetCore.Mvc;
 using Classifieds.Web.Models;
 using Classifieds.Domain.Model;
 using AutoMapper;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Http;
+using System.Security.Claims;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc.Routing;
+using Microsoft.AspNetCore.Mvc.ViewFeatures;
 
 namespace Classifieds.XUnitTest.Controller
 {
@@ -24,11 +30,12 @@ namespace Classifieds.XUnitTest.Controller
         {
             Initialize();
             mockService = new Mock<IUserService>();
+
         }
         [Fact]
         public void Login_ModelState_IsInvalid()
         {
-            
+
             mockService.Setup(m => m.authenticateUser(It.IsAny<String>(), It.IsAny<String>()))
                .Returns(It.IsAny<User>());
 
@@ -37,12 +44,14 @@ namespace Classifieds.XUnitTest.Controller
 
             UserViewModel user = new UserViewModel
             {
-                ID = 1, Email = "my@email", Password = "Pass1"
+                ID = 1,
+                Email = "my@email",
+                Password = "Pass1"
             };
 
 
             //return View("Index", user);
-            var result = controller.Login(user)as ViewResult;
+            var result = controller.Login(user).Result as ViewResult;
             var model = result.Model;
 
             Assert.Equal("Index", result.ViewName);
@@ -65,7 +74,7 @@ namespace Classifieds.XUnitTest.Controller
 
 
             //return View("Index", user);
-            var result = controller.Login(user) as ViewResult;
+            var result = controller.Login(user).Result as ViewResult;
             var model = result.Model;
 
             Assert.Equal("Index", result.ViewName);
@@ -88,17 +97,23 @@ namespace Classifieds.XUnitTest.Controller
                 Password = "Pass1"
             };
 
-            var mockService = new Mock<IUserService>();
             mockService.Setup(m => m.authenticateUser(It.IsAny<String>(), It.IsAny<String>()))
-                .Returns(user);
+               .Returns(user);
 
             var controller = new LoginController(mockService.Object, mapper);
 
-            var result = (RedirectToActionResult) controller.Login(userViewModel);
-    
+            controller.ControllerContext = new ControllerContext();
+            controller.ControllerContext.HttpContext = new DefaultHttpContext()
+            {
+                RequestServices = ServiceProviderMock()
+            };
 
-            Assert.Equal("Index", result.ActionName);
-            Assert.Equal("Home", result.ControllerName);
+            var result = controller.Login(userViewModel).Result;
+            var redirect = (RedirectToActionResult)result;
+
+
+            Assert.Equal("Index", redirect.ActionName);
+            Assert.Equal("Home", redirect.ControllerName);
         }
         private void Initialize()
         {
@@ -109,7 +124,34 @@ namespace Classifieds.XUnitTest.Controller
 
             mapper = config.CreateMapper();
         }
+        private IServiceProvider ServiceProviderMock()
+        {
+
+            var authServiceMock = new Mock<IAuthenticationService>();
+            authServiceMock.Setup(m => m.SignInAsync(It.IsAny<HttpContext>(),
+                It.IsAny<String>(), It.IsAny<ClaimsPrincipal>(),
+                It.IsAny<AuthenticationProperties>()))
+                .Returns(Task.FromResult((object)null));
+
+            var urlHelperFactory = new Mock<IUrlHelperFactory>();
+
+            var dataDictionaryFactory = new Mock<ITempDataDictionaryFactory>();
+
+            var serviceProviderMock = new Mock<IServiceProvider>();
+            serviceProviderMock.Setup(m => m.GetService(typeof(IAuthenticationService)))
+                .Returns(authServiceMock.Object);
+            serviceProviderMock.Setup(m => m.GetService(typeof(IUrlHelperFactory)))
+                .Returns(urlHelperFactory.Object);
+            serviceProviderMock.Setup(m => m.GetService(typeof(ITempDataDictionaryFactory)))
+                .Returns(dataDictionaryFactory.Object);
+
+            return serviceProviderMock.Object;
+        }
+
+
     }
 
-    
 }
+
+    
+

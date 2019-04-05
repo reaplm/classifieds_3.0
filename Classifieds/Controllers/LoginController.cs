@@ -1,11 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using AutoMapper;
 using Classifieds.Domain.Model;
 using Classifieds.Service;
 using Classifieds.Web.Models;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Classifieds.Web.Controllers
@@ -14,11 +18,15 @@ namespace Classifieds.Web.Controllers
     {
         private IUserService userService;
         private IMapper mapper;
+       // private readonly UserManager<User> userManager;
+        //private readonly SignInManager<User> signInManager;
 
         public LoginController(IUserService userService, IMapper mapper)
         {
             this.userService = userService;
             this.mapper = mapper;
+            //this.userManager = userManager;
+            //this.signInManager = signInManager;
         }
         public IActionResult Index()
         {
@@ -26,16 +34,35 @@ namespace Classifieds.Web.Controllers
         }
         [HttpPost]
         [AutoValidateAntiforgeryToken]
-        public IActionResult Login(UserViewModel user)
+        public async Task<IActionResult> Login(UserViewModel user)
         {
-            UserViewModel autenticatedUser = mapper.Map<UserViewModel>
+            UserViewModel authenticatedUser = mapper.Map<UserViewModel>
                 (userService.authenticateUser(user.Email, user.Password));
 
-            if (autenticatedUser  == null){
+            //User authUser = userService.authenticateUser(user.Email, user.Password);
+
+            if (authenticatedUser == null){
                 ModelState.AddModelError("Password", "Wrong email or password");
             }
             if (ModelState.IsValid)
             {
+                var claims = new List<Claim>
+                {
+                    new Claim(ClaimTypes.Name, user.Email),
+                    new Claim(ClaimTypes.Email, user.Email),
+                    new Claim(ClaimTypes.Role, "Administrator")
+                };
+                var claimsIdentity = new ClaimsIdentity(claims, 
+                    CookieAuthenticationDefaults.AuthenticationScheme);
+                var authProperties = new AuthenticationProperties
+                {
+                    AllowRefresh= true
+                };
+
+                await HttpContext.SignInAsync(
+                        CookieAuthenticationDefaults.AuthenticationScheme,
+                        new ClaimsPrincipal(claimsIdentity), authProperties);
+
                 return RedirectToAction("Index", "Home", "");
             }
 

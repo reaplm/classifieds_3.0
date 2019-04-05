@@ -57,17 +57,7 @@
     box-shadow: 1px 2px 5px 5px #e9eef2; /* Opera 10.5, IE 9, Firefox 4+, Chrome 6+, iOS 5 */
 }
 
-    #login .form-group .has-danger{
-        height: 415px;
-    }
-
-    #login .form-group a, .form-group a:visited {
-        color: #666;
-    }
-
-    #login .field-validation-errorr{
-        color: #f8d650;
-    }
+    
 #login button{
     background-color: #2c2a33;
     border-color: #2c2a33;
@@ -88,6 +78,20 @@
     border-radius: 0.25rem;
 }
 
-.form-group{
-    position: relative;
+.form-group .has-danger{
+    height: 85px;
+}
+.form-group {
+    margin-bottom: 10px;
+}
+
+.form-group a, .form-group a:visited {
+    color: #666;
+}
+
+.form-control-danger {
+    display: block;
+    color: #666;
+    font-size: 9pt;
+    height: 20px;
 }

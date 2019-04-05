@@ -30,22 +30,49 @@
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    <li><a asp-area="" asp-controller="Home" asp-action="Index"  
-                           class="@((ViewContext.RouteData.Values["Controller"].ToString().Equals("Home") 
+                    <li>
+                        <a asp-area="" asp-controller="Home" asp-action="Index"
+                           class="@((ViewContext.RouteData.Values["Controller"].ToString().Equals("Home")
                                && ViewContext.RouteData.Values["Action"].ToString().Equals("Index"))? "active":"")">
-                        Home</a>
+                            Home
+                        </a>
                     </li>
-                    <li><a asp-area="" asp-controller="Classifieds" asp-action="Index"
-                           class="@((ViewContext.RouteData.Values["Controller"].ToString().Equals("Classifieds") 
+                    <li>
+                        <a asp-area="" asp-controller="Classifieds" asp-action="Index"
+                           class="@((ViewContext.RouteData.Values["Controller"].ToString().Equals("Classifieds")
                                && ViewContext.RouteData.Values["Action"].ToString().Equals("Index"))? "active":"")">
-                        
-                        Classifieds</a>
+
+                            Classifieds
+                        </a>
                     </li>
-                    <li><a asp-area="" asp-controller="Login" asp-action="Index"
-                                class="@((ViewContext.RouteData.Values["Controller"].ToString().Equals("User") 
+                    @if (User.Identity.IsAuthenticated)
+    {
+                <li>
+                    <a asp-area="" asp-controller="Login" asp-action="Index"
+                       class="@((ViewContext.RouteData.Values["Controller"].ToString().Equals("User")
+                                       && ViewContext.RouteData.Values["Action"].ToString().Equals("Index"))? "active":"")">
+                        Logout
+                    </a>
+                </li>
+                <li>
+                    <a asp-area="" asp-controller=" " asp-action="Index">
+                        Welcome @User.Identity.Name!
+                    </a>
+                </li>
+
+}
+else
+{
+                <li>
+                    <a asp-area="" asp-controller="Login" asp-action="Index"
+                       class="@((ViewContext.RouteData.Values["Controller"].ToString().Equals("User")
                                && ViewContext.RouteData.Values["Action"].ToString().Equals("Index"))? "active":"")">
-                                                   Login</a>
-                    </li>
+                        Login
+                    </a>
+                </li>
+
+}
+
                 </ul>
             </div>
         </div>

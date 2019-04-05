@@ -18,7 +18,7 @@
     <div class="form-group has-danger">
         @Html.LabelFor(Model => Model.Password)
         @Html.PasswordFor(Model => Model.Password, new { @id = "password", @class= "rounded-box size-lg form-control" })
-        @Html.ValidationMessageFor(Model => Model.Password, "",
+         @Html.ValidationMessageFor(Model => Model.Password, "",
                        htmlAttributes: new { @class = "form-control-danger" })
     </div>
     <div class="form-group">
