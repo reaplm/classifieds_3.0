@@ -19,17 +19,19 @@
 <body>
     <nav class="navbar" >
         <div class="container">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <a asp-area="" asp-controller="Home" asp-action="Index" class="navbar-brand">Classifieds</a>
-            </div>
-            <div class="navbar-collapse collapse">
-                <ul class="nav navbar-nav">
+            <button type="button" class="navbar-toggle float-right" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <div class="flex-container">
+                <div class="navbar-header">
+                    <a asp-area="" asp-controller="Home" asp-action="Index" class="navbar-brand">Classifieds</a>
+                </div>
+                <div class="navbar-collapse collapse" >
+
+                <ul class="nav navbar-nav" style="border: solid">
                     <li>
                         <a asp-area="" asp-controller="Home" asp-action="Index"
                            class="@((ViewContext.RouteData.Values["Controller"].ToString().Equals("Home")
@@ -46,7 +48,7 @@
                         </a>
                     </li>
                     @if (User.Identity.IsAuthenticated)
-    {
+            {
                 <li>
                     <a asp-area="" asp-controller="Login" asp-action="Index"
                        class="@((ViewContext.RouteData.Values["Controller"].ToString().Equals("User")
@@ -60,21 +62,22 @@
                     </a>
                 </li>
 
-}
-else
-{
-                <li>
-                    <a asp-area="" asp-controller="Login" asp-action="Index"
-                       class="@((ViewContext.RouteData.Values["Controller"].ToString().Equals("User")
+    }
+    else
+    {
+        <li>
+            <a asp-area="" asp-controller="Login" asp-action="Index"
+               class="@((ViewContext.RouteData.Values["Controller"].ToString().Equals("User")
                                && ViewContext.RouteData.Values["Action"].ToString().Equals("Index"))? "active":"")">
-                        Login
-                    </a>
-                </li>
+                Login
+            </a>
+        </li>
 
 }
 
                 </ul>
             </div>
+                </div>
         </div>
     </nav>
     <div class="container body-content">
