@@ -50,7 +50,7 @@
                     @if (User.Identity.IsAuthenticated)
             {
                 <li>
-                    <a asp-area="" asp-controller="Login" asp-action="Index"
+                    <a asp-area="" asp-controller="Login" asp-action="SignOut"
                        class="@((ViewContext.RouteData.Values["Controller"].ToString().Equals("User")
                                        && ViewContext.RouteData.Values["Action"].ToString().Equals("Index"))? "active":"")">
                         Logout

@@ -115,6 +115,24 @@ namespace Classifieds.XUnitTest.Controller
             Assert.Equal("Index", redirect.ActionName);
             Assert.Equal("Home", redirect.ControllerName);
         }
+        [Fact]
+        public void TestSignOut()
+        {
+            var controller = new LoginController(mockService.Object, mapper);
+
+            controller.ControllerContext = new ControllerContext();
+            controller.ControllerContext.HttpContext = new DefaultHttpContext()
+            {
+                RequestServices = ServiceProviderMock()
+            };
+
+            var result = controller.SignOut().Result;
+            var redirect = (RedirectToActionResult)result;
+
+
+            Assert.Equal("Index", redirect.ActionName);
+            Assert.Equal("Home", redirect.ControllerName);
+        }
         private void Initialize()
         {
             var config = new MapperConfiguration(cfg =>

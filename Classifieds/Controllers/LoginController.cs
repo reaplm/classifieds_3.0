@@ -39,8 +39,6 @@ namespace Classifieds.Web.Controllers
             UserViewModel authenticatedUser = mapper.Map<UserViewModel>
                 (userService.authenticateUser(user.Email, user.Password));
 
-            //User authUser = userService.authenticateUser(user.Email, user.Password);
-
             if (authenticatedUser == null){
                 ModelState.AddModelError("Password", "Wrong email or password");
             }
@@ -68,7 +66,14 @@ namespace Classifieds.Web.Controllers
 
             return View("Index", user);
         }
-        
+        public async Task<IActionResult> SignOut()
+        {
+            await HttpContext.SignOutAsync(
+                CookieAuthenticationDefaults.AuthenticationScheme);
+            //HttpContext.Response.Cookies.Delete(".AspNetCore.Cookies");
+
+            return RedirectToAction("Index", "Home");
+        }
 
         
     }
