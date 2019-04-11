@@ -18,5 +18,12 @@ namespace Classifieds.Domain.Enumerated
             ACTIVE,
             INACTIVE
         }
+
+        public enum AdvertStatus
+        {
+            SUBMITTED,
+            REJECTED,
+            APPROVED
+        }
     }
 }

@@ -55,72 +55,114 @@ span.icon-bar{
         display: inline-block;
     }
 
-    /*==================================LOGIN PAGE=================================*/
-    #pg-login {
-        width: 500px;
-        height: 300px;
-        margin: 2em auto;
-        background-color: #e9eef2;
-    }
+/*==================================LOGIN PAGE=================================*/
+#pg-login {
+    width: 500px;
+    height: 300px;
+    margin: 2em auto;
+    background-color: #e9eef2;
+}
 
-    #login {
-        width: 80%;
-        margin-top: 10px;
-        margin: 1em auto;
-    }
+#login {
+    width: 80%;
+    margin-top: 10px;
+    margin: 1em auto;
+}
 
-        #login input {
-            border: solid 1px #f8d650;
-        }
+       
+/*====================================CREATE ADVERT=================================*/
 
-        #login .form-control span {
-            min-height: 15px;
-        }
+#create-ad {
+    color: #2c2a33;
+    padding-left: 10px;
+}
 
-        #login .form-control:focus {
-            border: solid 1px #f8d650;
-            -webkit-box-shadow: 1px 2px 5px 5px #e9eef2; /* Safari 3-4, iOS 4.0.2 - 4.2, Android 2.3+ */
-            -moz-box-shadow: 1px 2px 5px 5px #e9eef2; /* Firefox 3.5 - 3.6 */
-            box-shadow: 1px 2px 5px 5px #e9eef2; /* Opera 10.5, IE 9, Firefox 4+, Chrome 6+, iOS 5 */
-        }
+/*=====================================CLASSES===========================================*/
+/*-------------------------------------buttons-------------------------------------------*/
+.image-button {
+    background-color: transparent;
+    border: none;
+}
+
+.image-button img {
+    width: 30px;
+    height: 30px;
+    margin: 10px;
+}
+ .form-button {
+    background-color: #2c2a33;
+    border-color: #2c2a33;
+    color: #fff;
+}
+
+.uploadcare--widget__button_type_open {
+    background-color: #2e202b;
+    width: 200px;
+    height: 45px;
+}
+
+.uploadcare--widget {
+    float: left;
+}
+
+.uploadcare--widget__button_type_open:hover {
+    background-color: #2c2a33;
+}
+/*-------------------------------------input------------------------------------------------*/
+.size-lg {
+    height: 40px;
+}
+.rounded-box {
+    border-radius: 0.25rem;
+}
+.form-input {
+    border: solid 1px #f8d650;
+}
+.w-100{
+    width: 100%;
+}
+/*-------------------------------------container-------------------------------------------*/
+.col-layout {
+    column-count: 3;
+    column-gap: 10px;
+}
+.form-group .has-danger {
+    height: 85px;
+}
+.form-group {
+    margin-bottom: 10px;
+}
+.form-group a, .form-group a:visited {
+    color: #666;
+}
+/*-------------------------------------label-------------------------------------------*/
+.form-control-danger {
+    display: block;
+    color: #666;
+    font-size: 9pt;
+    height: 20px;
+}
+.form-control:focus {
+    border: solid 1px #f8d650;
+    -webkit-box-shadow: 1px 2px 5px 5px #e9eef2; /* Safari 3-4, iOS 4.0.2 - 4.2, Android 2.3+ */
+    -moz-box-shadow: 1px 2px 5px 5px #e9eef2; /* Firefox 3.5 - 3.6 */
+    box-shadow: 1px 2px 5px 5px #e9eef2; /* Opera 10.5, IE 9, Firefox 4+, Chrome 6+, iOS 5 */
+}
+
+.form-control span {
+    min-height: 15px;
+}
+/*-------------------------------------color-------------------------------------------*/
+.color-fd8 {
+    background-color: #f8d650;
+}
+.color-666 {
+    background-color: #666;
+}
+.color-e9e {
+    background-color: #e9eef2;
+} 
+
+    
 
 
-        #login button {
-            background-color: #2c2a33;
-            border-color: #2c2a33;
-            color: #fff;
-        }
-
-    /*====================================CLASSES=================================*/
-    .col-layout {
-        column-count: 3;
-        column-gap: 10px;
-    }
-
-    .size-lg {
-        width: 100%;
-        height: 40px;
-    }
-
-    .rounded-box {
-        border-radius: 0.25rem;
-    }
-
-    .form-group .has-danger {
-        height: 85px;
-    }
-
-    .form-group {
-        margin-bottom: 10px;
-    }
-
-        .form-group a, .form-group a:visited {
-            color: #666;
-        }
-
-    .form-control-danger {
-        display: block;
-        color: #666;
-        font-size: 9pt;
-        height: 20px;
-    }

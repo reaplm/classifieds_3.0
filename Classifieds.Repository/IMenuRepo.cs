@@ -8,5 +8,6 @@ namespace Classifieds.Repository
     public interface IMenuRepo : IGenericRepo<Menu>
     {
         IEnumerable<Menu> findByType(String[] types);
+        IEnumerable<Menu> findAll(long parentId);
     }
 }

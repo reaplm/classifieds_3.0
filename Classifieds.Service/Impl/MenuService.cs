@@ -19,5 +19,9 @@ namespace Classifieds.Service.Impl
         {
             return menuRepository.findByType(types);
         }
+        public IEnumerable<Menu> findAll(long parentId)
+        {
+            return menuRepository.findAll(parentId);
+        }
     }
 }

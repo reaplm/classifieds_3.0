@@ -1,0 +1,120 @@
+﻿@model AdvertViewModel
+@using Classifieds.Web.Models
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+
+<div class="container color-e9e ">
+    @using (Html.BeginForm("Create", "Classifieds", "", FormMethod.Post, true,
+     htmlAttributes: new { @id = "create-ad", @class = "form-horizontal" }))
+    {
+        @Html.AntiForgeryToken()
+        @Html.ValidationMessageFor(model => model.UserID, "",
+                              new { @Class = "form-control-danger" })
+        <div class="row form-group">
+            <div class="col-sm-3">
+                @Html.DropDownList("menu", ViewBag.Menus as IEnumerable<SelectListItem>,
+                          "Select Menu", new
+                          {
+                              @class = "rounded-box size-lg form-control form-input " +
+                          "text-capitalize"
+                          })
+                @Html.ValidationMessageFor(model => model.ParentID, "",
+                       new { @Class = "form-control-danger" })
+            </div>
+            <div class="col-sm-3">
+                @Html.DropDownList("submenu", ViewBag.SubMenus as IEnumerable<SelectListItem>,
+                                 "Select Sub-Menu", new
+                                 {
+                                     @class = "rounded-box size-lg form-control form-input " +
+                                 "text-capitalize"
+                                 })
+                @Html.ValidationMessageFor(model => model.MenuID, "",
+                                  new { @Class = "form-control-danger" })
+            </div>
+            <div class="col-sm-3">
+
+            </div>
+            <div class="col-sm-3">
+
+            </div>
+        </div>
+
+        <div class="row form-group">
+            <div class="col-sm-6">
+                @Html.TextBoxFor(model => model.Detail.Location,
+                                new
+                                {
+                                    @class = "rounded-box size-lg form-control form-input",
+                                    @placeholder = "Location"
+                                })
+                @Html.ValidationMessageFor(model => model.Detail.Location, "",
+                              new { @Class = "form-control-danger" })
+            </div>
+            <div class="col-sm-6"></div>
+        </div>
+        <div class="row form-group">
+            <div class="col-sm-6">
+                @Html.TextBoxFor(model => model.Detail.Title,
+                                 new
+                                 {
+                                     @class = "rounded-box size-lg form-control form-input",
+                                     @placeholder = "Title"
+                                 })
+                @Html.ValidationMessageFor(model => model.Detail.Title, "",
+                              new { @Class = "form-control-danger" })
+            </div>
+            <div class="col-sm-6"></div>
+        </div>
+        <div class="row form-group">
+            <div class="col-sm-12">
+                @Html.TextAreaFor(model => model.Detail.Body, 10, 1,
+                          new { @class = "rounded-box size-lg form-control form-input" })
+                @Html.ValidationMessageFor(model => model.Detail.Body, "",
+                              new { @Class = "form-control-danger" })
+            </div>
+        </div>
+        <div class="row form-group">
+            <div class="col-xs-6 col-sm-4">
+                @Html.TextBoxFor(model => model.Detail.Email,
+                                 new
+                                 {
+                                     @class = "rounded-box size-lg form-control form-input",
+                                     @placeholder = "Email"
+                                 })
+                @Html.ValidationMessageFor(model => model.Detail.Email, "",
+                              new { @Class = "form-control-danger" })
+            </div>
+            <div class="col-xs-6 col-sm-4">
+                @Html.TextBoxFor(model => model.Detail.Phone,
+                                new
+                                {
+                                    @class = "rounded-box size-lg form-control form-input",
+                                    @placeholder = "Phone"
+                                })
+                @Html.ValidationMessageFor(model => model.Detail.Phone, "",
+                              new { @Class = "form-control-danger" })
+            </div>
+            <div class="col-sm-4"></div>
+        </div>
+        <div class="row form-group">
+            <div class="col-sm-12">
+
+                <input name="uploadCareUrl" type="hidden" id="uploadcareWidget"
+                       role="uploadcare-uploader" data-images-only="true"
+                       data-multiple="true" data-multiple-max="4"
+                       class="float-left" />
+                <button id="submit-ad"class="image-button"> <img src="~/images/send.png" title="submit" /></button>
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.HiddenFor(model => model.MenuID)
+            @Html.HiddenFor(model => model.ParentID)
+            @Html.HiddenFor(model => model.UserID)
+        </div>
+
+
+    }
+</div>

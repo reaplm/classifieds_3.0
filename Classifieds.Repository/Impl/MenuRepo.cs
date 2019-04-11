@@ -25,5 +25,11 @@ namespace Classifieds.Repository.Impl
                 .Include(x => x.SubMenus);
             return menus;
         }
+        public IEnumerable<Menu> findAll(long parentId)
+        {
+            //return context.Menus.Find(parentId).SubMenus;
+            return context.Menus.Where(x => x.ParentID == parentId).ToList();
+        }
+
     }
 }

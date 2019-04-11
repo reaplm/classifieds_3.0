@@ -34,6 +34,11 @@ namespace Classifieds.Domain.Model
         [ForeignKey("MenuID")]
         public Menu Menu { set; get; }
 
+        [Column(name: "fk_appuser_id")]
+        public long UserID { set; get; }
+        [ForeignKey("UserID")]
+        public virtual User User { set; get; }
+
         public virtual AdvertDetail Detail { set; get; }
     }
 }

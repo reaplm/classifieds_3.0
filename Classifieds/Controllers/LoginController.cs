@@ -46,8 +46,9 @@ namespace Classifieds.Web.Controllers
             {
                 var claims = new List<Claim>
                 {
-                    new Claim(ClaimTypes.Name, user.Email),
-                    new Claim(ClaimTypes.Email, user.Email),
+                    new Claim("UserId", authenticatedUser.ID.ToString()),
+                    new Claim(ClaimTypes.Name, authenticatedUser.Email),
+                    new Claim(ClaimTypes.Email, authenticatedUser.Email),
                     new Claim(ClaimTypes.Role, "Administrator")
                 };
                 var claimsIdentity = new ClaimsIdentity(claims, 

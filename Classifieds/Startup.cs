@@ -42,7 +42,13 @@ namespace Classifieds
             services.AddSingleton(mapper);
 
             //Authentication
-            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie();
+            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+                .AddCookie(options =>
+                {
+                    options.LoginPath = "/Login";
+                    options.LogoutPath = "/Login/Signout";
+                }
+                );
             services.AddMvc();
 
             //Dependency Injection
@@ -74,6 +80,7 @@ namespace Classifieds
 
             //Authentication
             app.UseAuthentication();
+           
 
             app.UseMvc(routes =>
             {

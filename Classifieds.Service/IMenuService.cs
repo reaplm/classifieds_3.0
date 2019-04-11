@@ -8,5 +8,6 @@ namespace Classifieds.Service
     public interface IMenuService : IGenericService<Menu>
     {
         IEnumerable<Menu> findByType(String[] types);
+        IEnumerable<Menu> findAll(long parentId);
     }
 }
