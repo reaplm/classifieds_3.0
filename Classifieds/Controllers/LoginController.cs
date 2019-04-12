@@ -18,23 +18,31 @@ namespace Classifieds.Web.Controllers
     {
         private IUserService userService;
         private IMapper mapper;
-       // private readonly UserManager<User> userManager;
-        //private readonly SignInManager<User> signInManager;
 
         public LoginController(IUserService userService, IMapper mapper)
         {
             this.userService = userService;
             this.mapper = mapper;
-            //this.userManager = userManager;
-            //this.signInManager = signInManager;
         }
-        public IActionResult Index()
+        /// <summary>
+        /// /Login
+        /// </summary>
+        /// <returns></returns>
+        public IActionResult Index(String ReturnUrl)
         {
+            ViewBag.ReturnUrl = ReturnUrl;
+
             return View();
         }
+        /// <summary>
+        /// Login Post
+        /// </summary>
+        /// <param name="user">ViewModel</param>
+        /// <param name="ReturnUrl">Redirect to url after login</param>
+        /// <returns></returns>
         [HttpPost]
         [AutoValidateAntiforgeryToken]
-        public async Task<IActionResult> Login(UserViewModel user)
+        public async Task<IActionResult> Login(UserViewModel user, String ReturnUrl)
         {
             UserViewModel authenticatedUser = mapper.Map<UserViewModel>
                 (userService.authenticateUser(user.Email, user.Password));
@@ -62,20 +70,35 @@ namespace Classifieds.Web.Controllers
                         CookieAuthenticationDefaults.AuthenticationScheme,
                         new ClaimsPrincipal(claimsIdentity), authProperties);
 
-                return RedirectToAction("Index", "Home", "");
+                    return RedirectToLocal(ReturnUrl);
             }
 
             return View("Index", user);
         }
+        /// <summary>
+        /// Signout
+        /// </summary>
+        /// <returns></returns>
         public async Task<IActionResult> SignOut()
         {
             await HttpContext.SignOutAsync(
                 CookieAuthenticationDefaults.AuthenticationScheme);
-            //HttpContext.Response.Cookies.Delete(".AspNetCore.Cookies");
 
             return RedirectToAction("Index", "Home");
         }
-
+        /// <summary>
+        /// Redirect to url
+        /// </summary>
+        /// <param name="returnUrl"></param>
+        /// <returns></returns>
+        private IActionResult RedirectToLocal(string returnUrl)
+        {
+            if (Url.IsLocalUrl(returnUrl))
+            {
+                return Redirect(returnUrl);
+            }
+            else { return RedirectToAction("Index", "Home"); }
+        }
         
     }
 }
