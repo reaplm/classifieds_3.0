@@ -72,7 +72,7 @@ namespace Classifieds.Web.Controllers
 
                     return RedirectToLocal(ReturnUrl);
             }
-
+            ViewBag.ReturnUrl = ReturnUrl;
             return View("Index", user);
         }
         /// <summary>
