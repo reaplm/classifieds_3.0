@@ -174,6 +174,31 @@ namespace Classifieds.XUnitTest.Controller
 
         }
         /// <summary>
+        /// Test public IActionResult Detail(long id)
+        /// </summary>
+        [Fact]
+        public void Detail()
+        {
+            Advert advert = new Advert
+            {
+                ID = 1,
+                Detail = new AdvertDetail { Email = "myEmail", Title = "Car Wanted" }
+            };
+
+            mockAdvertService.Setup(m => m.find(It.IsAny<long>()))
+                .Returns(advert);
+
+            var controller = new ClassifiedsController(mockAdvertService.Object, 
+                mockMenuService.Object, mapper);
+
+            var result = controller.Detail(3) as ViewResult;
+            var model = result.Model as AdvertViewModel;
+
+            Assert.Equal("myEmail", model.Detail.Email);
+            Assert.Equal("Car Wanted", model.Detail.Title);
+
+        }
+        /// <summary>
         /// Initialize AutoMapper
         /// </summary>
         private void Inialize()
@@ -181,7 +206,9 @@ namespace Classifieds.XUnitTest.Controller
             var config = new MapperConfiguration(cfg =>
             {
                 cfg.CreateMap<AdvertViewModel, Advert>();
-                cfg.CreateMap<AdvertDetailViewModel, AdvertDetail>();
+                cfg.CreateMap<Advert, AdvertViewModel>()
+                    .ForMember(m => m.ParentID, opts => opts.Ignore());
+                cfg.CreateMap<AdvertDetailViewModel, AdvertDetail>(MemberList.Source);
             });
 
             mapper = config.CreateMapper();

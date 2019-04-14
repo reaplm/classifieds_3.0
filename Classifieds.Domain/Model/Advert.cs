@@ -31,6 +31,12 @@ namespace Classifieds.Domain.Model
         
         [Column(name:"fk_menu_id")]
         public long MenuID { set; get; }
+
+        public Advert Include()
+        {
+            throw new NotImplementedException();
+        }
+
         [ForeignKey("MenuID")]
         public Menu Menu { set; get; }
 

@@ -1,5 +1,15 @@
-﻿// Write your JavaScript code
-function GetSubMenus(menuId,url, callback) {
+﻿
+function GetAdvertDetail(url, callback) {
+    $.ajax({
+        url: url,
+        type: "get",
+    })
+    .done(function (data, textStatus, jqXHR) {
+        callback(data);
+     })
+     .fail(function(jqXHR, errorText, errorThrown){
+        alert("Failed to fetch advert details"); });
+}function GetSubMenus(menuId,url, callback) {
     $.ajax({
         url: url,
         type: "get",
@@ -42,5 +52,18 @@ $(document).ready(function () {
 
     $("submit-ad").on("click", function () {
         document.getElementById("SubmittedDate").value = new Date();
+    });
+
+    $(".modal-link").on("click", function (e) {
+        e.preventDefault();
+
+        $("#advert-detail-modal").remove();
+
+        var url = $(this).attr("href");
+
+        GetAdvertDetail(url, function (data) {
+            $(data).modal();
+        });
+        
     });
 });

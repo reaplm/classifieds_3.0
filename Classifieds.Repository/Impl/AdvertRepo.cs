@@ -26,5 +26,12 @@ namespace Classifieds.Repository.Impl
 
             return adverts;
         }
+        public Advert Find(long id)
+        {
+            return context.Adverts.Where(x => x.ID == id)
+                    .Include(x => x.Detail)
+                    .Include(x => x.User)
+                    .SingleOrDefault();
+        }
     }
 }

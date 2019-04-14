@@ -95,6 +95,17 @@ namespace Classifieds.Web.Controllers
             return View(model);
         }
         /// <summary>
+        /// Return advert details
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public IActionResult Detail(long id)
+        {
+            AdvertViewModel model = mapper.Map<AdvertViewModel>(advertService.Find(id));
+
+            return PartialView(model);
+        }
+        /// <summary>
         /// 
         /// </summary>
         /// <param name="selectedVal">The ID of the selected item</param>

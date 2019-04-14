@@ -5,7 +5,11 @@
 <div class="col-layout">
     @foreach(var advert in Model)
     {
-        <h4 class="text-capitalize text-center">@advert.Detail.Title</h4>
+        <h4 class="text-capitalize text-center">
+            @Html.ActionLink(advert.Detail.Title, "Detail", "Classifieds",
+            new {id=advert.ID},new {@class="modal-link",
+                @data_target= "#advert-detail-modal", @data_toggle="modal" })
+        </h4>
         <p>@advert.Detail.Body</p>
         <hr />
     }

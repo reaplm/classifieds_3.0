@@ -161,8 +161,49 @@ span.icon-bar{
 }
 .color-e9e {
     background-color: #e9eef2;
-} 
+}
+/*=============================MODAL=============================*/
+.modal-content {
+    color: #2c2a33;
+}
+.modal-content .container{
+    width: auto;
+}
+.modal-header {
+    text-transform: Capitalize;
+    background-color: #e9eef2;
+}
 
+.modal-footer {
+    background-color: #e9eef2;
+}
+
+.modal-body .border-btm select {
+    border-bottom: solid 1px #e9eef2;
+}
+
+.modal-body .border-btm input[type="text"] {
+    border: none;
+    border-bottom: solid 1px #e9eef2;
+}
+
+.modal-body .border-btm select {
+    border: none;
+    border-bottom: solid 1px #e9eef2;
+}
+
+.modal-body .form-control-danger {
+    color: #e9eef2;
+}
+
+.modal-body input, .modal-body select {
+    font-size: 9pt;
+}
+
+.modal-body label {
+    color: #999;
+}
+/*====================================FOOTER===============*/
     
 
 

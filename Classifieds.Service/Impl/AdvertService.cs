@@ -18,5 +18,9 @@ namespace Classifieds.Service.Impl
         {
             return advertRepo.findByCategory(id);
         }
+        public Advert Find(long id)
+        {
+            return advertRepo.Find(id);
+        }
     }
 }
