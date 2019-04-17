@@ -14,6 +14,7 @@ namespace Classifieds.Repository
         public virtual DbSet<AdvertDetail> AdvertDetails { set; get; }
         public virtual DbSet<User> Users { set; get; }
         public virtual DbSet<UserDetail> UserDetails { set; get; }
+        public virtual DbSet<AdPicture> AdPictures { set; get; }
 
         public ApplicationContext(DbContextOptions<ApplicationContext> options) : base(options)
         {

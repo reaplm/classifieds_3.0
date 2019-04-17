@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Classifieds.Domain.Enumerated;
 using Classifieds.Domain.Model;
 using Classifieds.Repository.Impl;
 using Classifieds.Service;
@@ -162,7 +163,7 @@ namespace Classifieds.XUnitTest.Controller
         [Fact]
         public void TestCreateValidModelState_POST()
         {
-            AdvertViewModel model = new AdvertViewModel();
+            AdvertViewModel model = GetAdvert();
 
             var controller = new ClassifiedsController(mockAdvertService.Object, mockMenuService.Object, mapper);
             var result = controller.Create(model) as RedirectToActionResult;
@@ -243,6 +244,54 @@ namespace Classifieds.XUnitTest.Controller
             };
 
             return menus;
+        }
+        /// <summary>
+        /// Create Advert object
+        /// </summary>
+        /// <returns></returns>
+        private AdvertViewModel GetAdvert()
+        {
+            AdPictureViewModel picture1 = new AdPictureViewModel
+            {
+                ID = 1,
+                Uuid = "0b83b507-8c11-4c0e-96d2-5fd773d525f7",
+                CdnUrl = "https://ucarecdn.com/0b83b507-8c11-4c0e-96d2-5fd773d525f7/",
+                Name = "about me sample 3.PNG",
+                Size = 135083
+            };
+            AdPictureViewModel picture2 = new AdPictureViewModel
+            {
+                ID = 2,
+                Uuid = "c1df9f17-61ad-450a-87f9-d846c312dae0",
+                CdnUrl = "https://ucarecdn.com/c1df9f17-61ad-450a-87f9-d846c312dae0/",
+                Name = "about me sample 4.PNG",
+                Size = 146888
+            };
+            List<AdPictureViewModel> pictures = new List<AdPictureViewModel> { picture1, picture2 };
+
+            AdvertDetailViewModel advertDetail = new AdvertDetailViewModel
+            {
+                ID = 8,
+                Title = "Black Toyota for sale",
+                Body = "Black 4x4 Toyota cruiser",
+                Email = "pearl@email",
+                GroupCdn = "GroupCdnValue",
+                GroupCount = 2,
+                GroupSize = 2048,
+                GroupUuid = "GroupUuidValue",
+                Location = "Gaborone",
+                AdPictures = pictures
+            };
+
+            AdvertViewModel advert = new AdvertViewModel
+            {
+                ID = 8,
+                Status = EnumTypes.AdvertStatus.SUBMITTED.ToString(),
+                MenuID = 6,
+                Detail = advertDetail
+            };
+
+            return advert;
         }
         /// <summary>
         /// Mock Authentication Service

@@ -44,5 +44,7 @@ namespace Classifieds.Domain.Model
         public long AdvertID { set; get; }
         [ForeignKey("AdvertID")]
         public Advert Advert { set; get; }
+
+        public virtual IEnumerable<AdPicture> AdPictures { set; get; }
     }
 }

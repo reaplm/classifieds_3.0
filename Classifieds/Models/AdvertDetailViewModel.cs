@@ -1,5 +1,5 @@
-﻿using Classifieds.Domain.Model;
-using System;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace Classifieds.Web.Models
@@ -26,16 +26,18 @@ namespace Classifieds.Web.Models
         [Display(Name = "Phone Number")]
         public String Phone { set; get; }
 
-        public String GroupCdn { set; get; }
-        public int GroupCount { set; get; }
-        public long GroupSize { set; get; }
-       public String GroupUuid { set; get; }
-
         [Required(ErrorMessage = "Please choose location")]
         [Display(Name = "Location")]
         public String Location { set; get; }
 
         public long AdvertID { set; get; }
-        public Advert Advert { set; get; }
+        public AdvertViewModel Advert { set; get; }
+
+        public String GroupCdn { set; get; }
+        public int GroupCount { set; get; }
+        public long GroupSize { set; get; }
+        public String GroupUuid { set; get; }
+
+        public virtual List<AdPictureViewModel> AdPictures { set; get; }
     }
 }
