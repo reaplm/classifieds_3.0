@@ -12,43 +12,35 @@ namespace Classifieds.XUnitTest.Service
 {
     public class TestÙserService
     {
-        private ApplicationContext mockContext;
-
-        public TestÙserService()
-        {
-            InitContext();
-        }
+        /// <summary>
+        /// Test { public User AuthenticateUser(String email, String password) }
+        /// </summary>
         [Fact]
-        public void TestAuthenticateUser()
+        public void AuthenticateUser()
         {
             var mockRepo = new Mock<IUserRepo>();
-            mockRepo.Setup(x => x.authenticateUser(It.IsAny<String>(), It.IsAny<String>()))
+            mockRepo.Setup(x => x.AuthenticateUser(It.IsAny<String>(), It.IsAny<String>()))
                 .Returns(new Domain.Model.User { ID = 5, Email = "user@email.com" });
 
             var service = new UserService(mockRepo.Object);
 
-            var result = service.authenticateUser(It.IsAny<String>(), It.IsAny<String>());
+            var result = service.AuthenticateUser(It.IsAny<String>(), It.IsAny<String>());
 
             Assert.Equal(5, result.ID);
             Assert.Equal("user@email.com", result.Email);
         }
+        /// <summary>
+        /// Test { public String GetEncryptedPassword(String password) }
+        /// </summary>
         [Fact]
-        public void TestGetEncryptedPassword()
+        public void GetEncryptedPassword()
         {
             var mockRepo = new Mock<IUserRepo>();
             var service = new UserService(mockRepo.Object);
 
-            var result = service.getEncryptedPassword("password2");
+            var result = service.GetEncryptedPassword("password2");
 
             Assert.Equal("6cb75f652a9b52798eb6cf2201057c73", result);
-        }
-        private void InitContext()
-        {
-            var builder = new DbContextOptionsBuilder<ApplicationContext>()
-                .UseInMemoryDatabase("TestDB");
-            var context = new ApplicationContext(builder.Options);
-
-      
         }
     }
 }
