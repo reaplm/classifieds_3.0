@@ -2,11 +2,16 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 
 namespace Classifieds.Repository.Impl
 {
-    public abstract class GenericRepo<T> where T : class
+    /// <summary>
+    /// Generic Repository
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    public class GenericRepo<T> where T : class
     {
 
         private ApplicationContext context;
@@ -17,18 +22,29 @@ namespace Classifieds.Repository.Impl
             this.context = context;
             this.dbSet = context.Set<T>();
         }
-
-        public void create(T entity)
+        /// <summary>
+        /// Insert object into the database
+        /// </summary>
+        /// <param name="entity"></param>
+        public void Create(T entity)
         {
             context.Set<T>().Add(entity);
         }
-        public void update(T entity)
+        /// <summary>
+        /// Update an entity
+        /// </summary>
+        /// <param name="entity"></param>
+        public void Update(T entity)
         {
             context.Entry(entity).State = EntityState.Modified;
         }
-        public void delete(Int64 id)
+        /// <summary>
+        /// Delete an objec from the database
+        /// </summary>
+        /// <param name="id"></param>
+        public void Delete(long id)
         {
-            T entity = find(id);
+            T entity = Find(id);
 
             if (entity != null)
             {
@@ -36,17 +52,76 @@ namespace Classifieds.Repository.Impl
             }
 
         }
-        public void save()
+        /// <summary>
+        /// Save changes to the database
+        /// </summary>
+        public void Save()
         {
             context.SaveChanges();
         }
-        public T find(Int64 id)
+        /// <summary>
+        /// Retrieve object and children
+        /// </summary>
+        /// <param name="id">id of entity</param>
+        /// <param name="includes">eager statements</param>
+        /// <returns></returns>
+        public T Find(long id, Expression<Func<T, Object>>[] includes)
+        {
+            IQueryable<T> query = context.Set<T>();
+
+            foreach (var property in includes)
+            {
+                query = query.Include(property);
+            }
+
+            var propertyName = "ID";
+            var parameter = Expression.Parameter(typeof(T), "param");
+
+            //Create lamdba expressions
+            var predicateLeft = Expression.PropertyOrField(parameter, propertyName);
+            var predicateRight = Expression.Constant(id);
+            var predicate = Expression.Lambda<Func<T, bool>>
+                (Expression.Equal(predicateLeft, predicateRight), parameter);
+
+            return query.FirstOrDefault(predicate);
+        }
+        /// <summary>
+        /// Retrieve entity using id
+        /// </summary>
+        /// <param name="id">id of entity</param>
+        /// <returns></returns>
+        public T Find(long id)
         {
             return context.Set<T>().Find(id);
         }
+        /// <summary>
+        /// Fetch all objects from the database
+        /// </summary>
+        /// <returns></returns>
+        public IEnumerable<T> FindAll()
+        {
+            return context.Set<T>().ToList();
+        }
+        /// <summary>
+        /// Fetch all objects, include children and Where stement
+        /// </summary>
+        /// <param name="wherePredicate"></param>
+        /// <param name="includes"></param>
+        /// <returns></returns>
+        public IEnumerable<T> FindAll(Expression<Func<T, bool>> wherePredicate,
+            Expression<Func<T, Object>>[] includes)
+        {
+            IQueryable<T> query = context.Set<T>();
 
-        public abstract IEnumerable<T> findAll();
+            foreach (var property in includes)
+            {
+                query = query.Include(property);
+            }
+            if (wherePredicate != null)
+                query = query.Where(wherePredicate);
 
+            return query.ToList();
+        }
         private bool disposed = false;
         protected virtual void Dispose(bool disposing)
         {

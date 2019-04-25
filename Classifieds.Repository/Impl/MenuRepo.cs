@@ -15,21 +15,18 @@ namespace Classifieds.Repository.Impl
             this.context = context;
 
         }
-        public override IEnumerable<Menu> findAll()
-        {
-            return context.Menus.Include(x => x.SubMenus);
-        }
-        public IEnumerable<Menu> findByType(String[] types)
+        /// <summary>
+        /// Find menu items by type
+        /// </summary>
+        /// <param name="types">Array of type MenuType</param>
+        /// <returns></returns>
+        public IEnumerable<Menu> FindByType(String[] types)
         {
             var menus = context.Menus.Where(m => types.Contains(m.Type))
                 .Include(x => x.SubMenus);
             return menus;
         }
-        public IEnumerable<Menu> findAll(long parentId)
-        {
-            //return context.Menus.Find(parentId).SubMenus;
-            return context.Menus.Where(x => x.ParentID == parentId).ToList();
-        }
+
 
     }
 }

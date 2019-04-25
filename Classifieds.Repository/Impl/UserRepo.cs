@@ -15,12 +15,13 @@ namespace Classifieds.Repository.Impl
         {
             this.context = context;
         }
-
-        public override IEnumerable<User> findAll()
-        {
-            return context.Users.Include(x => x.UserDetail);
-        }
-        public User authenticateUser(String email, String password) 
+        /// <summary>
+        /// Authenticate a user
+        /// </summary>
+        /// <param name="email"></param>
+        /// <param name="password"></param>
+        /// <returns>Authenticated user</returns>
+        public User AuthenticateUser(String email, String password) 
         {
             try
             {

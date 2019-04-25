@@ -7,6 +7,6 @@ namespace Classifieds.Repository
 {
     public interface IUserRepo : IGenericRepo<User>
     {
-        User authenticateUser(String email, String password);
+        User AuthenticateUser(String email, String password);
     }
 }

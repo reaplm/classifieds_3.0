@@ -15,23 +15,17 @@ namespace Classifieds.Repository.Impl
         {
             this.context = context;
         }
-        public override IEnumerable<Advert> findAll()
-        {
-            return context.Adverts.Include(x => x.Detail);
-        }
-        public IEnumerable<Advert> findByCategory(int id)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public IEnumerable<Advert> FindByCategory(int id)
         {
             var adverts = context.Adverts.Where(x => x.MenuID == id)
                 .Include(x => x.Detail);
 
             return adverts;
-        }
-        public Advert Find(long id)
-        {
-            return context.Adverts.Where(x => x.ID == id)
-                    .Include(x => x.Detail)
-                    .Include(x => x.User)
-                    .SingleOrDefault();
         }
     }
 }
