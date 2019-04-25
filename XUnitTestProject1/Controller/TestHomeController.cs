@@ -21,17 +21,20 @@ namespace Classifieds.XUnitTest.Controller
             Initialize();
             mockService = new Mock<IMenuService>();
         }
+        /// <summary>
+        /// Test { public IActionResult Index() }
+        /// </summary>
         [Fact]
         public void TestIndex()
         {
-            
+
             IEnumerable<Menu> menus = new List<Menu>
             {
                 new Menu{ID=1,Name="menu 1"},
                 new Menu{ID=2,Name="menu 2" }
             };
 
-            mockService.Setup(m => m.findByType(It.IsAny<String[]>())).Returns(menus);
+            mockService.Setup(m => m.FindByType(It.IsAny<String[]>())).Returns(menus);
             var controller = new HomeController(mockService.Object, mapper);
 
             var result = controller.Index() as ViewResult;

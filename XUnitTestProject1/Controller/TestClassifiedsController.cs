@@ -16,6 +16,7 @@ using Moq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Security.Claims;
 using System.Security.Principal;
 using System.Text;
@@ -39,7 +40,7 @@ namespace Classifieds.XUnitTest.Controller
             mockClaimsPrincipal = new Mock<ClaimsPrincipal>();
         }
         /// <summary>
-        /// Test for: public IActionResult Index()
+        /// Test { public IActionResult Index() }
         /// </summary>
         [Fact]
         public void TestIndex()
@@ -53,9 +54,9 @@ namespace Classifieds.XUnitTest.Controller
 
             var menuService = new Mock<IMenuService>();
             var advertService = new Mock<IAdvertService>();
-            advertService.Setup(m => m.findAll()).Returns(adverts);
+            advertService.Setup(m => m.FindAll()).Returns(adverts);
 
-            var controller = new ClassifiedsController(advertService.Object, 
+            var controller = new ClassifiedsController(advertService.Object,
                 menuService.Object, mapper);
             var result = controller.Index() as ViewResult;
             var list = result.Model as List<Advert>;
@@ -64,7 +65,7 @@ namespace Classifieds.XUnitTest.Controller
 
         }
         /// <summary>
-        /// Test for: public IActionResult Category(int id)
+        /// Test { public IActionResult Category(int id) }
         /// //Classifieds/Category/id
         /// </summary>
         [Fact]
@@ -79,9 +80,9 @@ namespace Classifieds.XUnitTest.Controller
 
             var menuService = new Mock<IMenuService>();
             var advertService = new Mock<IAdvertService>();
-            advertService.Setup(m => m.findByCategory(It.IsAny<int>())).Returns(adverts);
+            advertService.Setup(m => m.FindByCategory(It.IsAny<int>())).Returns(adverts);
 
-            var controller = new ClassifiedsController(advertService.Object, 
+            var controller = new ClassifiedsController(advertService.Object,
                 menuService.Object, mapper);
             var result = controller.Category(2) as ViewResult;
             var list = result.Model as List<Advert>;
@@ -90,7 +91,7 @@ namespace Classifieds.XUnitTest.Controller
 
         }
         /// <summary>
-        /// Test for: public IActionResult Create()
+        /// Test { public IActionResult Create() }
         /// Mocks authentication, HttpContext
         /// </summary>
         [Fact]
@@ -104,15 +105,15 @@ namespace Classifieds.XUnitTest.Controller
             mockIdentity.AddClaim(new Claim("UserId", "1"));
             var principal = new GenericPrincipal(mockIdentity, null);
 
-            
+
             var mockHttpContext = new Mock<HttpContext>();
             mockHttpContext.Setup(m => m.User).Returns(principal);
-            
-            mockMenuService.Setup(m => m.findByType(It.IsAny<String[]>()))
+
+            mockMenuService.Setup(m => m.FindByType(It.IsAny<String[]>()))
                 .Returns(menus);
 
-           var controller = new ClassifiedsController(mockAdvertService.Object, 
-                mockMenuService.Object, mapper);
+            var controller = new ClassifiedsController(mockAdvertService.Object,
+                 mockMenuService.Object, mapper);
 
             controller.ControllerContext.HttpContext = mockHttpContext.Object;
 
@@ -121,16 +122,16 @@ namespace Classifieds.XUnitTest.Controller
             var subMenus = result.ViewData["SubMenus"] as IEnumerable<SelectListItem>;
 
 
-            Assert.IsType< AdvertViewModel>(result.Model);
+            Assert.IsType<AdvertViewModel>(result.Model);
             Assert.Equal(3, menuList.Count());
             Assert.Empty(subMenus);
         }
         /// <summary>
-        /// Test for: public IActionResult Create(AdvertViewModel model)
+        /// Test { public IActionResult Create(AdvertViewModel model) }
         /// Test when ModelState.IsValid = false
         /// </summary>
         [Fact]
-        public void TestCreateInvalidModelState_POST()
+        public void Create_InvalidModelState_POST()
         {
             var menus = GetMenuList();
             var submenus = GetSubMenuList();
@@ -138,12 +139,13 @@ namespace Classifieds.XUnitTest.Controller
             model.MenuID = 2;
             model.ParentID = 1;
 
-            mockMenuService.Setup(x => x.findByType(It.IsAny<String[]>()))
+            mockMenuService.Setup(x => x.FindByType(It.IsAny<String[]>()))
                 .Returns(menus);
-            mockMenuService.Setup(x => x.findAll(It.IsAny<long>()))
+            mockMenuService.Setup(x => x.FindAll(It.IsAny<Expression<Func<Menu, bool>>>(),
+                It.IsAny<Expression<Func<Menu, object>>[]>()))
                 .Returns(submenus);
 
-            var controller = new ClassifiedsController(mockAdvertService.Object, 
+            var controller = new ClassifiedsController(mockAdvertService.Object,
                 mockMenuService.Object, mapper);
             controller.ModelState.AddModelError("menu", "please select menu");//set ModelState to be invalid
 
@@ -157,7 +159,7 @@ namespace Classifieds.XUnitTest.Controller
             Assert.True(list.FirstOrDefault(x => x.Value.Equals("1")).Selected);
         }
         /// <summary>
-        /// Test for: public IActionResult Create(AdvertViewModel model)
+        /// Test { public IActionResult Create(AdvertViewModel model) }
         /// Create a new advert and redict on success
         /// </summary>
         [Fact]
@@ -170,33 +172,32 @@ namespace Classifieds.XUnitTest.Controller
 
             Assert.Equal("Index", result.ActionName);
             Assert.Equal("Classifieds", result.ControllerName);
-            mockAdvertService.Verify(m => m.create(It.IsAny<Advert>()), Times.Once());
-            mockAdvertService.Verify(m => m.save(), Times.Once());
+            mockAdvertService.Verify(m => m.Create(It.IsAny<Advert>()), Times.Once());
+            mockAdvertService.Verify(m => m.Save(), Times.Once());
 
         }
         /// <summary>
-        /// Test public IActionResult Detail(long id)
+        /// Test { public IActionResult Detail(long id) }
         /// </summary>
         [Fact]
         public void Detail()
         {
-            Advert advert = new Advert
-            {
-                ID = 1,
-                Detail = new AdvertDetail { Email = "myEmail", Title = "Car Wanted" }
-            };
+            Advert advert = mapper.Map<Advert>(GetAdvert());
 
-            mockAdvertService.Setup(m => m.find(It.IsAny<long>()))
+            mockAdvertService.Setup(m => m.Find(It.IsAny<long>()))
                 .Returns(advert);
 
-            var controller = new ClassifiedsController(mockAdvertService.Object, 
+            var controller = new ClassifiedsController(mockAdvertService.Object,
                 mockMenuService.Object, mapper);
 
-            var result = controller.Detail(3) as ViewResult;
+            var result = controller.Detail(3) as PartialViewResult;
             var model = result.Model as AdvertViewModel;
 
-            Assert.Equal("myEmail", model.Detail.Email);
-            Assert.Equal("Car Wanted", model.Detail.Title);
+            Assert.Equal("pearl@email", model.Detail.Email);
+            Assert.Equal("Black Toyota for sale", model.Detail.Title);
+            Assert.Equal(2, model.Detail.GroupCount);
+            Assert.Equal(2, model.Detail.AdPictures.Count());
+
 
         }
         /// <summary>
@@ -210,6 +211,8 @@ namespace Classifieds.XUnitTest.Controller
                 cfg.CreateMap<Advert, AdvertViewModel>()
                     .ForMember(m => m.ParentID, opts => opts.Ignore());
                 cfg.CreateMap<AdvertDetailViewModel, AdvertDetail>(MemberList.Source);
+                cfg.CreateMap<AdPictureViewModel, AdPicture>();
+                cfg.CreateMap<AdPicture, AdPictureViewModel>();
             });
 
             mapper = config.CreateMapper();

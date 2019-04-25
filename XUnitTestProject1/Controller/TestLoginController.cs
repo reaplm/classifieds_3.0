@@ -33,7 +33,7 @@ namespace Classifieds.XUnitTest.Controller
 
         }
         /// <summary>
-        /// Test for: public IActionResult Index(String ReturnUrl)
+        /// Test { public IActionResult Index(String ReturnUrl) }
         /// Url to redirect to after login
         /// </summary>
         [Fact]
@@ -42,19 +42,19 @@ namespace Classifieds.XUnitTest.Controller
             var controller = new LoginController(mockUserService.Object, mapper);
             String returnUrl = "/Classifieds/Create";
             var result = controller.Index(returnUrl) as ViewResult;
-            
+
             Assert.Null(result.ViewName);
             Assert.Equal("/Classifieds/Create", result.ViewData["ReturnUrl"]);
         }
         /// <summary>
-        /// Test for: public async Task<IActionResult> Login(UserViewModel user)
+        /// Test { public async Task<IActionResult> Login(UserViewModel user) }
         /// Test POST when ModelState.IsValid = false
         /// </summary>
         [Fact]
         public void Login_ModelStateIsInvalid()
         {
 
-            mockUserService.Setup(m => m.authenticateUser(It.IsAny<String>(), It.IsAny<String>()))
+            mockUserService.Setup(m => m.AuthenticateUser(It.IsAny<String>(), It.IsAny<String>()))
                .Returns(It.IsAny<User>());
 
             var controller = new LoginController(mockUserService.Object, mapper);
@@ -67,13 +67,13 @@ namespace Classifieds.XUnitTest.Controller
                 Password = "Pass1"
             };
 
-            var result = controller.Login(user,null).Result as ViewResult;
+            var result = controller.Login(user, null).Result as ViewResult;
             var model = result.Model;
 
             Assert.Equal("Index", result.ViewName);
         }
         /// <summary>
-        /// Test for: public async Task<IActionResult> Login(UserViewModel user)
+        /// Test { public async Task<IActionResult> Login(UserViewModel user) }
         /// Test POST when authenticateUser(String, String) return null
         /// </summary>
         [Fact]
@@ -86,7 +86,7 @@ namespace Classifieds.XUnitTest.Controller
                 Password = "Pass1"
             };
 
-            mockUserService.Setup(m => m.authenticateUser(It.IsAny<String>(), It.IsAny<String>()))
+            mockUserService.Setup(m => m.AuthenticateUser(It.IsAny<String>(), It.IsAny<String>()))
                .Returns((User)null);
 
             var controller = new LoginController(mockUserService.Object, mapper);
@@ -105,7 +105,7 @@ namespace Classifieds.XUnitTest.Controller
 
         }
         /// <summary>
-        /// Test for: public async Task<IActionResult> Login(UserViewModel user)
+        /// Test { public async Task<IActionResult> Login(UserViewModel user) }
         /// login is successful, ReturnUrl = null
         /// </summary>
         [Fact]
@@ -125,7 +125,7 @@ namespace Classifieds.XUnitTest.Controller
                 Password = "Pass1"
             };
 
-            mockUserService.Setup(m => m.authenticateUser(It.IsAny<String>(), It.IsAny<String>()))
+            mockUserService.Setup(m => m.AuthenticateUser(It.IsAny<String>(), It.IsAny<String>()))
                .Returns(user);
 
             var urlHelper = new Mock<IUrlHelper>();
@@ -146,7 +146,7 @@ namespace Classifieds.XUnitTest.Controller
             Assert.Equal("Home", redirect.ControllerName);
         }
         /// <summary>
-        /// Test for: public async Task<IActionResult> Login(UserViewModel user)
+        /// Test { public async Task<IActionResult> Login(UserViewModel user) }
         /// login is successful ReturnUrl is not null
         /// </summary>
         [Fact]
@@ -166,7 +166,7 @@ namespace Classifieds.XUnitTest.Controller
                 Password = "Pass1"
             };
 
-            mockUserService.Setup(m => m.authenticateUser(It.IsAny<String>(), It.IsAny<String>()))
+            mockUserService.Setup(m => m.AuthenticateUser(It.IsAny<String>(), It.IsAny<String>()))
                .Returns(user);
 
             var mockUrlHelper = new Mock<IUrlHelper>(MockBehavior.Strict);
@@ -188,7 +188,7 @@ namespace Classifieds.XUnitTest.Controller
             Assert.Equal("/Classifieds/Create", redirect.Url);
         }
         /// <summary>
-        /// Test for: public async Task<IActionResult> SignOut()
+        /// Test { public async Task<IActionResult> SignOut() }
         /// </summary>
         [Fact]
         public void SignOut()
@@ -239,7 +239,7 @@ namespace Classifieds.XUnitTest.Controller
             urlHelper.Setup(m => m.IsLocalUrl(It.IsAny<string>())).Returns(true);
             //urlHelper.Setup(m => m(It.IsAny<string>())
 
-var serviceProviderMock = new Mock<IServiceProvider>();
+            var serviceProviderMock = new Mock<IServiceProvider>();
             serviceProviderMock.Setup(m => m.GetService(typeof(IAuthenticationService)))
                 .Returns(authServiceMock.Object);
             serviceProviderMock.Setup(m => m.GetService(typeof(IUrlHelperFactory)))
@@ -251,7 +251,6 @@ var serviceProviderMock = new Mock<IServiceProvider>();
 
             return serviceProviderMock.Object;
         }
-
 
     }
 

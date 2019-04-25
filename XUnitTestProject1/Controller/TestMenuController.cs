@@ -9,6 +9,7 @@ using Moq;
 using MySqlX.XDevAPI.Common;
 using System;
 using System.Collections.Generic;
+using System.Linq.Expressions;
 using System.Text;
 using Xunit;
 
@@ -22,26 +23,28 @@ namespace Classifieds.XUnitTest.Controller
         {
             mockMenuService = new Mock<IMenuService>();
         }
+        /// <summary>
+        /// Test { public IActionResult SubMenus(int id) }
+        /// </summary>
         [Fact]
-        public void TestSubMenus()
+        public void SubMenus()
         {
             var menus = FindAll();
 
-            mockMenuService.Setup(m => m.findAll(It.IsAny<long>()))
-                .Returns(menus);
+            mockMenuService.Setup(m => m.FindAll(It.IsAny<Expression<Func<Menu, bool>>>(),
+                It.IsAny<Expression<Func<Menu, Object>>[]>()))
+                 .Returns(menus);
 
             var controller = new MenuController(mockMenuService.Object);
             OkObjectResult result = controller.SubMenus(1) as OkObjectResult;
             List<Menu> model = Assert.IsType<List<Menu>>(result.Value);
 
-            //var model = result.Value;
-
             Assert.Equal(200, result.StatusCode);
             //Assert.Equal(6, model.);
 
         }
-      
-        private List<Menu> FindAll()
+
+        private IEnumerable<Menu> FindAll()
         {
             var menus = new List<Menu>
             {
