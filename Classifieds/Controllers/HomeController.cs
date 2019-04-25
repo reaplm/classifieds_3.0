@@ -22,30 +22,44 @@ namespace Classifieds.Controllers
             this.menuService = menuService;
             this.mapper = mapper;
         }
-
+        /// <summary>
+        /// Home Page
+        /// /Home
+        /// </summary>
+        /// <returns></returns>
         public IActionResult Index()
         {
            
             ViewBag.Title = "Adpost Home";
             IEnumerable<MenuViewModel> menus = mapper.Map<IEnumerable<MenuViewModel>>
-                (menuService.findByType(new String[] { "HOME" }));
+                (menuService.FindByType(new String[] { "HOME" }));
 
             return View(menus);
             
         }
-
+        /// <summary>
+        /// Classifieds link on header menu
+        /// /Classifieds
+        /// </summary>
         public void Classifieds()
         {
             RedirectToAction("Index", "Classifieds");
         }
-
+        /// <summary>
+        /// Login link on header menu
+        /// /Login
+        /// </summary>
+        /// <returns></returns>
         public IActionResult Login()
         {
             ViewData["Message"] = "Your contact page.";
 
             return View();
         }
-
+        /// <summary>
+        /// Error page
+        /// </summary>
+        /// <returns></returns>
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });

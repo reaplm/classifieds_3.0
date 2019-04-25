@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 
 namespace Classifieds.Web.Controllers
@@ -35,7 +36,11 @@ namespace Classifieds.Web.Controllers
         /// <returns></returns>
         public IActionResult Index()
         {
-            var adverts = advertService.findAll();
+            Expression<Func<Advert, object>>[] include =
+            {
+                a => a.Detail
+            };
+            var adverts = advertService.FindAll(null, include);
 
             return View(adverts);
         }
@@ -47,7 +52,7 @@ namespace Classifieds.Web.Controllers
         /// <returns></returns>
         public IActionResult Category(int id)
         {
-            var adverts = advertService.findByCategory(id);
+            var adverts = advertService.FindByCategory(id);
             return View(adverts);
         }
         /// <summary>
@@ -59,14 +64,14 @@ namespace Classifieds.Web.Controllers
         [Authorize]
         public IActionResult Create()
         {
-                var model = new AdvertViewModel();
+            var model = new AdvertViewModel();
 
-                var userId = HttpContext.User.Claims.FirstOrDefault(u => u.Type == "UserId").Value;
-                model.UserID = long.Parse(userId);
-                
-                //Initially there's no selected item
-                ViewBag.Menus = MenuSelectListItems(-1);
-                ViewBag.SubMenus = new List<SelectListItem>();//empty initially
+            var userId = HttpContext.User.Claims.FirstOrDefault(u => u.Type == "UserId").Value;
+            model.UserID = long.Parse(userId);
+
+            //Initially there's no selected item
+            ViewBag.Menus = MenuSelectListItems(-1);
+            ViewBag.SubMenus = new List<SelectListItem>();//empty initially
 
             return View(model);
         }
@@ -84,8 +89,8 @@ namespace Classifieds.Web.Controllers
                 model.SubmittedDate = DateTime.Now;
                 model.Status = EnumTypes.AdvertStatus.SUBMITTED.ToString();
 
-                advertService.create(mapper.Map<Advert>(model));
-                advertService.save();
+                advertService.Create(mapper.Map<Advert>(model));
+                advertService.Save();
                 return RedirectToAction("Index", "Classifieds");
             }
 
@@ -101,7 +106,12 @@ namespace Classifieds.Web.Controllers
         /// <returns></returns>
         public IActionResult Detail(long id)
         {
-            AdvertViewModel model = mapper.Map<AdvertViewModel>(advertService.Find(id));
+            Expression<Func<Advert, object>>[] include =
+            {
+                a => a.Detail,
+                a => a.Menu
+            };
+            AdvertViewModel model = mapper.Map<AdvertViewModel>(advertService.Find(id, include));
 
             return PartialView(model);
         }
@@ -112,10 +122,10 @@ namespace Classifieds.Web.Controllers
         /// <returns>List of SelectListItem</returns>
         private IEnumerable<SelectListItem> MenuSelectListItems(int? selectedVal)
         {
-            IEnumerable<Menu> menus = menuService.findByType(new String[] { "HOME" });
+            IEnumerable<Menu> menus = menuService.FindByType(new String[] { "HOME" });
             List<SelectListItem> selectItems = new List<SelectListItem>();
 
-            foreach(var menu in menus)
+            foreach (var menu in menus)
             {
                 selectItems.Add(new SelectListItem
                 {
@@ -135,7 +145,7 @@ namespace Classifieds.Web.Controllers
         /// <returns>SelectListItem</returns>
         private IEnumerable<SelectListItem> SubMenuSelectListItems(long parentId, long? selectedVal)
         {
-            IEnumerable<Menu> menus = menuService.findAll(parentId);
+            IEnumerable<Menu> menus = menuService.FindAll();
             List<SelectListItem> selectItems = new List<SelectListItem>();
 
             foreach (var menu in menus)

@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 
 namespace Classifieds.Web.Controllers
@@ -16,12 +17,20 @@ namespace Classifieds.Web.Controllers
         {
             this.menuService = menuService;
         }
-        //classifieds/SubMenus/2
+        /// <summary>
+        /// classifieds/SubMenus/2
+        /// Fetch all submenus with parentId {id}
+        /// </summary>
+        /// <param name="id">parent id</param>
+        /// <returns></returns>
         public IActionResult SubMenus(int id)
         {
-            var subMenus = menuService.findAll(id) as List<Menu>;
+            Expression<Func<Menu, bool>> whereCondition = m => m.ParentID == id;
+
+            var subMenus = menuService.FindAll(whereCondition, null) as List<Menu>;
 
             return Ok(new { results = subMenus });
+
         }
     }
 }

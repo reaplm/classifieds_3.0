@@ -45,7 +45,7 @@ namespace Classifieds.Web.Controllers
         public async Task<IActionResult> Login(UserViewModel user, String ReturnUrl)
         {
             UserViewModel authenticatedUser = mapper.Map<UserViewModel>
-                (userService.authenticateUser(user.Email, user.Password));
+                (userService.AuthenticateUser(user.Email, user.Password));
 
             if (authenticatedUser == null){
                 ModelState.AddModelError("Password", "Wrong email or password");
