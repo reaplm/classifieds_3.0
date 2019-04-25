@@ -54,7 +54,8 @@ namespace Classifieds.XUnitTest.Controller
 
             var menuService = new Mock<IMenuService>();
             var advertService = new Mock<IAdvertService>();
-            advertService.Setup(m => m.FindAll()).Returns(adverts);
+            advertService.Setup(m => m.FindAll(It.IsAny<Expression<Func<Advert,bool>>>(),
+                It.IsAny<Expression<Func<Advert,object>>[]>())).Returns(adverts);
 
             var controller = new ClassifiedsController(advertService.Object,
                 menuService.Object, mapper);
@@ -141,8 +142,7 @@ namespace Classifieds.XUnitTest.Controller
 
             mockMenuService.Setup(x => x.FindByType(It.IsAny<String[]>()))
                 .Returns(menus);
-            mockMenuService.Setup(x => x.FindAll(It.IsAny<Expression<Func<Menu, bool>>>(),
-                It.IsAny<Expression<Func<Menu, object>>[]>()))
+            mockMenuService.Setup(x => x.FindAll())
                 .Returns(submenus);
 
             var controller = new ClassifiedsController(mockAdvertService.Object,
@@ -184,7 +184,8 @@ namespace Classifieds.XUnitTest.Controller
         {
             Advert advert = mapper.Map<Advert>(GetAdvert());
 
-            mockAdvertService.Setup(m => m.Find(It.IsAny<long>()))
+            mockAdvertService.Setup(m => m.Find(It.IsAny<long>(), 
+                It.IsAny<Expression<Func<Advert, object>>[]>()))
                 .Returns(advert);
 
             var controller = new ClassifiedsController(mockAdvertService.Object,
