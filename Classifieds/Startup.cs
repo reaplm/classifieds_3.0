@@ -41,6 +41,7 @@ namespace Classifieds
                     .ForMember(m => m.ParentID, opts => opts.Ignore());
                 cfg.CreateMap<AdvertDetailViewModel, AdvertDetail>();
                 cfg.CreateMap<AdPictureViewModel, AdPicture>();
+                cfg.CreateMap<AdPicture, AdPictureViewModel>();
             });
 
             IMapper mapper = config.CreateMapper();
