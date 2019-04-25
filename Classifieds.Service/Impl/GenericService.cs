@@ -1,6 +1,7 @@
 ﻿using Classifieds.Repository;
 using System;
 using System.Collections.Generic;
+using System.Linq.Expressions;
 using System.Text;
 
 namespace Classifieds.Service.Impl
@@ -14,30 +15,39 @@ namespace Classifieds.Service.Impl
             this.genericRepo = genericRepo;
         }
 
-        public void create(T entity)
+        public void Create(T entity)
         {
-            genericRepo.create(entity);
+            genericRepo.Create(entity);
         }
-        public void update(T entity)
+        public void Update(T entity)
         {
-            genericRepo.update(entity);
+            genericRepo.Update(entity);
         }
-        public void delete(Int64 id)
+        public void Delete(Int64 id)
         {
-            genericRepo.delete(id);
+            genericRepo.Delete(id);
 
         }
-        public void save()
+        public void Save()
         {
-            genericRepo.save();
+            genericRepo.Save();
         }
-        public T find(Int64 id)
+        public T Find(long id)
         {
-            return genericRepo.find(id);
+            return genericRepo.Find(id);
         }
-        public IEnumerable<T> findAll()
+        public IEnumerable<T> FindAll(Expression<Func<T, bool>> wherePredicate,
+            Expression<Func<T, Object>>[] includes)
         {
-            return genericRepo.findAll();
+            return genericRepo.FindAll(wherePredicate, includes);
+        }
+        public IEnumerable<T> FindAll()
+        {
+            return genericRepo.FindAll();
+        }
+        public T Find(long id, Expression<Func<T, Object>>[] includes)
+        {
+            return genericRepo.Find(id, includes);
         }
     }
 }

@@ -15,13 +15,24 @@ namespace Classifieds.Service.Impl
         {
             this.userRepository = userRepository;
         }
-        public User authenticateUser(String email, String password)
+        /// <summary>
+        /// Authentication Service
+        /// </summary>
+        /// <param name="email">Email</param>
+        /// <param name="password">Password</param>
+        /// <returns></returns>
+        public User AuthenticateUser(String email, String password)
         {
-            String encryptedPass = getEncryptedPassword(password);
+            String encryptedPass = GetEncryptedPassword(password);
 
-            return userRepository.authenticateUser(email, encryptedPass);
+            return userRepository.AuthenticateUser(email, encryptedPass);
         }
-        public String getEncryptedPassword(String password)
+        /// <summary>
+        /// Return encrypted password
+        /// </summary>
+        /// <param name="password"></param>
+        /// <returns></returns>
+        public String GetEncryptedPassword(String password)
         {
             
 

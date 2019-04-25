@@ -14,13 +14,9 @@ namespace Classifieds.Service.Impl
         {
             this.advertRepo = advertRepo;
         }
-        public IEnumerable<Advert> findByCategory(int id)
+        public IEnumerable<Advert> FindByCategory(int id)
         {
-            return advertRepo.findByCategory(id);
-        }
-        public Advert Find(long id)
-        {
-            return advertRepo.Find(id);
+            return advertRepo.FindByCategory(id);
         }
     }
 }

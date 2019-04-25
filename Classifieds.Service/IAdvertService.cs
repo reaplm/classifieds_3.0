@@ -7,7 +7,6 @@ namespace Classifieds.Service
 {
     public interface IAdvertService : IGenericService<Advert>
     {
-        IEnumerable<Advert> findByCategory(int id);
-        Advert Find(long id);
+        IEnumerable<Advert> FindByCategory(int id);
     }
 }
