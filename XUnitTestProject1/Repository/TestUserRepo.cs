@@ -17,44 +17,41 @@ namespace Classifieds.XUnitTest.Repository
         {
             InitContext();
         }
-
+        /// <summary>
+        /// Test authentication
+        /// </summary>
         [Fact]
-        public void TestFindAll()
+        public void AuthenticateUser()
         {
             var repo = new UserRepo(mockContext);
-            var users = repo.findAll() as IEnumerable<User>;
-
-            Assert.Equal(3, users.Count());
-            Assert.NotNull(users.ElementAt(0).UserDetail);
-            Assert.NotNull(users.ElementAt(1).UserDetail);
-            Assert.NotNull(users.ElementAt(2).UserDetail);
-        }
-         [Fact]
-         public void TestAuthenticateUser()
-         {
-             var repo = new UserRepo(mockContext);
-             User user = repo.authenticateUser("user2@email", "6cb75f652a9b52798eb6cf2201057c73");
+            User user = repo.AuthenticateUser("user2@email", "6cb75f652a9b52798eb6cf2201057c73");
 
 
-             Assert.Equal(2, user.ID);
+            Assert.Equal(2, user.ID);
             Assert.Equal("user2@email", user.Email);
 
-         }
+        }
+        /// <summary>
+        /// Test authentication when password and/or email are wrong
+        /// </summary>
         [Fact]
-        public void TestAuthenticateUser_InvalidOperationException()
+        public void AuthenticateUser_InvalidOperationException()
         {
             var repo = new UserRepo(mockContext);
 
-            Assert.Throws<InvalidOperationException>(() => 
-                repo.authenticateUser("my@email", "7c6a180b36896a0a8c02787eeafb0e4c"));
-            
+            Assert.Throws<InvalidOperationException>(() =>
+                repo.AuthenticateUser("my@email", "7c6a180b36896a0a8c02787eeafb0e4c"));
+
         }
-        //Hash: 7c6a180b36896a0a8c02787eeafb0e4c
-        //String: password1
-
-        //Hash: 6cb75f652a9b52798eb6cf2201057c73
-        //String: password2
-
+        /// <summary>
+        /// Initialize context
+        /// 
+        /// Hash: 7c6a180b36896a0a8c02787eeafb0e4c
+        /// String: password1
+        /// 
+        /// Hash: 6cb75f652a9b52798eb6cf2201057c73
+        /// String: password2
+        /// </summary>
         private void InitContext()
         {
             var builder = new DbContextOptionsBuilder<ApplicationContext>()
@@ -80,9 +77,11 @@ namespace Classifieds.XUnitTest.Repository
             context.UserDetails.AddRange(userDetails);
             int changed = context.SaveChanges();
             mockContext = context;
-            
-        }
 
+        }
+        /// <summary>
+        /// Clear db for next test
+        /// </summary>
         public void Dispose()
         {
             mockContext.Users.RemoveRange(mockContext.Users);
@@ -91,3 +90,4 @@ namespace Classifieds.XUnitTest.Repository
         }
     }
 }
+

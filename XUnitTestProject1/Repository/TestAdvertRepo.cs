@@ -16,17 +16,20 @@ namespace Classifieds.XUnitTest.Repository
     {
         private ApplicationContext appContext;
         private DbSet<Advert> mockSet;
-     
+
         public TestAdvertRepo()
         {
             InitContext();
             mockSet = appContext.Set<Advert>();
         }
+        /// <summary>
+        /// 
+        /// </summary>
         [Fact]
         public void FindByCategory()
         {
             var repo = new AdvertRepo(appContext);
-            IEnumerable<Advert> adverts = repo.findByCategory(6);
+            IEnumerable<Advert> adverts = repo.FindByCategory(6);
 
             Assert.Equal(3, adverts.Count());
         }
@@ -39,24 +42,28 @@ namespace Classifieds.XUnitTest.Repository
             Advert advert = GetAdvert();
 
             AdvertRepo repo = new AdvertRepo(appContext);
-            repo.create(advert);
-            repo.save();
+            repo.Create(advert);
+            repo.Save();
 
-            IEnumerable<Advert> adverts = repo.findAll();
+            IEnumerable<Advert> adverts = repo.FindAll();
             Advert ad = adverts.FirstOrDefault(x => x.ID == 8);
 
 
 
-           Assert.Equal(8, adverts.Count());
-           Assert.Equal("Black Toyota for sale", ad.Detail.Title);
-           Assert.Equal(2, ad.Detail.AdPictures.Count());
-          
+            Assert.Equal(8, adverts.Count());
+            Assert.Equal("Black Toyota for sale", ad.Detail.Title);
+            Assert.Equal(2, ad.Detail.AdPictures.Count());
+
         }
+        /// <summary>
+        /// Test data
+        /// </summary>
+        /// <returns></returns>
         private Advert GetAdvert()
         {
             AdPicture picture1 = new AdPicture
             {
-                ID=1,
+                ID = 1,
                 Uuid = "0b83b507-8c11-4c0e-96d2-5fd773d525f7",
                 CdnUrl = "https://ucarecdn.com/0b83b507-8c11-4c0e-96d2-5fd773d525f7/",
                 Name = "about me sample 3.PNG",
@@ -64,17 +71,17 @@ namespace Classifieds.XUnitTest.Repository
             };
             AdPicture picture2 = new AdPicture
             {
-                ID=2,
+                ID = 2,
                 Uuid = "c1df9f17-61ad-450a-87f9-d846c312dae0",
                 CdnUrl = "https://ucarecdn.com/c1df9f17-61ad-450a-87f9-d846c312dae0/",
                 Name = "about me sample 4.PNG",
                 Size = 146888
             };
-            IEnumerable < AdPicture > pictures = new List<AdPicture> { picture1, picture2 };
+            List<AdPicture> pictures = new List<AdPicture> { picture1, picture2 };
 
             AdvertDetail advertDetail = new AdvertDetail
             {
-                ID=8,
+                ID = 8,
                 Title = "Black Toyota for sale",
                 Body = "Black 4x4 Toyota cruiser",
                 Email = "pearl@email",
@@ -88,7 +95,7 @@ namespace Classifieds.XUnitTest.Repository
 
             Advert advert = new Advert
             {
-                ID=8,
+                ID = 8,
                 Status = EnumTypes.AdvertStatus.SUBMITTED.ToString(),
                 MenuID = 6,
                 Detail = advertDetail
@@ -96,6 +103,9 @@ namespace Classifieds.XUnitTest.Repository
 
             return advert;
         }
+        /// <summary>
+        /// Initialize
+        /// </summary>
         private void InitContext()
         {
             var builder = new DbContextOptionsBuilder<ApplicationContext>()
@@ -142,6 +152,9 @@ namespace Classifieds.XUnitTest.Repository
             appContext = context;
 
         }
+        /// <summary>
+        /// Setup next test
+        /// </summary>
         public void Dispose()
         {
             appContext.Menus.RemoveRange(appContext.Menus);

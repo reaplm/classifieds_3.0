@@ -16,47 +16,41 @@ namespace Classifieds.XUnitTest.Repository
     /// </summary>
     public class TestMenuRepo : IDisposable
     {
-        private DbSet<Menu> mockSet;
-        private ApplicationContext mockContext;
+        private DbSet<Menu> dbSet;
+        private ApplicationContext appContext;
 
         public TestMenuRepo()
         {
-           
-            initContext();
-            mockSet = mockContext.Set<Menu>();
+
+            InitContext();
+            dbSet = appContext.Set<Menu>();
         }
-       [Fact]
-        public void testFindByType()
+        /// <summary>
+        /// Test { public IEnumerable<Menu> FindByType(String[] types) }
+        /// </summary>
+        [Fact]
+        public void MenuRepo_FindByType()
         {
-            var menuRepo = new MenuRepo(mockContext);
-            var menus = menuRepo.findByType(new String[] { "HOME" });
+            var menuRepo = new MenuRepo(appContext);
+            var menus = menuRepo.FindByType(new String[] { "HOME" });
             IEnumerable<Menu> subMenu = menus.ElementAt(0).SubMenus;
 
             Assert.Equal(2, menus.Count());
             Assert.Equal(2, subMenu.Count());
 
         }
-        [Fact]
-        public void TestFindAllInt()
+        /// <summary>
+        /// Create a context and initialize the database with test Data
+        /// This method runs before each test.
+        ///
+        /// </summary>
+        private void InitContext()
         {
-            var menuRepo = new MenuRepo(mockContext);
-            var menus = menuRepo.findAll(1);
-
-            Assert.Equal(2, menus.Count());
-        }
-        /**
-         * Create a context and initialize the database with test Data
-         * This method runs before each test.
-         * 
-         * */
-        private void initContext()
-        {
-            
 
             var builder = new DbContextOptionsBuilder<ApplicationContext>()
                 .UseInMemoryDatabase<ApplicationContext>("TestDB.mdf");
 
-            var context = new ApplicationContext(builder.Options);
+            appContext = new ApplicationContext(builder.Options);
 
             var menus = new List<Menu>
             {
@@ -68,21 +62,20 @@ namespace Classifieds.XUnitTest.Repository
                 new Menu{ID=6, Name="trucks",Type="SUBMENU",ParentID=1}
             };
 
-            context.AddRange(menus);
-            int changed = context.SaveChanges();
-            mockContext = context;
+            appContext.AddRange(menus);
+            int changed = appContext.SaveChanges();
+            //appContext = context;
         }
-        /**
-         * Clear the database in preparation for the next test.
-         * Since each test executes the initContext method, it
-         * is necessary to clear the database before the next 
-         * test, otherwise the tests fail during insert stage.
-         **/
+        /// <summary>
+        /// Clear the database in preparation for the next test.
+        /// Since each test executes the initContext method, it
+        /// is necessary to clear the database before the next 
+        /// test, otherwise the tests fail during insert stage.
+        /// </summary>
         public void Dispose()
         {
-            mockContext.Menus.RemoveRange(mockContext.Menus);
-            int changed = mockContext.SaveChanges();
+            appContext.Menus.RemoveRange(appContext.Menus);
+            int changed = appContext.SaveChanges();
         }
     }
-    
 }
