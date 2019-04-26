@@ -110,7 +110,9 @@ namespace Classifieds.Web.Controllers
             Expression<Func<Advert, object>>[] include =
             {
                 a => a.Detail,
-                a => a.Menu
+                a => a.Detail.AdPictures,
+                a => a.Menu,
+                a => a.User
             };
             AdvertViewModel model = mapper.Map<AdvertViewModel>(advertService.Find(id, include));
 
