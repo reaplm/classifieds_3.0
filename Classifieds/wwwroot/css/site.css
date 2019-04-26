@@ -27,8 +27,8 @@
     flex-direction: row;
     justify-content:space-between;
 }
-span.icon-bar{
-    background-color: #666;
+.navbar-toggler-icon{
+    color: #666;
 }
 .navbar::before, .navbar::after, 
     .container::before, .container::after {
