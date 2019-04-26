@@ -50,10 +50,6 @@ $(document).ready(function () {
         console.log($(this).val());
     });
 
-    $("submit-ad").on("click", function () {
-        document.getElementById("SubmittedDate").value = new Date();
-    });
-
     $(".modal-link").on("click", function (e) {
         e.preventDefault();
 

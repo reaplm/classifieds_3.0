@@ -113,10 +113,14 @@ namespace Classifieds.Repository.Impl
         {
             IQueryable<T> query = context.Set<T>();
 
-            foreach (var property in includes)
-            {
-                query = query.Include(property);
+            if (includes != null)
+            { 
+                foreach (var property in includes)
+                {
+                    query = query.Include(property);
+                }
             }
+
             if (wherePredicate != null)
                 query = query.Where(wherePredicate);
 

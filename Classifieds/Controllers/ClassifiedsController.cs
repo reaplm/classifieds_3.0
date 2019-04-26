@@ -69,6 +69,7 @@ namespace Classifieds.Web.Controllers
             var userId = HttpContext.User.Claims.FirstOrDefault(u => u.Type == "UserId").Value;
             model.UserID = long.Parse(userId);
 
+
             //Initially there's no selected item
             ViewBag.Menus = MenuSelectListItems(-1);
             ViewBag.SubMenus = new List<SelectListItem>();//empty initially

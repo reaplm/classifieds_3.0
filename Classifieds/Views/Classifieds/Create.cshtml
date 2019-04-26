@@ -71,7 +71,7 @@
         <div class="row form-group">
             <div class="col-sm-12">
                 @Html.TextAreaFor(model => model.Detail.Body, 10, 1,
-                               new { @class = "rounded-box size-lg form-control form-input" })
+                               new { @class = "rounded-box form-control form-input" })
                 @Html.ValidationMessageFor(model => model.Detail.Body, "",
                                    new { @Class = "form-control-danger" })
             </div>
@@ -116,7 +116,7 @@
             <!-- Foreign keys -->
             @Html.HiddenFor(model => model.MenuID)
             @Html.HiddenFor(model => model.ParentID)
-            @Html.HiddenFor(model => model.UserID);
+            @Html.HiddenFor(model => model.UserID)
 
             <!-- Image group information-->
             @Html.HiddenFor(model => model.Detail.GroupCdn)
