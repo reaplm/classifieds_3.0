@@ -15,9 +15,9 @@
             colCount = 0;
         }
         colCount++;
-    <div class="col-sm-3 col-xs-6 category">
+    <div class="col-sm-3 col-xs-6 category mb-3">
         <div class="clearfix">
-            <img src="~/images/home/@menu.Icon" class="float-left" width="45" height="45" />
+            <img src="~/images/home/@menu.Icon" class="float-left mr-2" width="45" height="45" />
             <h4 class="pt-2 pb-2 text-capitalize">
                 @Html.ActionLink((String)menu.Name, "Category", "Classifieds", 
                         new { id = menu.ID})
@@ -27,7 +27,7 @@
         @foreach (var subMenu in menu.SubMenus)
     {
             <!-- LinkText, ActionName, Controller, RouteValues, HtmlAttributes-->
-        <p class="text-capitalize">@Html.ActionLink((String)subMenu.Name, "Category",
+        <p class="text-capitalize mb-1">@Html.ActionLink((String)subMenu.Name, "Category",
                                   "Classifieds", new {id = subMenu.ID})</p>
 
 }

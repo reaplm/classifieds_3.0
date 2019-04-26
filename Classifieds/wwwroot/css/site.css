@@ -54,7 +54,12 @@
     #pg-home .category h4 {
         display: inline-block;
     }
-
+.modal-link, .modal-link:hover {
+    color: #666;
+}
+    .modal-link:visited, .modal-link:active {
+        color: #666;
+    }
 /*==================================LOGIN PAGE=================================*/
 #pg-login {
     width: 500px;
