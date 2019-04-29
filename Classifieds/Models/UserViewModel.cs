@@ -14,17 +14,19 @@ namespace Classifieds.Web.Models
         public String ActivationCode { set; get; }
         public int? Notified { set; get; }
 
-        [Required(ErrorMessage ="Please enter email address")]
-        [EmailAddress(ErrorMessage ="Invalid email address")]
+        [Required(ErrorMessage = "Please enter email address")]
+        [EmailAddress(ErrorMessage = "Invalid email address")]
         public String Email { set; get; }
 
         [Required(ErrorMessage = "Password is required")]
         public String Password { set; get; }
 
         public DateTime? LastLogin { set; get; }
+        [DisplayFormat(DataFormatString ="{0:n}")]
         public DateTime RegDate { set; get; }
         public DateTime? PasswordExpiry { set; get; }
 
+        public virtual UserDetailViewModel UserDetail{set;get;}
         
     }
 }

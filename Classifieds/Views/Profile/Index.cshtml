@@ -1,0 +1,17 @@
+﻿@model  Classifieds.Web.Models.UserViewModel
+
+<div class="profile-header w-100">
+    <div class="img-round ">
+        @if (Model.UserDetail.ImageCdn != null)
+        {
+            <img src="@Model.UserDetail.ImageCdn" class="profile-img"/>
+        }
+    </div>
+    <div class="user-info">
+        <p >@Model.UserDetail.FirstName | @Model.RegDate</p>
+    </div>
+</div>
+<div class="sidebar">
+    
+</div>
+<div class="content"></div>

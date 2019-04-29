@@ -60,6 +60,29 @@
     .modal-link:visited, .modal-link:active {
         color: #666;
     }
+.profile-header {
+    height: 200px;
+    position:relative;
+    background-image: url(../images/chris-barbalis-255972-unsplash.png) ;
+}
+.img-round {
+    width: 150px;
+    height: 150px;
+    overflow: hidden;
+    border-radius: 50%;
+    position: absolute;
+    bottom: 15%;
+    left: 45%;
+    border: 5px ridge #fff;
+}
+.user-info {
+    color: #666;
+    font-weight: bold;
+    position: absolute;
+    bottom: 0%;
+    left: 40%;
+}
+
 /*==================================LOGIN PAGE=================================*/
 #pg-login {
     width: 500px;

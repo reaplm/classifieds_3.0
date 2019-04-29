@@ -35,6 +35,7 @@ namespace Classifieds
             var config = new AutoMapper.MapperConfiguration(cfg =>
             {
                 cfg.CreateMap<UserViewModel, User>();
+                cfg.CreateMap<UserDetailViewModel, UserDetail>();
                 cfg.CreateMap<MenuViewModel, Menu>();
                 cfg.CreateMap<AdvertViewModel, Advert>();
                 cfg.CreateMap<Advert, AdvertViewModel>()
