@@ -9,17 +9,18 @@ using Classifieds.Service;
 using Classifieds.Domain.Model;
 using AutoMapper;
 using Classifieds.Web.Models;
+using System.Linq.Expressions;
 
 namespace Classifieds.Controllers
 {
     public class HomeController : Controller
     {
-        private IMenuService menuService;
+        private ICategoryService categoryService;
         private IMapper mapper;
 
-        public HomeController(IMenuService menuService, IMapper mapper)
+        public HomeController(ICategoryService categoryService, IMapper mapper)
         {
-            this.menuService = menuService;
+            this.categoryService = categoryService;
             this.mapper = mapper;
         }
         /// <summary>
@@ -31,11 +32,17 @@ namespace Classifieds.Controllers
         {
            
             ViewBag.Title = "Adpost Home";
-            IEnumerable<MenuViewModel> menus = mapper.Map<IEnumerable<MenuViewModel>>
-                (menuService.FindByType(new String[] { "HOME" }));
 
-            return View(menus);
-            
+            Expression<Func<Category, object>>[] include =
+            {
+                c => c.SubCategories
+            };
+            Expression<Func<Category, bool>> where = c => c.ParentID == null;
+
+            IEnumerable<CategoryViewModel> categories = mapper.Map<IEnumerable<CategoryViewModel>>
+                (categoryService.FindAll(where, include));
+
+            return View(categories); 
         }
         /// <summary>
         /// Classifieds link on header menu
@@ -52,8 +59,6 @@ namespace Classifieds.Controllers
         /// <returns></returns>
         public IActionResult Login()
         {
-            ViewData["Message"] = "Your contact page.";
-
             return View();
         }
         /// <summary>

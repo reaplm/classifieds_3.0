@@ -22,7 +22,7 @@ namespace Classifieds.Repository.Impl
         /// <returns></returns>
         public IEnumerable<Advert> FindByCategory(int id)
         {
-            var adverts = context.Adverts.Where(x => x.MenuID == id)
+            var adverts = context.Adverts.Where(x => x.CategoryID == id)
                 .Include(x => x.Detail);
 
             return adverts;

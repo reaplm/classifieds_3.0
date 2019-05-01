@@ -18,7 +18,7 @@ namespace Classifieds.Web.Controllers
             this.menuService = menuService;
         }
         /// <summary>
-        /// classifieds/SubMenus/2
+        /// /Menu/SubMenus/2
         /// Fetch all submenus with parentId {id}
         /// </summary>
         /// <param name="id">parent id</param>

@@ -8,37 +8,44 @@ using Classifieds.Controllers;
 using Microsoft.AspNetCore.Mvc;
 using AutoMapper;
 using Classifieds.Web.Models;
+using System.Linq.Expressions;
 
 namespace Classifieds.XUnitTest.Controller
 {
     public class TestHomeController
     {
         private IMapper mapper;
-        private Mock<IMenuService> mockService;
+        private Mock<ICategoryService> mockService;
 
         public TestHomeController()
         {
             Initialize();
-            mockService = new Mock<IMenuService>();
+            mockService = new Mock<ICategoryService>();
         }
         /// <summary>
         /// Test { public IActionResult Index() }
         /// </summary>
         [Fact]
-        public void TestIndex()
+        public void Index()
         {
 
-            IEnumerable<Menu> menus = new List<Menu>
+            IEnumerable<Category> categories = new List<Category>
             {
-                new Menu{ID=1,Name="menu 1"},
-                new Menu{ID=2,Name="menu 2" }
+                new Category{ID=1,Name="category 1"},
+                new Category{ID=2,Name="category 2" }
+            };
+            Expression<Func<Category, object>>[] include =
+            {
+                c => c.SubCategories
             };
 
-            mockService.Setup(m => m.FindByType(It.IsAny<String[]>())).Returns(menus);
+            mockService.Setup(m => m.FindAll(It.IsAny<Expression<Func<Category, bool>>>(),
+                It.IsAny<Expression<Func<Category, object>>[]>())).Returns(categories);
+
             var controller = new HomeController(mockService.Object, mapper);
 
             var result = controller.Index() as ViewResult;
-            List<MenuViewModel> list = result.Model as List<MenuViewModel>;
+            List<CategoryViewModel> list = result.Model as List<CategoryViewModel>;
 
             Assert.Equal(2, list.Count);
         }
@@ -47,7 +54,7 @@ namespace Classifieds.XUnitTest.Controller
         {
             var config = new MapperConfiguration(cfg =>
             {
-                cfg.CreateMap<MenuViewModel, Menu>();
+                cfg.CreateMap<CategoryViewModel, Category>();
             });
 
             mapper = config.CreateMapper();

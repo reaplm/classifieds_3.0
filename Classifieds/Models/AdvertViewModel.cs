@@ -18,14 +18,14 @@ namespace Classifieds.Web.Models
         public DateTime RejectedDate { set; get; }
         public DateTime SubmittedDate { set; get; }
 
-        [Required(ErrorMessage = "Please select sub-menu")]
-        [Range(1,int.MaxValue,ErrorMessage = "Please select sub-menu")]
-        public long MenuID { set; get; }
-        [Display(Name = "Menu")]
-        public MenuViewModel Menu { set; get; }
+        [Required(ErrorMessage = "Please select sub-category")]
+        [Range(1,int.MaxValue,ErrorMessage = "Please select sub-category")]
+        public long CategoryID { set; get; }
+        [Display(Name = "Category")]
+        public CategoryViewModel category { set; get; }
 
-        [Required(ErrorMessage = "Please select menu")]
-        [Range(1, int.MaxValue, ErrorMessage = "Please select menu")]
+        [Required(ErrorMessage = "Please select category")]
+        [Range(1, int.MaxValue, ErrorMessage = "Please select category")]
         public int ParentID { set; get; }
 
         [Required(ErrorMessage ="Please login to post an ad")]

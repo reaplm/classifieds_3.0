@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Classifieds.Web.Models.MenuViewModel>
+﻿@model IEnumerable<Classifieds.Web.Models.CategoryViewModel>
 
 @{
     ViewData["Title"] = "Home Page";
@@ -7,7 +7,7 @@
 <div id="pg-home" class="container">
     @{int colCount = 0; }
     @Html.Raw("<div class='row'>")
-    @foreach (var menu in Model)
+    @foreach (var category in Model)
     {
         @if (colCount == 4)
         {
@@ -17,18 +17,18 @@
         colCount++;
     <div class="col-sm-3 col-xs-6 category mb-3">
         <div class="clearfix">
-            <img src="~/images/home/@menu.Icon" class="float-left mr-2" width="45" height="45" />
+            <img src="~/images/home/@category.Icon" class="float-left mr-2" width="45" height="45" />
             <h4 class="pt-2 pb-2 text-capitalize">
-                @Html.ActionLink((String)menu.Name, "Category", "Classifieds", 
-                        new { id = menu.ID})
+                @Html.ActionLink((String)category.Name, "Category", "Classifieds", 
+                        new { id = category.ID})
 
             </h4>
         </div>
-        @foreach (var subMenu in menu.SubMenus)
+        @foreach (var subCategory in category.SubCategories)
     {
             <!-- LinkText, ActionName, Controller, RouteValues, HtmlAttributes-->
-        <p class="text-capitalize mb-1">@Html.ActionLink((String)subMenu.Name, "Category",
-                                  "Classifieds", new {id = subMenu.ID})</p>
+        <p class="text-capitalize mb-1">@Html.ActionLink((String)subCategory.Name, "Category",
+                                  "Classifieds", new {id = subCategory.ID})</p>
 
 }
     </div>

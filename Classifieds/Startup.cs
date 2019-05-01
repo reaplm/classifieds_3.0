@@ -43,6 +43,7 @@ namespace Classifieds
                 cfg.CreateMap<AdvertDetailViewModel, AdvertDetail>();
                 cfg.CreateMap<AdPictureViewModel, AdPicture>();
                 cfg.CreateMap<AdPicture, AdPictureViewModel>();
+                cfg.CreateMap<Category, CategoryViewModel>();
             });
 
             IMapper mapper = config.CreateMapper();
@@ -67,6 +68,8 @@ namespace Classifieds
             services.AddScoped<IAdvertRepo, AdvertRepo>();
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IUserRepo, UserRepo>();
+            services.AddScoped<ICategoryService, CategoryService>();
+            services.AddScoped<ICategoryRepo, CategoryRepo>();
 
         }
 

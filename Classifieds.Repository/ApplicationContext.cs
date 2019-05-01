@@ -15,6 +15,7 @@ namespace Classifieds.Repository
         public virtual DbSet<User> Users { set; get; }
         public virtual DbSet<UserDetail> UserDetails { set; get; }
         public virtual DbSet<AdPicture> AdPictures { set; get; }
+        public virtual DbSet<Category> Categories { set; get; }
 
         public ApplicationContext(DbContextOptions<ApplicationContext> options) : base(options)
         {

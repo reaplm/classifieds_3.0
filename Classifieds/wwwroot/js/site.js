@@ -9,44 +9,44 @@ function GetAdvertDetail(url, callback) {
      })
      .fail(function(jqXHR, errorText, errorThrown){
         alert("Failed to fetch advert details"); });
-}function GetSubMenus(menuId,url, callback) {
+}function GetSubCategories(categoryId,url, callback) {
     $.ajax({
         url: url,
         type: "get",
-        data: {id: menuId},
+        data: {id: categoryId},
         dataType: "json"
     }).done(function (data, textStatus, jqXHR) {
         callback(data.results);
     }).fail(function (jqXHR, errorText, errorThrown) {
-        alert("Failed to load sub-menus!");
+        alert("Failed to load sub-categories!");
     });
 }
 $(document).ready(function () {
-    $("#menu").on("change", function () {
+    $("#category").on("change", function () {
         var id = $(this).val();
-        var url = "/Menu/SubMenus/";
-        GetSubMenus(id, url, function (data) {
+        var url = "/Category/SubCategories/";
+        GetSubCategories(id, url, function (data) {
             console.log(data); 
 
-            $("#submenu").empty();
-            $("#submenu").append("<option value= 0>Select Sub - Menu</option>");
+            $("#subcategory").empty();
+            $("#subcategory").append("<option value= 0>Select Sub-Category</option>");
 
             for (var i = 0; i < data.length; i++) {
-                $("#submenu").append("<option value='"
+                $("#subcategory").append("<option value='"
                     + data[i].id + "'>" + data[i].name + "</option>");
             }
         });
     });
 
-    $("#submenu").on("change", function () {
+    $("#subcategory").on("change", function () {
         var id = $(this).val();
-        document.getElementById("MenuID").value = id;
+        document.getElementById("CategoryID").value = id;
         
     });
 
-    $("#menu").on("change", function () {
+    $("#category").on("change", function () {
         document.getElementById("ParentID").value = $(this).val();
-        document.getElementById("MenuID").value = 0;
+        document.getElementById("CategoryID").value = 0;
         console.log($(this).val());
     });
 

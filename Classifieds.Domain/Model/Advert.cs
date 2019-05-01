@@ -27,18 +27,12 @@ namespace Classifieds.Domain.Model
 
         [Column(name: "submitted_date")]
         public DateTime SubmittedDate { set; get; }
-
         
-        [Column(name:"fk_menu_id")]
-        public long MenuID { set; get; }
+        [Column(name:"fk_cat_id")]
+        public long CategoryID { set; get; }
 
-        public Advert Include()
-        {
-            throw new NotImplementedException();
-        }
-
-        [ForeignKey("MenuID")]
-        public Menu Menu { set; get; }
+        [ForeignKey("CategoryID")]
+        public Category Category { set; get; }
 
         [Column(name: "fk_appuser_id")]
         public long UserID { set; get; }

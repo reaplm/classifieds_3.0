@@ -15,8 +15,8 @@
                                    new { @Class = "form-control-danger" })
         <div class="row form-group">
             <div class="col-sm-3">
-                @Html.DropDownList("menu", ViewBag.Menus as IEnumerable<SelectListItem>,
-                               "Select Menu", new
+                @Html.DropDownList("category", ViewBag.Categories as IEnumerable<SelectListItem>,
+                               "Select Category", new
                                {
                                    @class = "rounded-box size-lg form-control form-input " +
                                "text-capitalize"
@@ -25,13 +25,13 @@
                             new { @Class = "form-control-danger" })
             </div>
             <div class="col-sm-3">
-                @Html.DropDownList("submenu", ViewBag.SubMenus as IEnumerable<SelectListItem>,
-                                      "Select Sub-Menu", new
+                @Html.DropDownList("subcategory", ViewBag.SubCategories as IEnumerable<SelectListItem>,
+                                      "Select Sub-Category", new
                                       {
                                           @class = "rounded-box size-lg form-control form-input " +
                                       "text-capitalize"
                                       })
-                @Html.ValidationMessageFor(model => model.MenuID, "",
+                @Html.ValidationMessageFor(model => model.CategoryID, "",
                                        new { @Class = "form-control-danger" })
             </div>
             <div class="col-sm-3">
@@ -114,7 +114,7 @@
         </div>
         <div class="form-group">
             <!-- Foreign keys -->
-            @Html.HiddenFor(model => model.MenuID)
+            @Html.HiddenFor(model => model.CategoryID)
             @Html.HiddenFor(model => model.ParentID)
             @Html.HiddenFor(model => model.UserID)
 

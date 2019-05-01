@@ -12,18 +12,15 @@ namespace Classifieds.Domain.Model
         [Column(name: "pk_menu_id")]
         public long ID { set; get; }
 
-        [Required(ErrorMessage = "Menu name is required")]
         [Column(name: "menu_name")]
         public String Name { set; get; }
 
-        [Required(ErrorMessage = "Required")]
         [Column(name: "admin_menu")]
         public int Admin { set; get; }
 
         [Column(name: "icon")]
         public String Icon { set; get; }
 
-        [Required]
         [Column(name: "label")]
         public String Label { set; get; }
 

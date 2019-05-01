@@ -29,21 +29,21 @@ namespace Classifieds.XUnitTest.Controller
     {
         private IMapper mapper;
         private Mock<IAdvertService> mockAdvertService;
-        private Mock<IMenuService> mockMenuService;
+        private Mock<ICategoryService> mockCatService;
         private Mock<ClaimsPrincipal> mockClaimsPrincipal;
 
         public TestClassifiedsController()
         {
             Inialize();
             mockAdvertService = new Mock<IAdvertService>();
-            mockMenuService = new Mock<IMenuService>();
+            mockCatService = new Mock<ICategoryService>();
             mockClaimsPrincipal = new Mock<ClaimsPrincipal>();
         }
         /// <summary>
         /// Test { public IActionResult Index() }
         /// </summary>
         [Fact]
-        public void TestIndex()
+        public void Index()
         {
             IEnumerable<Advert> adverts = new List<Advert>
             {
@@ -58,7 +58,7 @@ namespace Classifieds.XUnitTest.Controller
                 It.IsAny<Expression<Func<Advert,object>>[]>())).Returns(adverts);
 
             var controller = new ClassifiedsController(advertService.Object,
-                menuService.Object, mapper);
+                mockCatService.Object, mapper);
             var result = controller.Index() as ViewResult;
             var list = result.Model as List<Advert>;
 
@@ -70,7 +70,7 @@ namespace Classifieds.XUnitTest.Controller
         /// //Classifieds/Category/id
         /// </summary>
         [Fact]
-        public void TestCategory()
+        public void Category()
         {
             IEnumerable<Advert> adverts = new List<Advert>
             {
@@ -84,7 +84,7 @@ namespace Classifieds.XUnitTest.Controller
             advertService.Setup(m => m.FindByCategory(It.IsAny<int>())).Returns(adverts);
 
             var controller = new ClassifiedsController(advertService.Object,
-                menuService.Object, mapper);
+                mockCatService.Object, mapper);
             var result = controller.Category(2) as ViewResult;
             var list = result.Model as List<Advert>;
 
@@ -96,9 +96,9 @@ namespace Classifieds.XUnitTest.Controller
         /// Mocks authentication, HttpContext
         /// </summary>
         [Fact]
-        public void TestCreate_GET()
+        public void Create_GET()
         {
-            IEnumerable<Menu> menus = GetMenuList();
+            IEnumerable<Category> categories = GetCatList();
 
             //Setup to allow query of authenticated user
             //  (HttpContext.User.Claims.FirstOrDefault(u => u.Type == "UserId").Value)
@@ -110,22 +110,22 @@ namespace Classifieds.XUnitTest.Controller
             var mockHttpContext = new Mock<HttpContext>();
             mockHttpContext.Setup(m => m.User).Returns(principal);
 
-            mockMenuService.Setup(m => m.FindByType(It.IsAny<String[]>()))
-                .Returns(menus);
+            mockCatService.Setup(m => m.FindAll())
+                .Returns(categories);
 
             var controller = new ClassifiedsController(mockAdvertService.Object,
-                 mockMenuService.Object, mapper);
+                 mockCatService.Object, mapper);
 
             controller.ControllerContext.HttpContext = mockHttpContext.Object;
 
             var result = controller.Create() as ViewResult;
-            var menuList = result.ViewData["Menus"] as IEnumerable<SelectListItem>;
-            var subMenus = result.ViewData["SubMenus"] as IEnumerable<SelectListItem>;
+            var categoryList = result.ViewData["Categories"] as IEnumerable<SelectListItem>;
+            var subCategories = result.ViewData["SubCategories"] as IEnumerable<SelectListItem>;
 
 
             Assert.IsType<AdvertViewModel>(result.Model);
-            Assert.Equal(3, menuList.Count());
-            Assert.Empty(subMenus);
+            Assert.Equal(3, categoryList.Count());
+            Assert.Empty(subCategories);
         }
         /// <summary>
         /// Test { public IActionResult Create(AdvertViewModel model) }
@@ -134,24 +134,27 @@ namespace Classifieds.XUnitTest.Controller
         [Fact]
         public void Create_InvalidModelState_POST()
         {
-            var menus = GetMenuList();
-            var submenus = GetSubMenuList();
-            AdvertViewModel model = new AdvertViewModel();
-            model.MenuID = 2;
-            model.ParentID = 1;
+            var categories = GetCatList();
+            var subcategories = GetSubCatList();
+            AdvertViewModel model = new AdvertViewModel
+            {
+                CategoryID = 2,
+                ParentID = 1
+            };
 
-            mockMenuService.Setup(x => x.FindByType(It.IsAny<String[]>()))
-                .Returns(menus);
-            mockMenuService.Setup(x => x.FindAll())
-                .Returns(submenus);
+            mockCatService.Setup(x => x.FindAll())
+                .Returns(categories);
+            mockCatService.Setup(x => x.FindAll(It.IsAny<Expression<Func<Category, bool>>>(),
+                It.IsAny<Expression<Func<Category, object>>[]>()))
+                .Returns(subcategories);
 
             var controller = new ClassifiedsController(mockAdvertService.Object,
-                mockMenuService.Object, mapper);
-            controller.ModelState.AddModelError("menu", "please select menu");//set ModelState to be invalid
+                mockCatService.Object, mapper);
+            controller.ModelState.AddModelError("category", "please select category");//set ModelState to be invalid
 
             var result = controller.Create(model) as ViewResult;
-            var list = result.ViewData["Menus"] as IEnumerable<SelectListItem>;
-            var subs = result.ViewData["SubMenus"] as IEnumerable<SelectListItem>;
+            var list = result.ViewData["Categories"] as IEnumerable<SelectListItem>;
+            var subs = result.ViewData["SubCategories"] as IEnumerable<SelectListItem>;
 
             Assert.Equal(3, list.Count());
             Assert.Equal(2, subs.Count());
@@ -163,11 +166,11 @@ namespace Classifieds.XUnitTest.Controller
         /// Create a new advert and redict on success
         /// </summary>
         [Fact]
-        public void TestCreateValidModelState_POST()
+        public void CreateValidModelState_POST()
         {
             AdvertViewModel model = GetAdvert();
 
-            var controller = new ClassifiedsController(mockAdvertService.Object, mockMenuService.Object, mapper);
+            var controller = new ClassifiedsController(mockAdvertService.Object, mockCatService.Object, mapper);
             var result = controller.Create(model) as RedirectToActionResult;
 
             Assert.Equal("Index", result.ActionName);
@@ -189,7 +192,7 @@ namespace Classifieds.XUnitTest.Controller
                 .Returns(advert);
 
             var controller = new ClassifiedsController(mockAdvertService.Object,
-                mockMenuService.Object, mapper);
+                mockCatService.Object, mapper);
 
             var result = controller.Detail(3) as PartialViewResult;
             var model = result.Model as AdvertViewModel;
@@ -222,32 +225,32 @@ namespace Classifieds.XUnitTest.Controller
         /// Data (Menu SelectList)
         /// </summary>
         /// <returns></returns>
-        private IEnumerable<Menu> GetMenuList()
+        private IEnumerable<Category> GetCatList()
         {
 
-            IEnumerable<Menu> menus = new List<Menu>
+            IEnumerable<Category> categories = new List<Category>
             {
-                new Menu{ID=1,Name="menu1"},
-                new Menu{ID=2,Name="menu2"},
-                new Menu{ID=3,Name="menu3"},
+                new Category{ID=1,Name="cat1"},
+                new Category{ID=2,Name="cat2"},
+                new Category{ID=3,Name="cat3"},
             };
 
-            return menus;
+            return categories;
         }
         /// <summary>
         /// Data (SubMenu SelectList)
         /// </summary>
         /// <returns></returns>
-        private IEnumerable<Menu> GetSubMenuList()
+        private IEnumerable<Category> GetSubCatList()
         {
 
-            IEnumerable<Menu> menus = new List<Menu>
+            IEnumerable<Category> categories = new List<Category>
             {
-                new Menu{ID=1,Name="summenu1"},
-                new Menu{ID=2,Name="submenu2"}
+                new Category{ID=1,Name="subcat1"},
+                new Category{ID=2,Name="subcat2"}
             };
 
-            return menus;
+            return categories;
         }
         /// <summary>
         /// Create Advert object
@@ -291,7 +294,7 @@ namespace Classifieds.XUnitTest.Controller
             {
                 ID = 8,
                 Status = EnumTypes.AdvertStatus.SUBMITTED.ToString(),
-                MenuID = 6,
+                CategoryID = 6,
                 Detail = advertDetail
             };
 

@@ -14,20 +14,18 @@ using System.Threading.Tasks;
 
 namespace Classifieds.Web.Controllers
 {
-    
-
-     
     public class ClassifiedsController : Controller
     {
         private IAdvertService advertService;
-        private IMenuService menuService;
+        private ICategoryService categoryService;
         private IMapper mapper;
 
-        public ClassifiedsController(IAdvertService advertService, IMenuService menuService,
+        public ClassifiedsController(IAdvertService advertService, 
+            ICategoryService categoryService,
             IMapper mapper)
         {
             this.advertService = advertService;
-            this.menuService = menuService;
+            this.categoryService = categoryService;
             this.mapper = mapper;
         }
         /// <summary>
@@ -71,8 +69,8 @@ namespace Classifieds.Web.Controllers
 
 
             //Initially there's no selected item
-            ViewBag.Menus = MenuSelectListItems(-1);
-            ViewBag.SubMenus = new List<SelectListItem>();//empty initially
+            ViewBag.Categories = CatSelectListItems(-1);
+            ViewBag.SubCategories = new List<SelectListItem>();//empty initially
 
             return View(model);
         }
@@ -95,8 +93,8 @@ namespace Classifieds.Web.Controllers
                 return RedirectToAction("Index", "Classifieds");
             }
 
-            ViewBag.Menus = MenuSelectListItems(model.ParentID);
-            ViewBag.SubMenus = SubMenuSelectListItems(model.ParentID, model.MenuID);
+            ViewBag.Categories = CatSelectListItems(model.ParentID);
+            ViewBag.SubCategories = SubCatSelectListItems(model.ParentID, model.CategoryID);
 
             return View(model);
         }
@@ -111,7 +109,7 @@ namespace Classifieds.Web.Controllers
             {
                 a => a.Detail,
                 a => a.Detail.AdPictures,
-                a => a.Menu,
+                a => a.Category,
                 a => a.User
             };
             AdvertViewModel model = mapper.Map<AdvertViewModel>(advertService.Find(id, include));
@@ -119,22 +117,24 @@ namespace Classifieds.Web.Controllers
             return PartialView(model);
         }
         /// <summary>
-        /// 
+        /// Fetch parent categories
         /// </summary>
         /// <param name="selectedVal">The ID of the selected item</param>
         /// <returns>List of SelectListItem</returns>
-        private IEnumerable<SelectListItem> MenuSelectListItems(int? selectedVal)
+        private IEnumerable<SelectListItem> CatSelectListItems(int? selectedVal)
         {
-            IEnumerable<Menu> menus = menuService.FindByType(new String[] { "HOME" });
+            Expression<Func<Category, bool>> where = c => c.ParentID == null;
+
+            IEnumerable<Category> categories = categoryService.FindAll(where, null);
             List<SelectListItem> selectItems = new List<SelectListItem>();
 
-            foreach (var menu in menus)
+            foreach (var category in categories)
             {
                 selectItems.Add(new SelectListItem
                 {
-                    Text = menu.Name,
-                    Value = menu.ID.ToString(),
-                    Selected = menu.ID == selectedVal ? true : false
+                    Text = category.Name,
+                    Value = category.ID.ToString(),
+                    Selected = category.ID == selectedVal ? true : false
                 });
             }
 
@@ -146,18 +146,20 @@ namespace Classifieds.Web.Controllers
         /// <param name="parentId">The ID of the parent entity</param>
         /// <param name="selectedVal">The ID of the selected item</param>
         /// <returns>SelectListItem</returns>
-        private IEnumerable<SelectListItem> SubMenuSelectListItems(long parentId, long? selectedVal)
+        private IEnumerable<SelectListItem> SubCatSelectListItems(long parentId, long? selectedVal)
         {
-            IEnumerable<Menu> menus = menuService.FindAll();
+            Expression<Func<Category, bool>> where = x => x.ParentID == parentId;
+
+            IEnumerable<Category> categories = categoryService.FindAll(where, null);
             List<SelectListItem> selectItems = new List<SelectListItem>();
 
-            foreach (var menu in menus)
+            foreach (var category in categories)
             {
                 selectItems.Add(new SelectListItem
                 {
-                    Text = menu.Name,
-                    Value = menu.ID.ToString(),
-                    Selected = menu.ID == selectedVal ? true : false
+                    Text = category.Name,
+                    Value = category.ID.ToString(),
+                    Selected = category.ID == selectedVal ? true : false
                 });
             }
 

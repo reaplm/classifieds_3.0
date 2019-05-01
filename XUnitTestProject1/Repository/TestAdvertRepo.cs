@@ -97,7 +97,7 @@ namespace Classifieds.XUnitTest.Repository
             {
                 ID = 8,
                 Status = EnumTypes.AdvertStatus.SUBMITTED.ToString(),
-                MenuID = 6,
+                CategoryID = 6,
                 Detail = advertDetail
             };
 
@@ -125,13 +125,13 @@ namespace Classifieds.XUnitTest.Repository
 
             List<Advert> adverts = new List<Advert>
             {
-                new Advert{ID=1, Status="SUBMITTED", SubmittedDate= new DateTime(2019,1,3), MenuID=5},
-                new Advert{ID=2, Status="REJECTED", SubmittedDate= new DateTime(2018,10,5), MenuID=6},
-                new Advert{ID=3, Status="APPROVED", SubmittedDate= new DateTime(2018,12,20), MenuID=6},
-                new Advert{ID=4, Status="SUBMITTED", SubmittedDate= new DateTime(2019,3,11), MenuID=6},
-                new Advert{ID=5, Status="APPROVED", SubmittedDate= new DateTime(2018,10,15), MenuID=4},
-                new Advert{ID=6, Status="SUBMITTED", SubmittedDate= new DateTime(2019,2,28), MenuID=5 },
-                new Advert{ID=7, Status="SUBMITTED", SubmittedDate= new DateTime(2018,7,3), MenuID=4}
+                new Advert{ID=1, Status="SUBMITTED", SubmittedDate= new DateTime(2019,1,3), CategoryID=5},
+                new Advert{ID=2, Status="REJECTED", SubmittedDate= new DateTime(2018,10,5), CategoryID=6},
+                new Advert{ID=3, Status="APPROVED", SubmittedDate= new DateTime(2018,12,20), CategoryID=6},
+                new Advert{ID=4, Status="SUBMITTED", SubmittedDate= new DateTime(2019,3,11), CategoryID=6},
+                new Advert{ID=5, Status="APPROVED", SubmittedDate= new DateTime(2018,10,15), CategoryID=4},
+                new Advert{ID=6, Status="SUBMITTED", SubmittedDate= new DateTime(2019,2,28), CategoryID=5 },
+                new Advert{ID=7, Status="SUBMITTED", SubmittedDate= new DateTime(2018,7,3), CategoryID=4}
             };
 
             List<AdvertDetail> advertDetails = new List<AdvertDetail>
