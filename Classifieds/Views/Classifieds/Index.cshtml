@@ -2,14 +2,14 @@
 @{
     ViewData["Title"] = "Index";
 }
-<div class="col-layout">
+<div class="col-layout mt-5">
     @foreach(var advert in Model)
     {
-        <h4 class="text-capitalize text-center">
+        <h5 class="text-capitalize text-center">
             @Html.ActionLink(advert.Detail.Title, "Detail", "Classifieds",
             new {id=advert.ID},new {@class="modal-link",
                 @data_target= "#advert-detail-modal", @data_toggle="modal" })
-        </h4>
+        </h5>
         <p>@advert.Detail.Body</p>
         <hr />
     }
