@@ -17,6 +17,20 @@ namespace Classifieds.Web.Models
         [Display(Name = "Body")]
         public String Body { set; get; }
 
+        public String BodySubString
+        {
+            get
+            {
+                if (Body != null)
+                {
+                    if (Body.Length > 200)
+                        return Body.Substring(0, 200) + "...";
+
+                    else return Body + "...";
+                }
+                else return "";
+            }
+        }
         [Required(ErrorMessage = "Please enter email address")]
         [EmailAddress(ErrorMessage ="Invalid email address")]
         [Display(Name = "Email Address")]
@@ -34,7 +48,7 @@ namespace Classifieds.Web.Models
         public AdvertViewModel Advert { set; get; }
 
         public String GroupCdn { set; get; }
-        public int? GroupCount { set; get; }
+        public int GroupCount { set; get; }
         public long? GroupSize { set; get; }
         public String GroupUuid { set; get; }
 

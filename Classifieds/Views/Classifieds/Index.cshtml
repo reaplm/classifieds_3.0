@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Classifieds.Domain.Model.Advert>
+﻿@model IEnumerable<Classifieds.Web.Models.AdvertViewModel>
 @{
     ViewData["Title"] = "Index";
 }
@@ -10,7 +10,7 @@
             new {id=advert.ID},new {@class="modal-link",
                 @data_target= "#advert-detail-modal", @data_toggle="modal" })
         </h5>
-        <p>@advert.Detail.Body</p>
+        <p>@advert.Detail.BodySubString</p>
         <hr />
     }
 </div>

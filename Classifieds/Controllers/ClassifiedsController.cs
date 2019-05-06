@@ -38,7 +38,7 @@ namespace Classifieds.Web.Controllers
             {
                 a => a.Detail
             };
-            var adverts = advertService.FindAll(null, include);
+            var adverts = mapper.Map<IEnumerable<AdvertViewModel>>(advertService.FindAll(null, include));
 
             return View(adverts);
         }

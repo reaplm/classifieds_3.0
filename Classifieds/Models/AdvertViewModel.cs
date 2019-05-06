@@ -13,16 +13,17 @@ namespace Classifieds.Web.Models
         public long ID { set; get; }
         public String Status { set; get; }
 
-        public DateTime ApprovedDate { set; get; }
-        public DateTime PublishedDate { set; get; }
-        public DateTime RejectedDate { set; get; }
+        public DateTime? ApprovedDate { set; get; }
+        public DateTime? PublishedDate { set; get; }
+        public DateTime? RejectedDate { set; get; }
         public DateTime SubmittedDate { set; get; }
 
         [Required(ErrorMessage = "Please select sub-category")]
         [Range(1,int.MaxValue,ErrorMessage = "Please select sub-category")]
         public long CategoryID { set; get; }
+
         [Display(Name = "Category")]
-        public CategoryViewModel category { set; get; }
+        public CategoryViewModel Category { set; get; }
 
         [Required(ErrorMessage = "Please select category")]
         [Range(1, int.MaxValue, ErrorMessage = "Please select category")]

@@ -60,7 +60,7 @@ namespace Classifieds.XUnitTest.Controller
             var controller = new ClassifiedsController(advertService.Object,
                 mockCatService.Object, mapper);
             var result = controller.Index() as ViewResult;
-            var list = result.Model as List<Advert>;
+            var list = result.Model as List<AdvertViewModel>;
 
             Assert.Equal(3, list.Count());
 
@@ -110,7 +110,8 @@ namespace Classifieds.XUnitTest.Controller
             var mockHttpContext = new Mock<HttpContext>();
             mockHttpContext.Setup(m => m.User).Returns(principal);
 
-            mockCatService.Setup(m => m.FindAll())
+            mockCatService.Setup(m => m.FindAll(It.IsAny< Expression<Func<Category, bool>>>(),
+                It.IsAny< Expression<Func<Category, object>>[]>()))
                 .Returns(categories);
 
             var controller = new ClassifiedsController(mockAdvertService.Object,
@@ -142,11 +143,10 @@ namespace Classifieds.XUnitTest.Controller
                 ParentID = 1
             };
 
-            mockCatService.Setup(x => x.FindAll())
-                .Returns(categories);
-            mockCatService.Setup(x => x.FindAll(It.IsAny<Expression<Func<Category, bool>>>(),
-                It.IsAny<Expression<Func<Category, object>>[]>()))
-                .Returns(subcategories);
+            Expression<Func<Category, bool>> where = c => c.ParentID == null;
+            Expression<Func<Category, bool>> subwhere = x => x.ParentID == 1;
+
+             
 
             var controller = new ClassifiedsController(mockAdvertService.Object,
                 mockCatService.Object, mapper);
@@ -204,6 +204,10 @@ namespace Classifieds.XUnitTest.Controller
 
 
         }
+        private IEnumerable<Category> GetResults()
+        {
+
+        }
         /// <summary>
         /// Initialize AutoMapper
         /// </summary>
@@ -214,7 +218,9 @@ namespace Classifieds.XUnitTest.Controller
                 cfg.CreateMap<AdvertViewModel, Advert>();
                 cfg.CreateMap<Advert, AdvertViewModel>()
                     .ForMember(m => m.ParentID, opts => opts.Ignore());
-                cfg.CreateMap<AdvertDetailViewModel, AdvertDetail>(MemberList.Source);
+                cfg.CreateMap<AdvertDetailViewModel, AdvertDetail>();
+                cfg.CreateMap<AdvertDetail, AdvertDetailViewModel>()
+                    .ForMember(m => m.BodySubString, opts =>opts.Ignore());
                 cfg.CreateMap<AdPictureViewModel, AdPicture>();
                 cfg.CreateMap<AdPicture, AdPictureViewModel>();
             });
