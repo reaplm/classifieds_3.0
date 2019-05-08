@@ -249,6 +249,14 @@ p{
 label{
     margin: 0;
 }
+.img-bg{
+    background-image: url(../images/chris-barbalis-255972-unsplash.png);
+}
+.admin-menu {
+    height: 230px;
+    color: #f7547a;
+}
+
 /*====================================FOOTER===============*/
     
 
