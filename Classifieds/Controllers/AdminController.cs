@@ -27,7 +27,7 @@ namespace Classifieds.Web.Controllers
             this.mapper = mapper;
         }
         /// <summary>
-        /// Admin home page
+        /// Admin Dashboard Page
         /// </summary>
         /// <returns></returns>
         public IActionResult Index()
@@ -49,6 +49,6 @@ namespace Classifieds.Web.Controllers
 
             return View();
         }
-        
+
     }
 }

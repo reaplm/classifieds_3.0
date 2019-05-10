@@ -6,7 +6,7 @@
 @{ 
     String ImageCdn = User.Claims.FirstOrDefault(u => u.Type == "ImageCdn").Value;
 }
-<div class="sidebar shadow pl-2 position-sticky">
+<div class="sidebar shadow pl-2 position-fixed container-fluid">
     <div class="m-auto user-img text-center">
         <img src="@ImageCdn" class="img-round mt-4"/>
     </div>
