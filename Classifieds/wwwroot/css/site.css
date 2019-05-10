@@ -1,6 +1,7 @@
 ﻿body {
     padding-bottom: 20px;
     font-family: Montserrat,Helvetica,Arial,sans-serif;
+    color: #666;
 }
 
 /* Wrapping element */
@@ -9,20 +10,21 @@
     padding-left: 15px;
     padding-right: 15px;
 }
+a, a:visited {
+    color: #666;
+}
+
+a:hover, a.active {
+        color: #f7547a;
+        text-decoration: underline;
+    }
 /*==================================HEADER MENU================================*/
 .navbar {
     text-transform: Capitalize;
     font-size: 9pt;
     color: #fff;
 }
-.navbar a, .navbar a:visited {
-    color: #666;
-}
 
-.navbar a:hover, .navbar a.active {
-    color: #f7547a;
-    text-decoration: underline;
-}
 .navbar .flex-container{
     display: flex;
     flex-direction: row;
@@ -311,14 +313,6 @@ label{
     font-size: small;
 }
 
-.accordion a, .navbar a:visited {
-    color: #666;
-}
-
-.accordion a:hover, .navbar a.active {
-    color: #f7547a;
-    text-decoration: underline;
-}
 /*====================================DASHBOARD PAGE===============*/
 .small-card{
     height: 150px;
@@ -328,4 +322,9 @@ label{
 }
 .large-card {
     width: 100%;
+}
+/*====================================PROFILE PAGE===============*/
+.profile-img{
+    top: 200px;
+    left: 0;
 }

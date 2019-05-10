@@ -19,11 +19,15 @@ namespace Classifieds.Web.Controllers
     public class AdminController : Controller
     {
         private IMenuService menuService;
+        IUserService userService;
+
         private IMapper mapper;
 
-        public AdminController(IMenuService menuService, IMapper mapper)
+        public AdminController(IMenuService menuService, IUserService userService,
+            IMapper mapper)
         {
             this.menuService = menuService;
+            this.userService = userService;
             this.mapper = mapper;
         }
         /// <summary>
@@ -49,6 +53,22 @@ namespace Classifieds.Web.Controllers
 
             return View();
         }
+        public IActionResult Profile()
+        {
+            var userId = HttpContext.User.Claims.FirstOrDefault(u => u.Type == "UserId").Value;
+            UserViewModel model = null;
+            Expression<Func<User, object>>[] include =
+            {
+                u => u.UserDetail
+            };
 
+            if (userId != null)
+            {
+                model = mapper.Map<UserViewModel>(userService.Find(long.Parse(userId), include));
+            }
+            
+            return View(model);
+
+        }
     }
 }
