@@ -34,6 +34,6 @@ namespace Classifieds.Web.Models
         public int? ParentID { set; get; }
         public virtual MenuViewModel Parent { set; get; }
 
-        public IEnumerable<MenuViewModel> SubMenus { set; get; }
+        public virtual IEnumerable<MenuViewModel> SubMenus { set; get; }
     }
 }

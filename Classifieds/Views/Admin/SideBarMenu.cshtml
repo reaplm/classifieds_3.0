@@ -1,0 +1,75 @@
+﻿@using System.Security.Claims
+@using Microsoft.AspNetCore.Http
+@using Classifieds.Web.Models
+@using Newtonsoft.Json;
+
+@{ 
+    String ImageCdn = User.Claims.FirstOrDefault(u => u.Type == "ImageCdn").Value;
+}
+<div class="sidebar shadow pl-2 position-sticky">
+    <div class="m-auto user-img text-center">
+        <img src="@ImageCdn" class="img-round mt-4"/>
+    </div>
+    <div class="user-info mb-4 text-center">
+        <p>@User.Identity.Name </p>
+        <button class="btn"><img src="~/images/icons/multimedia.png" class="p-0" /></button>
+        <button class="btn"><img src="~/images/icons/settings1.png" class="p-0" /></button>
+</div>
+    @if (ViewContext.HttpContext.Session.GetString("SideMenus") != null)
+    {
+        IEnumerable<MenuViewModel> menus = JsonConvert.DeserializeObject<List<MenuViewModel>>
+            (ViewContext.HttpContext.Session.GetString("SideMenus"));
+
+        int i = 1;
+        int j = 0;
+
+
+
+        <div class="accordion text-capitalize" id="adm-sb-accordion">
+            @foreach (var menu in menus)
+            {
+                string heading = "heading" + i.ToString();
+                string target = "collapse" + i.ToString();
+                <div class="">
+
+                    <div class="p-3 acc-heading" id="@heading">
+                        <img src="~/images/icons/@menu.Icon" />
+                        <h6 class="mb-0 d-inline-block">
+                            <a class="card-link align-bottom"  data-toggle="collapse"
+                                    data-target="#@target"
+                                    @if (j == 0) { @Html.Raw("aria-expanded='true'")  } else { @Html.Raw("aria-expanded='false'") }
+                                    aria-controls="@target">
+                                @menu.Name
+                            </a>
+                        </h6>
+                    </div>
+                    @if (menu.SubMenus.Count() > 0)
+                    {
+
+                        <div id="@target" aria-labelledby="@heading"
+                             @if (j == 0) { @Html.Raw("class='collapse show pt-0 pb-0'")  } else { @Html.Raw("class='collapse'") }
+                             data-parent="#adm-sb-accordion">
+                            <div class="">
+                                <ul class="list-unstyled">
+                                    @foreach (var submenu in menu.SubMenus)
+                                    {
+                                        <li>
+                                            <a href="/adpostm/admin/@submenu.Label"
+                                               class="acc-nav-link pl-4">
+                                                @submenu.Name
+                                            </a>
+                                        </li>
+                                        <hr />
+                                    }
+                                </ul>
+                            </div>
+                        </div>
+                    }
+                </div>
+                i++;
+                j++;
+            }
+        </div>
+
+    }
+</div>

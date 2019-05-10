@@ -1,9 +1,7 @@
 ﻿using AutoMapper;
 using Classifieds.Domain.Enumerated;
 using Classifieds.Domain.Model;
-using Classifieds.Repository.Impl;
 using Classifieds.Service;
-using Classifieds.Service.Impl;
 using Classifieds.Web.Controllers;
 using Classifieds.Web.Models;
 using Microsoft.AspNetCore.Authentication;
@@ -204,10 +202,10 @@ namespace Classifieds.XUnitTest.Controller
 
 
         }
-        private IEnumerable<Category> GetResults()
+       /* private IEnumerable<Category> GetResults()
         {
 
-        }
+        }*/
         /// <summary>
         /// Initialize AutoMapper
         /// </summary>

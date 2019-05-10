@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -55,9 +56,11 @@ namespace Classifieds.Web.Controllers
                 var claims = new List<Claim>
                 {
                     new Claim("UserId", authenticatedUser.ID.ToString()),
-                    new Claim(ClaimTypes.Name, authenticatedUser.Email),
+                    new Claim(ClaimTypes.Name, authenticatedUser.UserDetail.FirstName),
                     new Claim(ClaimTypes.Email, authenticatedUser.Email),
-                    new Claim(ClaimTypes.Role, "Administrator")
+                    new Claim(ClaimTypes.Role, "Administrator"),
+                    new Claim("LastLoginDate", authenticatedUser.LastLogin.ToString()),
+                    new Claim("ImageCdn", authenticatedUser.UserDetail.ImageCdn)
                 };
                 var claimsIdentity = new ClaimsIdentity(claims, 
                     CookieAuthenticationDefaults.AuthenticationScheme);

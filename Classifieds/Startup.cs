@@ -59,7 +59,16 @@ namespace Classifieds
                     options.LogoutPath = "/Login/Signout";
                 }
                 );
-            services.AddMvc();
+
+            //session
+            services.AddSession(options =>
+            {
+                options.IdleTimeout = TimeSpan.FromMinutes(60);
+                options.Cookie.HttpOnly = true;
+            });
+
+            services.AddMvc()
+                .AddJsonOptions(opts => opts.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
 
             //Dependency Injection
             var connectionString = "server=localhost;port=3306;database=ad_post;uid=developer;password=Sweet05p06=";
@@ -72,6 +81,8 @@ namespace Classifieds
             services.AddScoped<IUserRepo, UserRepo>();
             services.AddScoped<ICategoryService, CategoryService>();
             services.AddScoped<ICategoryRepo, CategoryRepo>();
+
+            
 
         }
 
@@ -92,7 +103,9 @@ namespace Classifieds
 
             //Authentication
             app.UseAuthentication();
-           
+
+            //session
+            app.UseSession();
 
             app.UseMvc(routes =>
             {

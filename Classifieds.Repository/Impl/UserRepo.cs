@@ -27,6 +27,7 @@ namespace Classifieds.Repository.Impl
             {
                User user = context.Users
                 .Where(x => x.Email == email && x.Password == password)
+                .Include(x => x.UserDetail)
                 .SingleOrDefault();
 
                 return user;
