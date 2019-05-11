@@ -1,7 +1,7 @@
 ﻿body {
     padding-bottom: 20px;
     font-family: Montserrat,Helvetica,Arial,sans-serif;
-    color: #666;
+    color: #333;
 }
 
 /* Wrapping element */
@@ -312,7 +312,20 @@ label{
     color: #666;
     font-size: small;
 }
-
+.accordion li{
+    height: 50px;
+    width: 100%;
+}
+    .accordion li a{
+        padding-top: 5px;
+    }
+.accordion li.active {
+    background-color: #e9eef2;
+    border-left: solid 5px #f8d650;
+}
+    .accordion .acc-heading.active {
+        background-color: #ccc;
+    }
 /*====================================DASHBOARD PAGE===============*/
 .small-card{
     height: 150px;

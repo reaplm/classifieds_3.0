@@ -103,5 +103,17 @@ $(document).ready(function () {
 
             }
         });
+
     }
+    //=======================================ACCORDION ACTIVE============================
+    $(".acc-nav-link").each(function () {
+        
+        var url = window.location.href;
+
+        if (url == this.href) {
+            $(this).addClass("active");
+            $(this).closest("li").addClass("active");
+            $(this).closest(".acc-heading").addClass("active");
+        }
+    });
 });

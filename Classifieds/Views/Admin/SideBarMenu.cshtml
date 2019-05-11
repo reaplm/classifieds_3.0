@@ -6,15 +6,17 @@
 @{ 
     String ImageCdn = User.Claims.FirstOrDefault(u => u.Type == "ImageCdn").Value;
 }
-<div class="sidebar shadow pl-2 position-fixed container-fluid">
+<div class="sidebar shadow pl-2 position-fixed container-fluid pr-0">
     <div class="m-auto user-img text-center">
-        <img src="@ImageCdn" class="img-round mt-4"/>
+        <!--
+        <img src="@ImageCdn" class="img-round mt-4
+            -->
     </div>
     <div class="user-info mb-4 text-center">
         <p>@User.Identity.Name </p>
-        <button class="btn"><img src="~/images/icons/multimedia.png" class="p-0" /></button>
-        <button class="btn"><img src="~/images/icons/settings1.png" class="p-0" /></button>
-        <button class="btn"><img src="~/images/icons/edit.png" class="p-0" /></button>
+        <button class="btn p-1"><img src="~/images/icons/multimedia.png" class="" /></button>
+        <button class="btn p-1"><img src="~/images/icons/settings1.png" class="" /></button>
+        <button class="btn p-1"><img src="~/images/icons/edit.png" class="" /></button>
 
     </div>
     @if (ViewContext.HttpContext.Session.GetString("SideMenus") != null)
@@ -57,11 +59,11 @@
                                     {
                                         <li>
                                             <a href="@submenu.Url"
-                                               class="acc-nav-link pl-4">
+                                                class="acc-nav-link pl-4">
                                                 @submenu.Name
                                             </a>
                                         </li>
-                                        <hr />
+                                        
                                     }
                                 </ul>
                             </div>
