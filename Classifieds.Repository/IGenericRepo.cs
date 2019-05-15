@@ -30,6 +30,8 @@ namespace Classifieds.Repository
          * @param transientObject
          * @return
          */
+        T Find(Expression<Func<T, bool>> where,
+           Expression<Func<T, Object>>[] includes);
         void Update(T entity);
         /**
          * Remove an object from the database
@@ -38,7 +40,7 @@ namespace Classifieds.Repository
          * @throws Exception 
          */
         void Delete(long id);
-
+        void DeleteRange(List<T> entities);
         /**
          * Retrieve a list of all objects of class T
          * @param clazz

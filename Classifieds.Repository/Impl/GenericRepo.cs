@@ -39,7 +39,7 @@ namespace Classifieds.Repository.Impl
             context.Entry(entity).State = EntityState.Modified;
         }
         /// <summary>
-        /// Delete an objec from the database
+        /// Delete an object from the database
         /// </summary>
         /// <param name="id"></param>
         public void Delete(long id)
@@ -49,6 +49,19 @@ namespace Classifieds.Repository.Impl
             if (entity != null)
             {
                 context.Set<T>().Remove(entity);
+            }
+
+        }
+        /// <summary>
+        /// Delete multiple objects
+        /// </summary>
+        /// <param name="entities"></param>
+        public void DeleteRange(List<T> entities)
+        {
+
+            if (entities != null)
+            {
+                context.Set<T>().RemoveRange(entities);
             }
 
         }
@@ -101,6 +114,32 @@ namespace Classifieds.Repository.Impl
         public IEnumerable<T> FindAll()
         {
             return context.Set<T>().ToList();
+        }
+        /// <summary>
+        /// Find using where expression
+        /// </summary>
+        /// <param name="where"></param>
+        /// <param name="includes"></param>
+        /// <returns></returns>
+        public T Find(Expression<Func<T, bool>> where, 
+            Expression<Func<T, Object>>[] includes)
+        {
+            IQueryable<T> query = context.Set<T>();
+            T entity = null;
+
+            if (includes != null)
+            {
+                foreach (var property in includes)
+                {
+                    query = query.Include(property);
+                }
+            }
+
+            if (where != null)
+                entity = query.FirstOrDefault(where);
+
+            return entity;
+            
         }
         /// <summary>
         /// Fetch all objects, include children and Where stement

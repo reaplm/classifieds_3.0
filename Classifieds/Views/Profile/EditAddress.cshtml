@@ -1,0 +1,83 @@
+﻿@model Classifieds.Web.Models.UserDetailViewModel
+
+<div class="modal fade" id="addressModal" tabindex="-1" role="dialog"
+     aria-labelledby="addressModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addressModalLabel">Address</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                @using (Html.BeginForm("EditAddress", "Profile", new { }, FormMethod.Post, true,
+htmlAttributes: new { @id = "address-form", @class = "modal-form form-horizontal" }))
+    {
+            @Html.AntiForgeryToken()
+
+
+            <div class="form-group row has-danger">
+                <div class="col-sm-6">
+                    @Html.LabelFor(model => model.Address.PostAddress1)
+                    @Html.TextBoxFor(model => model.Address.PostAddress1)
+                    @Html.ValidationMessageFor(model => model.Address.PostAddress1)
+                </div>
+                <div class="col-sm-6">
+                    @Html.LabelFor(model => model.Address.PostAddress2)
+                    @Html.TextBoxFor(model => model.Address.PostAddress2)
+                    @Html.ValidationMessageFor(model => model.Address.PostAddress2)
+                </div>
+
+            </div>
+            <div class="form-group row has-danger">
+                <div class="col-sm-12">
+                    @Html.LabelFor(model => model.Address.Street,new { @class = "d-block" })
+                    @Html.TextBoxFor(model => model.Address.Street)
+                    @Html.ValidationMessageFor(model => model.Address.Street)
+                </div>
+
+            </div>
+            <div class="form-group row has-danger">
+                <div class="col-sm-4">
+                    @Html.LabelFor(model => model.Address.Surbub)
+                    @Html.TextBoxFor(model => model.Address.Surbub)
+                    @Html.ValidationMessageFor(model => model.Address.Surbub)
+                </div>
+                <div class="col-sm-4">
+                    @Html.LabelFor(model => model.Address.State)
+                    @Html.TextBoxFor(model => model.Address.State)
+                    @Html.ValidationMessageFor(model => model.Address.State)
+                </div>
+                <div class="col-sm-4">
+                    @Html.LabelFor(model => model.Address.PostCode)
+                    @Html.TextBoxFor(model => model.Address.PostCode)
+                    @Html.ValidationMessageFor(model => model.Address.PostCode)
+                </div>
+
+            </div>
+
+
+
+            @Html.HiddenFor(model => model.ID)
+            @Html.HiddenFor(model => model.FirstName)
+            @Html.HiddenFor(model => model.LastName)
+            @Html.HiddenFor(model => model.UserID)
+            @Html.HiddenFor(model => model.ImageCdn)
+            @Html.HiddenFor(model => model.ImageName)
+            @Html.HiddenFor(model => model.ImageUuid)
+            @Html.HiddenFor(model => model.MobileNo)
+
+}
+
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-primary" onclick="SubmitForm('address-form')" 
+                        data-dismiss="modal">Save</button>
+            </div>
+        </div>
+    </div>
+</div>
+

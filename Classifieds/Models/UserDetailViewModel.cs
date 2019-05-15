@@ -24,5 +24,7 @@ namespace Classifieds.Web.Models
 
         public long UserID { set; get; }
         public UserViewModel User { set; get; }
+
+        public virtual AddressViewModel Address { set; get; }
     }
 }

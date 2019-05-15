@@ -1,0 +1,106 @@
+﻿@model Classifieds.Web.Models.UserViewModel;
+
+@using System.Security.Claims
+
+@{
+    var claimsIdentity = User.Identity as System.Security.Claims.ClaimsIdentity;
+
+    string ImageCdn = User.Claims.FirstOrDefault(u => u.Type == "ImageCdn").Value;
+    string LastLogin = User.Claims.FirstOrDefault(u => u.Type == "LastLoginDate").Value;
+
+    string Email = claimsIdentity.FindFirst(ClaimTypes.Email).Value;
+    string Role = claimsIdentity.FindFirst(ClaimTypes.Role).Value;
+
+
+}
+
+<div class="card mt-2">
+        <img class="card-img-top" src="~/images/chris-barbalis-255972-unsplash.png" alt="Card image cap">
+        <div class="m-auto user-img profile-img text-center position-absolute">
+            <!--
+            <img src="@ImageCdn" class="img-round mt-4 " />
+                -->
+        </div>
+    <div class="card-body">
+        <h5 class="card-title mt-5">@User.Identity.Name</h5>
+        <p></p>
+    </div>
+    <ul class="list-group list-group-flush">
+        <li class="list-group-item">
+            <div class="d-flex  justify-content-between">
+                <p class="d-inline-block">Email</p>
+                <p class="d-inline-block">@Email</p>
+            </div>
+            <div class="d-flex  justify-content-between">
+                <p class="d-inline-block">Password</p>
+                <p class="d-inline-block">*********</p>
+            </div>
+            <div class="d-flex  justify-content-between">
+                <p class="d-inline-block"></p>
+                <a href="#" class="d-inline-block">Change Password</a>
+            </div>
+        </li>
+        <li class="list-group-item">
+            <div class="d-flex  justify-content-between">
+                <p class="d-inline-block">Account Type</p>
+                <p class="d-inline-block">Free</p>
+            </div>
+        </li>
+        <li class="list-group-item">
+            <div class="d-flex  justify-content-between">
+                <p class="d-inline-block">Primary Email</p>
+                <p class="d-inline-block">@Model.Email</p>
+            </div>
+            <div class="d-flex  justify-content-between">
+                <p class="d-inline-block">Secondary Email</p>
+                <p class="d-inline-block"></p>
+            </div>
+            <p></p>
+            <div class="d-flex  justify-content-between">
+                <p class="d-inline-block">Address</p>
+                <div class="text-right">
+                    <p class="">@Model.UserDetail.Address.PostAddress1</p>
+                    <p class="">@Model.UserDetail.Address.PostAddress2</p>
+                    <p class="">@Model.UserDetail.Address.Street</p>
+                    <p class="">@Model.UserDetail.Address.Surbub</p>
+                    <p class="">@Model.UserDetail.Address.State</p>
+                    <p class="">@Model.UserDetail.Address.PostCode</p>
+                </div>
+                
+            </div>
+            <div class="d-flex  justify-content-between">
+                <p class="d-inline-block">Location</p>
+                <p class="d-inline-block">Location</p>
+            </div>
+            <div class="d-flex  justify-content-between">
+                <p class="d-inline-block"></p>
+                <a id="edit-address" href="/Profile/EditAddress" 
+                   class="d-inline-block">Edit</a>
+            </div>
+        </li>
+        <li class="list-group-item">
+            <div class="d-flex  justify-content-between">
+                <p class="d-inline-block">Phone</p>
+                <p class="d-inline-block">@Model.UserDetail.MobileNo</p>
+            </div>
+            <div class="d-flex  justify-content-between">
+                <p class="d-inline-block"></p>
+                <a href="#" class="d-inline-block">Edit</a>
+            </div>
+        </li>
+        <li class="list-group-item">
+            <div class="d-flex  justify-content-between">
+                <p class="d-inline-block">Registration Date</p>
+                <p class="d-inline-block">@Model.RegDate</p>
+            </div>
+            <div class="d-flex  justify-content-between">
+                <p class="d-inline-block">Last Logged In</p>
+                <p class="d-inline-block">@Model.LastLogin</p>
+            </div>
+        </li>
+
+    </ul>
+    <div class="card-body">
+        <a href="#" class="card-link float-right">Delete Account</a>
+    </div>
+</div>

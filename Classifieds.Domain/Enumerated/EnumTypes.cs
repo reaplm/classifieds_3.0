@@ -25,5 +25,11 @@ namespace Classifieds.Domain.Enumerated
             REJECTED,
             APPROVED
         }
+
+        public enum AddressType
+        {
+            MAILING,
+            PHYSICAL
+        }
     }
 }

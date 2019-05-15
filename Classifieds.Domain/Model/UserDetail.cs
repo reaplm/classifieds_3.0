@@ -35,5 +35,7 @@ namespace Classifieds.Domain.Model
         public long UserID { set; get; }
         [ForeignKey("UserID")]
         public User User { set; get; }
+
+        public virtual Address Address { set; get; }
     }
 }

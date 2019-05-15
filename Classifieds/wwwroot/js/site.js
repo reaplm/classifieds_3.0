@@ -1,4 +1,44 @@
-﻿
+﻿/**
+ * Submit edit address
+ * @param {any} formId
+ */
+function SubmitForm(formId) {
+    var formToSubmit = document.getElementById(formId);
+    var url = $(formToSubmit).attr('action');
+    var formData = $(formToSubmit).serializeArray();
+
+    $.ajax({
+        url: url,
+        data: formData,
+        type:"post"
+    })
+    .done(function (data, textStatus, jqXHR) {
+    //If ModelState.IsValid == false
+    if (jqXHR.status === 200) {
+        $(formToSubmit).remove();
+        $(data).modal();
+    }
+    if (jqXHR.status === 201) {
+        alert(data);
+        window.location.reload();
+    }
+    })
+    .fail(function (jqXHR, errorText, errorThrown) {
+        alert("Failed to submit. Internal error.");
+    });
+}
+function GetAddress(url, callback) {
+    $.ajax({
+        url: url,
+        type: "get",
+    })
+        .done(function (data, textStatus, jqXHR) {
+            callback(data);
+        })
+        .fail(function (jqXHR, errorText, errorThrown) {
+            alert("Failed to fetch address");
+        });
+}
 function GetAdvertDetail(url, callback) {
     $.ajax({
         url: url,
@@ -8,7 +48,8 @@ function GetAdvertDetail(url, callback) {
         callback(data);
      })
      .fail(function(jqXHR, errorText, errorThrown){
-        alert("Failed to fetch advert details"); });
+            alert("Failed to fetch advert details");
+});
 }function GetSubCategories(categoryId,url, callback) {
     $.ajax({
         url: url,
@@ -49,7 +90,10 @@ $(document).ready(function () {
         document.getElementById("CategoryID").value = 0;
         console.log($(this).val());
     });
-
+    /**
+     * Advert details modal
+     * 
+     * */
     $(".modal-link").on("click", function (e) {
         e.preventDefault();
 
@@ -61,6 +105,17 @@ $(document).ready(function () {
             $(data).modal();
         });
         
+    });
+    $("#edit-address").on("click", function (e) {
+        e.preventDefault();
+
+        $("#address-form").remove();
+
+        var url = $(this).attr("href");
+
+        GetAddress(url, function (data) {
+            $(data).modal();
+        });
     });
     //===================================UPLOADCARE WIDGET=================================
     if ($("#create-ad").is(":visible")) {
@@ -110,7 +165,7 @@ $(document).ready(function () {
         
         var url = window.location.href;
 
-        if (url == this.href) {
+        if (url === this.href) {
             $(this).addClass("active");
             $(this).closest("li").addClass("active");
             $(this).closest(".acc-heading").addClass("active");

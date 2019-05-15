@@ -59,7 +59,8 @@ namespace Classifieds.Web.Controllers
             UserViewModel model = null;
             Expression<Func<User, object>>[] include =
             {
-                u => u.UserDetail
+                u => u.UserDetail,
+                u => u.UserDetail.Address
             };
 
             if (userId != null)

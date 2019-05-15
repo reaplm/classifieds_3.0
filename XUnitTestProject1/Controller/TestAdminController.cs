@@ -17,11 +17,13 @@ namespace Classifieds.XUnitTest.Controller
     public class TestAdminController
     {
         private Mock<IMenuService> mockMenuService;
+        private Mock<IUserService> mockUserService;
         private IMapper mapper;
 
         public TestAdminController()
         {
             mockMenuService = new Mock<IMenuService>();
+            mockUserService = new Mock<IUserService>();
             Initialize();
         }
         [Fact]
@@ -35,7 +37,8 @@ namespace Classifieds.XUnitTest.Controller
                 It.IsAny<Expression<Func<Menu, object>>[]>()))
                 .Returns(menus);
 
-            var controller = new AdminController(mockMenuService.Object, mapper);
+            var controller = new AdminController(mockMenuService.Object, mockUserService.Object,
+                mapper);
 
             controller.ControllerContext = new ControllerContext();
             controller.ControllerContext.HttpContext = new DefaultHttpContext();

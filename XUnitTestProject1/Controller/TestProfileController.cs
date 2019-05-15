@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Mvc.Routing;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Moq;
 using System;
+using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Security.Claims;
 using System.Security.Principal;
@@ -21,6 +22,8 @@ namespace Classifieds.XUnitTest.Controller
     public class TestProfileController
     {
         private Mock<IUserService> mockUserService;
+        private Mock<IUserDetailService> mockUserDetailService;
+        private Mock<IAddressService> mockAddressService;
         private Mock<ClaimsPrincipal> mockClaimsPrincipal;
         private IMapper mapper;
 
@@ -28,21 +31,17 @@ namespace Classifieds.XUnitTest.Controller
         {
             ConfigMapper();
             mockUserService = new Mock<IUserService>();
+            mockUserDetailService = new Mock<IUserDetailService>();
+            mockAddressService = new Mock<IAddressService>();
             mockClaimsPrincipal = new Mock<ClaimsPrincipal>();
         }
         [Fact]
-        public void Index()
+        public void TestEditAddress_GET()
         {
-            User user = new User
-            {
-                ID = 1,
-                Email = "my@email",
-                Password = "Pass1"
-            };
 
-            mockUserService.Setup(m => m.Find(It.IsAny<long>(),
-                It.IsAny<Expression<Func<User, Object>>[]>()))
-                .Returns(user);
+            Address address = new Address { ID = 1, PostAddress1 = "P O Box2361", State = "gaborone" };
+            UserDetail userDetail = new UserDetail { ID = 1, FirstName = "Pearl", Address = address };
+
 
             var mockIdentity = new GenericIdentity("User");
             mockIdentity.AddClaim(new Claim("UserId", "1"));
@@ -52,19 +51,70 @@ namespace Classifieds.XUnitTest.Controller
             var mockHttpContext = new Mock<HttpContext>();
             mockHttpContext.Setup(m => m.User).Returns(principal);
 
-            var controller = new ProfileController(mockUserService.Object, mapper);
+            mockUserDetailService.Setup(m => m.Find(It.IsAny<Expression<Func<UserDetail, bool>>>(),
+                It.IsAny<Expression<Func<UserDetail, object>>[]>())).Returns(userDetail);
+
+            var controller = new ProfileController(mockUserService.Object,
+                mockAddressService.Object, mockUserDetailService.Object, mapper);
             controller.ControllerContext.HttpContext = mockHttpContext.Object;
 
-            var result = controller.Index() as ViewResult;
-            var model = result.Model as UserViewModel;
+            var result = controller.EditAddress() as PartialViewResult;
+            UserDetailViewModel model = result.Model as UserDetailViewModel;
 
-            Assert.Equal(1, model.ID);
+            Assert.Equal("Pearl",model.FirstName);
+        }
+        [Fact]
+        public void EditAddressModelStateIsValid_POST()
+        {
+            AddressViewModel address = new AddressViewModel { ID = 1, PostAddress1 = "P O Box2361", State = "gaborone" };
+            UserDetailViewModel userDetail = new UserDetailViewModel { ID = 1, FirstName = "Pearl", Address = address };
+
+            Address addresses1 =  new Address{ ID = 1, PostAddress1 = "P O Box23", State = "gabs"};
+            UserDetail userDetail1 = new UserDetail { ID = 1, FirstName = "Pearl", Address = addresses1 };
+
+
+            mockUserDetailService.Setup(m => m.Find(It.IsAny<long>(),
+               It.IsAny<Expression<Func<UserDetail, object>>[]>()))
+               .Returns(userDetail1);
+
+            var controller = new ProfileController(mockUserService.Object,
+               mockAddressService.Object, mockUserDetailService.Object, mapper);
+
+            var result = controller.EditAddress(userDetail) as RedirectToActionResult;
+
+          
+            Assert.Equal("Profile", result.ActionName);
+            Assert.Equal("Admin", result.ControllerName);
+        }
+        [Fact]
+        public void EditAddressModelStateIsInvalid_POST()
+        {
+            GenericIdentity mockIdentity = new GenericIdentity("User");
+            mockIdentity.AddClaim(new Claim("UserId", "1"));
+            var principal = new GenericPrincipal(mockIdentity, null);
+
+            AddressViewModel address = new AddressViewModel { ID = 1, PostAddress1 = "P O Box2361", State = "gaborone" };
+            UserDetailViewModel userDetail = new UserDetailViewModel { ID = 1, FirstName = "Pearl", Address = address };
+
+            var controller = new ProfileController(mockUserService.Object,
+               mockAddressService.Object, mockUserDetailService.Object, mapper);
+
+            var mockHttpContext = new Mock<HttpContext>();
+            mockHttpContext.Setup(m => m.User).Returns(principal);
+
+            controller.ControllerContext.HttpContext = mockHttpContext.Object;
+            controller.ModelState.AddModelError("State", "State is required");
+            
+
+            var result = controller.EditAddress(userDetail) as ViewResult;
+
+            Assert.Equal("EditAddress", result.ViewName);
         }
         private void ConfigMapper()
         {
             var config = new MapperConfiguration(cfg =>
             {
-                cfg.CreateMap<User, UserViewModel>();
+                cfg.CreateMap<Address,AddressViewModel>();
             });
             mapper = config.CreateMapper();
         }

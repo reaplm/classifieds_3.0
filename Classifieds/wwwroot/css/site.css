@@ -255,6 +255,22 @@ p{
 .modal-body label {
     color: #999;
 }
+/*--------------------------------Modal Forms---------------------------*/
+.modal-form input[type="text"] {
+    border: none;
+    border-bottom: solid 1px #e9eef2;
+}
+.modal-form label {
+    font-size: 9pt;
+}
+.modal-form .form-group {
+    margin-bottom: 10px;
+}
+.modal-form .field-validation-error{
+    color: #f7547a;
+    font-size: 8.5pt;
+    display: block;
+}
 label{
     margin: 0;
 }

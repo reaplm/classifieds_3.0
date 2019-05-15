@@ -28,6 +28,10 @@ namespace Classifieds.Service.Impl
             genericRepo.Delete(id);
 
         }
+        public void DeleteRange(List<T> entities)
+        {
+            genericRepo.DeleteRange(entities);
+        }
         public void Save()
         {
             genericRepo.Save();
@@ -35,6 +39,11 @@ namespace Classifieds.Service.Impl
         public T Find(long id)
         {
             return genericRepo.Find(id);
+        }
+        public T Find(Expression<Func<T, bool>> where,
+            Expression<Func<T, Object>>[] includes)
+        {
+            return genericRepo.Find(where, includes);
         }
         public IEnumerable<T> FindAll(Expression<Func<T, bool>> wherePredicate,
             Expression<Func<T, Object>>[] includes)
