@@ -75,6 +75,7 @@ namespace Classifieds.Web.Controllers
                 addressService.Save();
 
                 userDetail.Address = mapper.Map<Address>(model.Address);
+                userDetail.MobileNo = model.MobileNo;
                 userDetailService.Update(userDetail);
                 userDetailService.Save();
 
@@ -85,5 +86,6 @@ namespace Classifieds.Web.Controllers
             HttpContext.Response.StatusCode = (int)HttpStatusCode.OK;
             return PartialView(model);
         }
+        
     }
 }

@@ -9,9 +9,11 @@ namespace Classifieds.Web.Models
     {
         public long ID { set; get; }
 
+        [Display(Name = "First Name")]
         [Required(ErrorMessage = "Please enter first name")]
         public String FirstName { set; get; }
 
+        [Display(Name ="Last Name")]
         [Required(ErrorMessage = "Please enter last name")]
         public String LastName { set; get; }
 
@@ -19,6 +21,7 @@ namespace Classifieds.Web.Models
         public String ImageName { set; get; }
         public String ImageUuid { set; get; }
 
+        [Display(Name = "Mobile No")]
         [Required(ErrorMessage = "Mobile Number is required")]
         public String MobileNo { set; get; }
 
