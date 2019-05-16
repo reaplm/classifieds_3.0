@@ -105,5 +105,26 @@ namespace Classifieds.Web.Controllers
 
             return View(adverts);
         }
+        /// <summary>
+        /// /Admin/Users
+        /// </summary>
+        /// <returns></returns>
+        public IActionResult Users()
+        {
+            Expression<Func<User, object>>[] include =
+            {
+                m => m.UserDetail
+            };
+
+            var users= mapper.Map<IEnumerable<UserViewModel>>
+                (userService.FindAll(null, include));
+
+            foreach(var user in users)
+            {
+                user.Password = "";
+            }
+
+            return View(users);
+        }
     }
 }

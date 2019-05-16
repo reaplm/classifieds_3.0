@@ -22,7 +22,9 @@ namespace Classifieds.Web.Models
         public String Password { set; get; }
 
         public DateTime? LastLogin { set; get; }
-        [DisplayFormat(DataFormatString ="{0:n}")]
+
+        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}",
+               ApplyFormatInEditMode = true)]
         public DateTime RegDate { set; get; }
         public DateTime? PasswordExpiry { set; get; }
 
