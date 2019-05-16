@@ -1,7 +1,4 @@
-﻿/**
- * Submit edit address
- * @param {any} formId
- */
+﻿
 function SubmitForm(formId) {
     var formToSubmit = document.getElementById(formId);
     var url = $(formToSubmit).attr('action');

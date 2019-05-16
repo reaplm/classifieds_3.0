@@ -13,9 +13,16 @@ namespace Classifieds.Web.Models
         public long ID { set; get; }
         public String Status { set; get; }
 
+        [Display(Name = "Approved")]
         public DateTime? ApprovedDate { set; get; }
+
+        [Display(Name = "Published")]
         public DateTime? PublishedDate { set; get; }
+
+        [Display(Name = "Rejected")]
         public DateTime? RejectedDate { set; get; }
+
+        [Display(Name = "Submitted")]
         public DateTime SubmittedDate { set; get; }
 
         [Required(ErrorMessage = "Please select sub-category")]

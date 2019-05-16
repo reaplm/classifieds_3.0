@@ -19,15 +19,16 @@ namespace Classifieds.Web.Controllers
     public class AdminController : Controller
     {
         private IMenuService menuService;
-        IUserService userService;
-
+        private IUserService userService;
+        private IAdvertService advertService;
         private IMapper mapper;
 
         public AdminController(IMenuService menuService, IUserService userService,
-            IMapper mapper)
+            IAdvertService advertService, IMapper mapper)
         {
             this.menuService = menuService;
             this.userService = userService;
+            this.advertService = advertService;
             this.mapper = mapper;
         }
         /// <summary>
@@ -71,6 +72,10 @@ namespace Classifieds.Web.Controllers
             return View(model);
 
         }
+        /// <summary>
+        /// /Admin/Menus
+        /// </summary>
+        /// <returns></returns>
         public IActionResult Menus()
         {
             Expression<Func<Menu, bool>> where = m => m.ParentID == null;
@@ -84,6 +89,21 @@ namespace Classifieds.Web.Controllers
 
             return View(menus);
         }
+        /// <summary>
+        /// /Admin/Adverts
+        /// </summary>
+        /// <returns></returns>
+        public IActionResult Adverts()
+        {
+            Expression<Func<Advert, object>>[] include =
+            {
+                m => m.Detail
+            };
 
+            var adverts = mapper.Map<IEnumerable<AdvertViewModel>>
+                (advertService.FindAll(null, include));
+
+            return View(adverts);
+        }
     }
 }

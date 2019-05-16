@@ -1,0 +1,62 @@
+﻿@model IEnumerable<Classifieds.Web.Models.MenuViewModel>
+
+<div id="menus">
+
+@foreach (var menu in Model)
+{
+    <div class="clearfix mt-2">
+        <img src="~/images/icons/@menu.Icon" class="mr-3 float-left" />
+        <h5 class="pt-2">
+            <a href="/adpostm/menus/detail?id=@menu.ID"
+               class="dtl-link text-capitalize">@menu.Name</a>
+        </h5>
+        @Html.CheckBoxFor(model => menu.Admin,new { @class="float-right"})
+    </div>
+    @if(menu.SubMenus.Count() > 0)
+    {
+    <table class="w-100">
+        <thead>
+            <tr>
+                <th>@Html.DisplayNameFor(model => menu.Name)</th>
+                <th>@Html.DisplayNameFor(model => menu.Desc)</th>
+                <th>@Html.DisplayNameFor(model => menu.Url)</th>
+                <th>@Html.DisplayNameFor(model => menu.Label)</th>
+                <th>@Html.DisplayNameFor(model => menu.Admin)</th>
+                <th>@Html.DisplayNameFor(model => menu.Active)</th>
+            </tr>
+        </thead>
+        <tbody>
+            @{ bool odd = true; }
+            @foreach (var submenu in menu.SubMenus)
+            {
+                if (odd)
+                {@Html.Raw("<tr class='odd-row'>")
+                }
+                else
+                { @Html.Raw("<tr class='even-row'>")
+                }
+                @Html.Raw("<td class='text-capitalize  w-25'>")
+                @Html.ActionLink(submenu.Name, "action", "controller")
+                @Html.Raw("</td><td class='w-25'>")
+                @Html.DisplayFor(model => submenu.Desc)
+                @Html.Raw("</td><td class='w-25'>")
+                @Html.DisplayFor(model => submenu.Url)
+                @Html.Raw("</td><td class='w-25'>")
+                @Html.DisplayFor(model => submenu.Label)
+                @Html.Raw("</td><td class=''>")
+                @Html.CheckBoxFor(model => submenu.Admin)
+                @Html.Raw("</td><td class=''>")
+                @Html.CheckBoxFor(model => submenu.Active)
+                @Html.Raw("</td><td>");
+                @Html.Raw("<button type='button' class='close' " +
+                    "onclick='DeleteMenu()'><span></span></button></td>")
+                @Html.Raw("</tr>")
+
+                odd = !odd;
+            }
+        </tbody>
+    </table>
+    }
+              
+}
+</div>
