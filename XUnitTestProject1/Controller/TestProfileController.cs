@@ -72,6 +72,7 @@ namespace Classifieds.XUnitTest.Controller
             Address addresses1 =  new Address{ ID = 1, PostAddress1 = "P O Box23", State = "gabs"};
             UserDetail userDetail1 = new UserDetail { ID = 1, FirstName = "Pearl", Address = addresses1 };
 
+            // Microsoft.AspNetCore.Mvc.ControllerBase.HttpContext.get returned
 
             mockUserDetailService.Setup(m => m.Find(It.IsAny<long>(),
                It.IsAny<Expression<Func<UserDetail, object>>[]>()))
@@ -80,11 +81,12 @@ namespace Classifieds.XUnitTest.Controller
             var controller = new ProfileController(mockUserService.Object,
                mockAddressService.Object, mockUserDetailService.Object, mapper);
 
-            var result = controller.EditAddress(userDetail) as RedirectToActionResult;
+            controller.ControllerContext.HttpContext = new DefaultHttpContext();
 
-          
-            Assert.Equal("Profile", result.ActionName);
-            Assert.Equal("Admin", result.ControllerName);
+            var result = controller.EditAddress(userDetail) as JsonResult;
+
+            Assert.Equal(201, controller.HttpContext.Response.StatusCode);
+            Assert.Equal("Address Saved!", result.Value);
         }
         [Fact]
         public void EditAddressModelStateIsInvalid_POST()
@@ -102,13 +104,20 @@ namespace Classifieds.XUnitTest.Controller
             var mockHttpContext = new Mock<HttpContext>();
             mockHttpContext.Setup(m => m.User).Returns(principal);
 
-            controller.ControllerContext.HttpContext = mockHttpContext.Object;
+
+
+            controller.ControllerContext.HttpContext = new DefaultHttpContext();
+            controller.ControllerContext.HttpContext.User = principal;
+
             controller.ModelState.AddModelError("State", "State is required");
-            
 
-            var result = controller.EditAddress(userDetail) as ViewResult;
+            var result = controller.EditAddress(userDetail) as PartialViewResult;
+            var model = result.Model as UserDetailViewModel;
 
-            Assert.Equal("EditAddress", result.ViewName);
+            Assert.Equal("Pearl", model.FirstName);
+            Assert.Equal("P O Box2361", model.Address.PostAddress1);
+            Assert.Equal("gaborone", model.Address.State);
+            Assert.Equal(200, controller.HttpContext.Response.StatusCode);
         }
         private void ConfigMapper()
         {

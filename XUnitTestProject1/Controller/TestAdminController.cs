@@ -47,7 +47,20 @@ namespace Classifieds.XUnitTest.Controller
             var result = controller.Index() as ViewResult;
     
         }
-       
+       [Fact]
+       public void Menus()
+        {
+            var menus = FindAll();
+
+            mockMenuService.Setup(m => m.FindAll(It.IsAny<Expression<Func<Menu, bool>>>(),
+                It.IsAny<Expression<Func<Menu, object>>[]>())).Returns(menus);
+            var controller = new AdminController(mockMenuService.Object, mockUserService.Object,
+                mapper);
+            var result = controller.Menus() as ViewResult;
+            List<MenuViewModel> model = result.Model as List<MenuViewModel>;
+
+            Assert.Equal(6, model.Count);
+        }
         private IEnumerable<Menu> FindAll()
         {
             var menus = new List<Menu>

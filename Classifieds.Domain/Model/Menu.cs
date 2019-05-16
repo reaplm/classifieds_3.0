@@ -28,7 +28,7 @@ namespace Classifieds.Domain.Model
         public String Desc { set; get; }
 
         [Column(name: "menu_status")]
-        public int Status { set; get; }
+        public int Active { set; get; }
 
         [Column(name: "menu_type")]
         public String Type { set; get; }

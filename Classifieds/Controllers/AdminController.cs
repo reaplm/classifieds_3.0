@@ -71,5 +71,19 @@ namespace Classifieds.Web.Controllers
             return View(model);
 
         }
+        public IActionResult Menus()
+        {
+            Expression<Func<Menu, bool>> where = m => m.ParentID == null;
+
+            Expression<Func<Menu, object>>[] include =
+            {
+                m => m.SubMenus
+            };
+
+            var menus = mapper.Map<IEnumerable<MenuViewModel>>(menuService.FindAll(where, include));
+
+            return View(menus);
+        }
+
     }
 }

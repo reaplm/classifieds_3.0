@@ -357,3 +357,13 @@ label{
     top: 200px;
     left: 0;
 }
+/*====================================MENUS PAGE===============*/
+#menus{
+    margin: 20px;
+}
+#menus img{
+    width: 45px;
+}
+.odd-row {
+    background-color: #f9f2a2;
+}

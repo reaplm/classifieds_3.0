@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace Classifieds.Web.Models
 {
@@ -12,23 +9,31 @@ namespace Classifieds.Web.Models
 
         public int ID { set; get; }
 
-        [Required(ErrorMessage = "Menu name is required")]
+        [Required(ErrorMessage = "Name is required")]
+        [Display(Name ="Name")]
         public String Name { set; get; }
 
         [Required(ErrorMessage = "Required")]
+        [Display(Name = "Admin")]
         public bool Admin { set; get; }
 
+        [Display(Name = "Icon")]
         public String Icon { set; get; }
 
-        [Required]
+        [Display(Name = "Label")]
         public String Label { set; get; }
 
+        [Display(Name = "Desc")]
         public String Desc { set; get; }
 
-        public int Status { set; get; }
+        [Display(Name = "Status")]
+        public bool Active { set; get; }
 
+        [Display(Name = "Menu Type")]
         public String Type { set; get; }
 
+        [Required(ErrorMessage = "Url is required")]
+        [Display(Name = "Url")]
         public String Url { set; get; }
 
         public int? ParentID { set; get; }
