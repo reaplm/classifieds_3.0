@@ -13,7 +13,6 @@ namespace Classifieds.Web.Models
         [Display(Name ="Name")]
         public String Name { set; get; }
 
-        [Required(ErrorMessage = "Required")]
         [Display(Name = "Admin")]
         public bool Admin { set; get; }
 
@@ -23,10 +22,10 @@ namespace Classifieds.Web.Models
         [Display(Name = "Label")]
         public String Label { set; get; }
 
-        [Display(Name = "Desc")]
+        [Display(Name = "Description")]
         public String Desc { set; get; }
 
-        [Display(Name = "Status")]
+        [Display(Name = "Active")]
         public bool Active { set; get; }
 
         [Display(Name = "Menu Type")]
@@ -36,7 +35,8 @@ namespace Classifieds.Web.Models
         [Display(Name = "Url")]
         public String Url { set; get; }
 
-        public int? ParentID { set; get; }
+        [Display(Name = "Parent Menu")]
+        public long? ParentID { set; get; }
         public virtual MenuViewModel Parent { set; get; }
 
         public virtual IEnumerable<MenuViewModel> SubMenus { set; get; }

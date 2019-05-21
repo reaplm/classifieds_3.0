@@ -1,4 +1,11 @@
-﻿
+﻿function GetMenuUrl(elementId) {
+    var element = document.getElementById(elementId);
+    var string = element.value
+    if (string !== null || string !== "") {
+        var url = "/Admin/" + string.charAt(0).toUpperCase() + string.slice(1);
+        $("#Url").attr("value", url);
+    }
+}
 function SubmitForm(formId) {
     var formToSubmit = document.getElementById(formId);
     var url = $(formToSubmit).attr('action');
@@ -9,10 +16,11 @@ function SubmitForm(formId) {
         data: formData,
         type:"post"
     })
-    .done(function (data, textStatus, jqXHR) {
+        .done(function (data, textStatus, jqXHR) {
+            $('.modal').remove();
     //If ModelState.IsValid == false
-    if (jqXHR.status === 200) {
-        $(formToSubmit).remove();
+        if (jqXHR.status === 200) {
+        
         $(data).modal();
     }
     if (jqXHR.status === 201) {
@@ -24,7 +32,7 @@ function SubmitForm(formId) {
         alert("Failed to submit. Internal error.");
     });
 }
-function GetAddress(url, callback) {
+function GetPartialView(url, callback) {
     $.ajax({
         url: url,
         type: "get",
@@ -33,21 +41,10 @@ function GetAddress(url, callback) {
             callback(data);
         })
         .fail(function (jqXHR, errorText, errorThrown) {
-            alert("Failed to fetch address");
+            alert("Failed to fetch view");
         });
 }
-function GetAdvertDetail(url, callback) {
-    $.ajax({
-        url: url,
-        type: "get",
-    })
-    .done(function (data, textStatus, jqXHR) {
-        callback(data);
-     })
-     .fail(function(jqXHR, errorText, errorThrown){
-            alert("Failed to fetch advert details");
-});
-}function GetSubCategories(categoryId,url, callback) {
+function GetSubCategories(categoryId,url, callback) {
     $.ajax({
         url: url,
         type: "get",
@@ -60,6 +57,11 @@ function GetAdvertDetail(url, callback) {
     });
 }
 $(document).ready(function () {
+    $(document).on('hidden.bs.modal', '.modal', function () {
+        $(".modal-dialog").remove();
+    });
+
+
     $("#category").on("change", function () {
         var id = $(this).val();
         var url = "/Category/SubCategories/";
@@ -98,7 +100,7 @@ $(document).ready(function () {
 
         var url = $(this).attr("href");
 
-        GetAdvertDetail(url, function (data) {
+        GetPartialView(url, function (data) {
             $(data).modal();
         });
         
@@ -110,7 +112,16 @@ $(document).ready(function () {
 
         var url = $(this).attr("href");
 
-        GetAddress(url, function (data) {
+        GetPartialView(url, function (data) {
+            $(data).modal();
+        });
+    });
+    $("#add-menu").on("click", function (e) {
+        e.preventDefault();
+
+        var url = "/Menu/Create"
+
+        GetPartialView(url, function (data) {
             $(data).modal();
         });
     });
@@ -168,4 +179,5 @@ $(document).ready(function () {
             $(this).closest(".acc-heading").addClass("active");
         }
     });
+   
 });
