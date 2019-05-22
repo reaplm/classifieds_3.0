@@ -53,7 +53,6 @@
                         <div id="@target" aria-labelledby="@heading"
                              @if (j == 0) { @Html.Raw("class='collapse show pt-0 pb-0'")  } else { @Html.Raw("class='collapse'") }
                              data-parent="#adm-sb-accordion">
-                            <div class="">
                                 <ul class="list-unstyled">
                                     @foreach (var submenu in menu.SubMenus)
                                     {
@@ -66,7 +65,6 @@
                                         
                                     }
                                 </ul>
-                            </div>
                         </div>
                     }
                 </div>

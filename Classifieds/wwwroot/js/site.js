@@ -173,11 +173,25 @@ $(document).ready(function () {
         
         var url = window.location.href;
 
+
         if (url === this.href) {
+            //remove previous classes
+            $(".accordion li").removeClass("active");
+            $(".accordion .acc-heading").removeClass("active");
+            $(".accordion h6 a").attr("aria-expanded", "false");
+            $(".accordion div").removeClass("show");
+
+            //add new classes
             $(this).addClass("active");
             $(this).closest("li").addClass("active");
             $(this).closest(".acc-heading").addClass("active");
+            $(this).closest("h6 a").attr("aria-expanded", "true");
+
+            var divId = $(this).closest("div").attr("id");
+            var div = document.getElementById(divId);
+            $("#" + divId).addClass("show");
         }
+        
     });
    
 });
