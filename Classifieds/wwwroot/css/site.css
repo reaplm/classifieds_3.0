@@ -349,9 +349,18 @@ label{
     width: 100%;
 }
 /*====================================PROFILE PAGE===============*/
-.profile-img{
-    top: 200px;
+.card-profile-img{
+    position:absolute;
+    bottom: -75px;
     left: 0;
+}
+.card-img-container{
+    position: relative;
+    top: 0;
+    left: 0;
+}
+.profile-icon{
+    
 }
 /*====================================MENUS PAGE===============*/
 #menus {
