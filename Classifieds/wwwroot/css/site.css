@@ -330,6 +330,7 @@ label{
 #menus .content img {
     width: 45px;
 }
+
 .odd-row {
     background-color: #f9f2a2;
 }
@@ -339,7 +340,10 @@ label{
 .menu-icon img{
     width: 30px;
 }
-
+/*====================================CATEGORIES PAGE===============*/
+#categories .content img {
+    width: 45px;
+}
 
 .modal-link, .modal-link:hover {
     color: #666;

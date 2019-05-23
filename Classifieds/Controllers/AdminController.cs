@@ -21,14 +21,16 @@ namespace Classifieds.Web.Controllers
         private IMenuService menuService;
         private IUserService userService;
         private IAdvertService advertService;
+        private ICategoryService categoryService;
         private IMapper mapper;
 
         public AdminController(IMenuService menuService, IUserService userService,
-            IAdvertService advertService, IMapper mapper)
+            IAdvertService advertService, ICategoryService categoryService, IMapper mapper)
         {
             this.menuService = menuService;
             this.userService = userService;
             this.advertService = advertService;
+            this.categoryService = categoryService;
             this.mapper = mapper;
         }
         /// <summary>
@@ -125,6 +127,24 @@ namespace Classifieds.Web.Controllers
             }
 
             return View(users);
+        }
+        /// <summary>
+        /// /Admin/Categories
+        /// </summary>
+        /// <returns></returns>
+        public IActionResult Categories()
+        {
+            Expression<Func<Category, bool>> where = c => c.ParentID == null;
+            Expression<Func<Category, object>>[] include =
+            {
+                c => c.SubCategories
+            };
+
+            var categories = mapper.Map<IEnumerable<CategoryViewModel>>
+                (categoryService.FindAll(where, include));
+
+
+            return View(categories);
         }
     }
 }

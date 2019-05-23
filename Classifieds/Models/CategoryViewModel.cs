@@ -15,6 +15,8 @@ namespace Classifieds.Web.Models
         public String Label { set; get; }
         public String Url { set; get; }
         public String Icon { set; get; }
+
+        public bool Status { set; get; }
  
         public long ParentID { set; get; }
         public virtual CategoryViewModel Parent { set; get; }
