@@ -31,21 +31,26 @@
 <body class="bg-e9e">
     <div class="container-fluid">
         <div class="row">
-            <div class="col-lg-3 nopadding">
+            <div class="col-xs-1 col-sm-1 col-md-1 col-lg-3">
                 <!-- Html.RenderPartial(action, controller ) -->
                 @{Html.RenderPartial("SideBarMenu"); }
             </div>
-            <div class="col-lg-9 pl-0">
+            <div class="col-xs-11 col-sm-11 col-md-11 col-lg-9">
                 <nav class="navbar navbar-expand-lg admin-menu mt-4 bg-fff rounded-box shadow" 
                      role="navigation">
-                    <div class="container ">
+                    
+                        
                         <div class="navbar-header">
+                            <button type="button" class="btn float-left d-lg-none mr-1 bg-transparent" onclick="OpenSidebar()">
+                                <span class="navbar-toggler-icon" aria-hidden="true"><img src="~/images/icons/menu (1).png" /></span>
+                            </button>
                             <a asp-area="" asp-controller="Home" asp-action="Index" class="navbar-brand">Classifieds</a>
                         </div>
                         <button type="button" class="navbar-toggler border
                         hidden-lg " data-toggle="collapse" data-target=".navbar-collapse" aria-expanded="false">
                             <span class="navbar-toggler-icon">&#9776;</span>
                         </button>
+
                         <div class="navbar-collapse collapse justify-content-end">
                             <ul class="navbar-nav">
                                 <li class="nav-item">
@@ -74,35 +79,35 @@
                                     </a>
                                 </li>
                                 @if (User.Identity.IsAuthenticated)
-                    {
-                        <li class="nav-item">
-                            <a asp-area="" asp-controller="Login" asp-action="SignOut"
-                               class="@((ViewContext.RouteData.Values["Controller"].ToString().Equals("User")
+            {
+                    <li class="nav-item">
+                        <a asp-area="" asp-controller="Login" asp-action="SignOut"
+                           class="@((ViewContext.RouteData.Values["Controller"].ToString().Equals("User")
 && ViewContext.RouteData.Values["Action"].ToString().Equals("Index")) ? "active" : "")
                            nav-link">
-                                Logout
-                            </a>
-                        </li>
+                            Logout
+                        </a>
+                    </li>
 
 
-        }
-        else
-        {
-            <li class="nav-item">
-                <a asp-area="" asp-controller="Login" asp-action="Index"
-                   class="@((ViewContext.RouteData.Values["Controller"].ToString().Equals("User")
+}
+else
+{
+                    <li class="nav-item">
+                        <a asp-area="" asp-controller="Login" asp-action="Index"
+                           class="@((ViewContext.RouteData.Values["Controller"].ToString().Equals("User")
 && ViewContext.RouteData.Values["Action"].ToString().Equals("Index")) ? "active" : "")
                            nav-link">
-                    Login
-                </a>
-            </li>
+                            Login
+                        </a>
+                    </li>
 
 }
                             </ul>
                         </div>
-                    </div>
+                    
                 </nav>
-                <div class="content bg-fff">
+                <div class="">
                     @RenderBody()
                 </div>
             </div>

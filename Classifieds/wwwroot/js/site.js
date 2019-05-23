@@ -1,4 +1,14 @@
-﻿function GetMenuUrl(elementId) {
+﻿/* Set the width of the side navigation to 250px */
+function OpenSidebar() {
+    document.getElementById("sideNavigation").style.width = "300px";
+}
+
+/* Set the width of the side navigation to 0 */
+function CloseSidebar() {
+    document.getElementById("sideNavigation").style.width = "0";
+}
+
+function GetMenuUrl(elementId) {
     var element = document.getElementById(elementId);
     var string = element.value
     if (string !== null || string !== "") {

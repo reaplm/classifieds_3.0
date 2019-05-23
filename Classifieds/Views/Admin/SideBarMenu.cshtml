@@ -6,12 +6,17 @@
 @{ 
     String ImageCdn = User.Claims.FirstOrDefault(u => u.Type == "ImageCdn").Value;
 }
-<div class="sidebar shadow pl-2 position-fixed container-fluid pr-0">
+<div id="sideNavigation"class="sidebar shadow pl-2 container-fluid pr-0">
+    <button type="button" class="close mr-4 mt-4 d-inline d-lg-none" 
+            aria-label="Close" onclick="CloseSidebar()">
+        <span aria-hidden="true">&times;</span>
+    </button>
     <div class="m-auto user-img text-center">
-        
+
         <img src="@ImageCdn" class="img-round mt-4" />
-            
+
     </div>
+
     <div class="user-info mb-4 text-center">
         <p>@User.Identity.Name </p>
         <button class="btn p-1"><img src="~/images/icons/multimedia.png" class="" /></button>
@@ -39,10 +44,10 @@
                     <div class="p-3 acc-heading" id="@heading">
                         <img src="~/images/icons/@menu.Icon" />
                         <h6 class="mb-0 d-inline-block">
-                            <a class="card-link align-bottom"  data-toggle="collapse"
-                                    data-target="#@target"
-                                    @if (j == 0) { @Html.Raw("aria-expanded='true'")  } else { @Html.Raw("aria-expanded='false'") }
-                                    aria-controls="@target">
+                            <a class="card-link align-bottom" data-toggle="collapse"
+                               data-target="#@target"
+                               @if (j == 0) { @Html.Raw("aria-expanded='true'")  } else { @Html.Raw("aria-expanded='false'") }
+                               aria-controls="@target">
                                 @menu.Name
                             </a>
                         </h6>
@@ -53,18 +58,18 @@
                         <div id="@target" aria-labelledby="@heading"
                              @if (j == 0) { @Html.Raw("class='collapse show pt-0 pb-0'")  } else { @Html.Raw("class='collapse'") }
                              data-parent="#adm-sb-accordion">
-                                <ul class="list-unstyled">
-                                    @foreach (var submenu in menu.SubMenus)
-                                    {
-                                        <li>
-                                            <a href="@submenu.Url"
-                                                class="acc-nav-link pl-4">
-                                                @submenu.Name
-                                            </a>
-                                        </li>
-                                        
-                                    }
-                                </ul>
+                            <ul class="list-unstyled">
+                                @foreach (var submenu in menu.SubMenus)
+                                {
+                                    <li>
+                                        <a href="@submenu.Url"
+                                           class="acc-nav-link pl-4">
+                                            @submenu.Name
+                                        </a>
+                                    </li>
+
+                                }
+                            </ul>
                         </div>
                     }
                 </div>
