@@ -207,20 +207,10 @@ p{
 }
 
 /*--------------------------------Modal Forms---------------------------*/
-.modal-body label {
-    color: #999;
-}
-.modal-body .border-btm select {
-    border-bottom: solid 1px #e9eef2;
-}
-
-
-.modal-body .form-control-danger {
-    color: #e9eef2;
-}
 
 .modal-form label {
     font-size: 9pt;
+    color: #999;
 }
 .modal-form .form-group {
     margin-bottom: 10px;
@@ -233,6 +223,13 @@ p{
 .modal-form select {
     border: none;
     border-bottom: solid 1px #e9eef2;
+    font-size: 9pt;
+}
+
+.modal-form input[type=text] {
+    border: none;
+    border-bottom: solid 1px #e9eef2;
+    font-size: 9pt;
 }
 
 label{
