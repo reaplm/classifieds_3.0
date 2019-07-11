@@ -1,8 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Reflection;
 using System.Text;
 
 namespace Classifieds.Repository.Impl
@@ -165,6 +167,75 @@ namespace Classifieds.Repository.Impl
 
             return query.ToList();
         }
+        /// <summary>
+        /// Update entity and children by copying values from entity to current entry
+        /// -Only children passed to the method will be update
+        /// -Fields marked as ReadOnly will be skipped
+        /// -Null values will be skipped
+        /// </summary>
+        /// <param name="entity">New entity</param>
+        /// <param name="keyValues">primary key fields</param>
+        /// <param name="includes">children to include in the update</param>
+        /// <returns></returns>
+        public int Update(T entity, Object[] keyValues, string[] includes)
+        {
+
+            T entry = (T)context.Find(entity.GetType(), keyValues);
+            var parentProperties = entry.GetType().GetProperties();
+            
+
+            foreach (var include in includes)
+            {
+                context.Entry(entry).Reference(include).Load();
+                var child = context.Entry(entry).Reference(include);
+                var childProperties = child.CurrentValue.GetType().GetProperties();
+
+                foreach(var property in parentProperties)
+                {
+                    if (property.Name.Equals(include))
+                    {
+                        var includeProperty = typeof(T).GetProperty(include);
+                        var includeObject = includeProperty.GetValue(entity);//child object
+
+                        foreach (var childProperty in childProperties)
+                        {
+                            var attribute = childProperty.GetCustomAttributes(typeof(ReadOnlyAttribute), false).FirstOrDefault() as ReadOnlyAttribute;
+                            var readOnly = attribute == null ? false: attribute.IsReadOnly;
+                            if (!readOnly)
+                            {
+                                object propValue = childProperty.GetValue(includeObject);//property value  
+
+                                if (propValue != null)
+                                    childProperty.SetValue(includeProperty.GetValue(entry), propValue);
+
+                            }
+                        }
+                        context.Entry(includeProperty.GetValue(entry)).State = EntityState.Modified;
+                    }
+
+                    else
+                    {
+                        var attribute = property.GetCustomAttributes(typeof(ReadOnlyAttribute), false).FirstOrDefault() as ReadOnlyAttribute;
+                        var readOnly = attribute == null ? false : attribute.IsReadOnly;
+                        if (!readOnly)
+                        {
+                        
+                            object propValue = property.GetValue(entity, null);
+                            if(propValue != null)
+                            {
+                                entry.GetType().GetProperty(property.Name)
+                                .SetValue(entry, propValue);
+                            }
+                        }
+                    }
+                }
+            }
+            context.Entry(entry).State = EntityState.Modified;
+            
+            return context.SaveChanges();
+
+        }
+
         private bool disposed = false;
         protected virtual void Dispose(bool disposing)
         {

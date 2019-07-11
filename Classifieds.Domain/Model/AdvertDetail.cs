@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
@@ -11,6 +12,7 @@ namespace Classifieds.Domain.Model
     {
         [Key]
         [Column(name: "pk_detail_id")]
+        [ReadOnly(true)]
         public long ID { set; get; }
 
         [Column(name: "title")]
@@ -41,7 +43,9 @@ namespace Classifieds.Domain.Model
         public String Location { set; get; }
 
         [Column(name: "fk_advert_id")]
+        [ReadOnly(true)]
         public long AdvertID { set; get; }
+
         [ForeignKey("AdvertID")]
         public Advert Advert { set; get; }
 

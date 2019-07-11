@@ -10,6 +10,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Net;
 using System.Threading.Tasks;
 
 namespace Classifieds.Web.Controllers
@@ -110,10 +111,70 @@ namespace Classifieds.Web.Controllers
                 a => a.Detail,
                 a => a.Detail.AdPictures,
                 a => a.Category,
-                a => a.User
+                a => a.User,
+                a => a.User.UserDetail
             };
             AdvertViewModel model = mapper.Map<AdvertViewModel>(advertService.Find(id, include));
 
+            return PartialView(model);
+        }
+        /// <summary>
+        /// Edit advert GET 
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public IActionResult Edit(long id)
+        {
+
+            //get advert
+            Expression<Func<Advert, object>>[] include =
+           {
+                a => a.Detail,
+                a => a.Detail.AdPictures,
+                a => a.Category
+            };
+            AdvertViewModel model = mapper.Map<AdvertViewModel>(advertService.Find(id, include));
+
+            model.ParentID = (int)model.Category.ParentID;
+
+            ViewBag.Categories = CatSelectListItems(model.ParentID);
+            ViewBag.SubCategories = SubCatSelectListItems(model.ParentID, model.CategoryID);
+
+            return PartialView(model);
+        }
+        /// <summary>
+        /// Edit an advert
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Edit(AdvertViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                string[] includes = new string[]
+                {
+                    "Detail"
+                };
+
+                int changed = advertService.Update(mapper.Map<Advert>(model), 
+                    keyValues: new object[] { model.ID }, includes: includes);
+
+                HttpContext.Response.StatusCode = (int)HttpStatusCode.Created;
+                if (changed > 0)
+                    return new JsonResult("Ádvert Updated!");
+                else
+                    return new JsonResult("Process completed but no rows were affected");
+
+            }
+
+            //model.ParentID = model.ParentID;
+
+            ViewBag.Categories = CatSelectListItems(model.ParentID);
+            ViewBag.SubCategories = SubCatSelectListItems(model.ParentID, model.CategoryID);
+
+            HttpContext.Response.StatusCode = (int)HttpStatusCode.OK;
             return PartialView(model);
         }
         /// <summary>

@@ -60,5 +60,6 @@ namespace Classifieds.Repository
          * 
          */
         void Save();
+        int Update(T entity, Object[] keyValues, string[] includes);
     }
 }

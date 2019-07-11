@@ -87,7 +87,6 @@ namespace Classifieds
             services.AddScoped<IAddressRepo, AddressRepo>();
             services.AddScoped<IUserDetailService, UserDetailService>();
             services.AddScoped<IUserDetailRepo, UserDetailRepo>();
-
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

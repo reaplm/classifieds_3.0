@@ -7,10 +7,55 @@ function OpenSidebar() {
 function CloseSidebar() {
     document.getElementById("sideNavigation").style.width = "0";
 }
+function ModalDismiss(modalId) {
+    var modal = "#" + modalId;
 
+    $(modal).remove();
+    $('body').removeClass('modal-open');
+    $('.modal-backdrop').remove();
+}
+
+function OnCategoryChanged(elementId) {
+    var element = document.getElementById(elementId);
+    var id = element.value;
+
+    document.getElementById("ParentID").value = id;
+    document.getElementById("CategoryID").value = 0;
+    console.log("ParentID: " + id);
+
+    var url = "/Category/SubCategories/";
+    GetSubCategories(id, url, function (data) {
+        console.log(data);
+
+        $("#subcategory").empty();
+        $("#subcategory").append("<option value= 0>Select Sub-Category</option>");
+
+        for (var i = 0; i < data.length; i++) {
+            $("#subcategory").append("<option value='"
+                + data[i].id + "'>" + data[i].name + "</option>");
+        }
+    });
+
+    
+}
+
+function OnSubCategoryChanged(elementId) {
+    var id = document.getElementById(elementId).value;
+    document.getElementById("CategoryID").value = id;
+    console.log("CategoryID: " + id);
+}
+
+function EditAdvert(id) {
+
+    var url = "/Classifieds/Edit/" + id;
+
+    GetPartialView(url, function (data) {
+        $(data).modal();
+    });
+}
 function GetMenuUrl(elementId) {
     var element = document.getElementById(elementId);
-    var string = element.value
+    var string = element.value;
     if (string !== null || string !== "") {
         var url = "/Admin/" + string.charAt(0).toUpperCase() + string.slice(1);
         $("#Url").attr("value", url);
@@ -28,9 +73,7 @@ function SubmitForm(formId) {
     })
         .done(function (data, textStatus, jqXHR) {
             $('.modal').remove();
-    //If ModelState.IsValid == false
         if (jqXHR.status === 200) {
-        
         $(data).modal();
     }
     if (jqXHR.status === 201) {
@@ -46,6 +89,7 @@ function GetPartialView(url, callback) {
     $.ajax({
         url: url,
         type: "get",
+        dataType: "HTML"
     })
         .done(function (data, textStatus, jqXHR) {
             callback(data);

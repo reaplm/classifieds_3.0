@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
@@ -11,6 +12,7 @@ namespace Classifieds.Domain.Model
     {
         [Key]
         [Column(name: "pk_advert_id")]
+        [ReadOnly(true)]
         public long ID { set; get; }
 
         [Column(name: "advert_status")]
@@ -35,8 +37,9 @@ namespace Classifieds.Domain.Model
         public Category Category { set; get; }
 
         [Column(name: "fk_appuser_id")]
+        [ReadOnly(true)]
         public long UserID { set; get; }
-        [ForeignKey("UserID")]
+
         public virtual User User { set; get; }
 
         public virtual AdvertDetail Detail { set; get; }

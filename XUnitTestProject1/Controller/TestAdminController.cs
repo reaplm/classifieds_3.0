@@ -19,6 +19,7 @@ namespace Classifieds.XUnitTest.Controller
         private Mock<IMenuService> mockMenuService;
         private Mock<IUserService> mockUserService;
         private Mock<IAdvertService> mockAdvertService;
+        private Mock<ICategoryService> mockCategoryService;
         private IMapper mapper;
 
         public TestAdminController()
@@ -26,6 +27,7 @@ namespace Classifieds.XUnitTest.Controller
             mockMenuService = new Mock<IMenuService>();
             mockUserService = new Mock<IUserService>();
             mockAdvertService = new Mock<IAdvertService>();
+            mockCategoryService = new Mock<ICategoryService>();
 
             Initialize();
         }
@@ -41,7 +43,7 @@ namespace Classifieds.XUnitTest.Controller
                 .Returns(menus);
 
             var controller = new AdminController(mockMenuService.Object, mockUserService.Object,
-                mockAdvertService.Object, mapper);
+                mockAdvertService.Object, mockCategoryService.Object, mapper);
 
             controller.ControllerContext = new ControllerContext();
             controller.ControllerContext.HttpContext = new DefaultHttpContext();
@@ -58,7 +60,7 @@ namespace Classifieds.XUnitTest.Controller
             mockMenuService.Setup(m => m.FindAll(It.IsAny<Expression<Func<Menu, bool>>>(),
                 It.IsAny<Expression<Func<Menu, object>>[]>())).Returns(menus);
             var controller = new AdminController(mockMenuService.Object, mockUserService.Object,
-                mockAdvertService.Object, mapper);
+                mockAdvertService.Object, mockCategoryService.Object, mapper);
             var result = controller.Menus() as ViewResult;
             List<MenuViewModel> model = result.Model as List<MenuViewModel>;
 

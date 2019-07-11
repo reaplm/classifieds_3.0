@@ -1,4 +1,5 @@
-﻿using Classifieds.Domain.Model;
+﻿using Classifieds.Domain.Enumerated;
+using Classifieds.Domain.Model;
 using Classifieds.Repository;
 using Classifieds.Repository.Impl;
 using Microsoft.EntityFrameworkCore;
@@ -48,12 +49,38 @@ namespace Classifieds.XUnitTest.Repository
             var menuRepo = new MenuRepo(appContext);
 
             Menu menu = menuRepo.Find(2);
-            menu.Name = "gardening updated";
+            menu.Name = "manage updated";
             menuRepo.Update(menu);
             appContext.SaveChanges();
 
-            Assert.Equal("gardening updated", appContext.Menus.Find(2L).Name);
+            Assert.Equal("manage updated", appContext.Menus.Find(2L).Name);
         }
+        /// <summary>
+        /// Test Method { public void Update(T entity) }
+        /// </summary>
+        [Fact]
+        public void Repository_UpdateWithChildren()
+        {
+            var advertRepo = new AdvertRepo(appContext);
+            var categoryRepo = new CategoryRepo(appContext);
+            Category category = categoryRepo.Find(5);
+            Advert advert = advertRepo.Find(8);
+
+            advert.Detail.Email = "updateEmail@email.com";
+            advert.Detail.Body = "4x4 for sale";
+            advert.SubmittedDate = new DateTime(2019, 6, 10);
+            advert.Category = category;
+
+            advertRepo.Update(advert);
+            appContext.SaveChanges();
+
+            Assert.Equal(new DateTime(2019, 6, 10), appContext.Adverts.Find(8L).SubmittedDate);
+            Assert.Equal("4x4 for sale", appContext.Adverts.Find(8L).Detail.Body);
+            Assert.Equal("updateEmail@email.com", appContext.Adverts.Find(8L).Detail.Email);
+            Assert.Equal(5, appContext.Adverts.Find(8L).Category.ID);
+            Assert.Equal(2, appContext.Adverts.Find(8L).Category.ParentID);
+        }
+
         /// <summary>
         /// Test Method { public void Delete(long id) }
         /// </summary>
@@ -77,7 +104,7 @@ namespace Classifieds.XUnitTest.Repository
             var menu = menuRepo.Find(5);
 
             Assert.Equal(5, menu.ID);
-            Assert.Equal("cars", menu.Name);
+            Assert.Equal("profile", menu.Name);
         }
         /// <summary>
         /// Test Method { T Find(long id, Expression<Func<T, Object>>[] includes) }
@@ -95,9 +122,9 @@ namespace Classifieds.XUnitTest.Repository
             Menu result = menuRepo.Find(5, includes);
 
             Assert.Equal(5, result.ID);
-            Assert.Equal("cars", result.Name);
-            Assert.Equal(1, result.ParentID);
-            Assert.Equal("vehicles", result.Parent.Name);
+            Assert.Equal("profile", result.Name);
+            Assert.Equal(4, result.ParentID);
+            Assert.Equal("account", result.Parent.Name);
 
         }
         /// <summary>
@@ -130,11 +157,56 @@ namespace Classifieds.XUnitTest.Repository
                 m => m.SubMenus,
                 m => m.Parent
             };
-            Expression<Func<Menu, bool>> where = m => m.Type == "HOME";
+            Expression<Func<Menu, bool>> where = m => m.Type == "SIDEBAR";
 
             var results = menuRepo.FindAll(where, includes);
 
-            Assert.Equal(2, results.Count());
+            Assert.Equal(3, results.Count());
+        }
+        /// <summary>
+        /// Test cascade update
+        /// Test Method public void Update(T entity, 
+        /// Object[] keyValues, string[] includes)}
+        /// </summary>
+        [Fact]
+        public void Repository_Update2()
+        {
+            var advertRepo = new AdvertRepo(appContext);
+
+            AdvertDetail newAdDetail = new AdvertDetail
+            {
+                ID = 6,
+                Title = "Black Toyota for sale in mogoditshane",
+                Body = "Black 4x4 Toyota cruiser",
+                Email = "pearl@email.com",
+                Location = "Mogoditshane"
+            };
+
+            Advert newAd = new Advert
+            {
+                ID = 8,
+                Status = EnumTypes.AdvertStatus.SUBMITTED.ToString(),
+                CategoryID = 6,
+                Detail = newAdDetail
+            };
+
+            string[] includes = new string[]
+            {
+                "Detail"
+            };
+
+            int changedRows = advertRepo.Update(newAd, keyValues: new object[] { newAd.ID }, 
+                includes: includes);
+
+            Advert editedAd = advertRepo.Find(8, new Expression<Func<Advert, object>>[] { x => x.Detail });
+
+            //changedRows is 4, detail is null
+            Assert.True(changedRows > 0);
+            Assert.Equal("Black Toyota for sale in mogoditshane", editedAd.Detail.Title);
+            Assert.Equal("pearl@email.com", editedAd.Detail.Email);
+            Assert.Equal("Mogoditshane", editedAd.Detail.Location);
+            Assert.Equal(new DateTime(2019, 05, 10), editedAd.PublishedDate);
+            Assert.Equal("71406569", editedAd.Detail.Phone);
         }
         /// <summary>
         ///Create a context and initialize the database with test Data
@@ -149,17 +221,77 @@ namespace Classifieds.XUnitTest.Repository
 
             var menus = new List<Menu>
             {
-                new Menu{ID=1, Name="vehicles",Type="HOME"},
-                new Menu{ID=2, Name="gardening", Type="HOME"},
-                new Menu{ID=3, Name="travel",Type="SIDEBAR"},
-                new Menu{ID=4, Name="fashion",Type="SUBMENU"},
-                new Menu{ID=5, Name="cars",Type="SUBMENU",ParentID=1}
+                new Menu{ID=1, Name="home",Type="HOME"},
+                new Menu{ID=2, Name="manage", Type="SIDEBAR"},
+                new Menu{ID=3, Name="settings",Type="SIDEBAR"},
+                new Menu{ID=4, Name="account",Type="SIDEBAR"},
+                new Menu{ID=5, Name="profile",Type="SUBMENU",ParentID=4}
+            };
+            var categories = new List<Category>
+            {
+                new Category{ID=1, Name="vehicles"},
+                new Category{ID=2, Name="gardening"},
+                new Category{ID=3, Name="travel"},
+                new Category{ID=4, Name="fashion"},
+                new Category{ID=5, Name="cars", ParentID = 2}
             };
 
+            var advert = GetAdvert();
+
             appContext.AddRange(menus);
+            appContext.AddRange(categories);
+            appContext.Add(advert);
             int changed = appContext.SaveChanges();
         }
+        private Advert GetAdvert()
+        {
 
+            
+
+            AdPicture picture1 = new AdPicture
+            {
+                ID = 1,
+                Uuid = "0b83b507-8c11-4c0e-96d2-5fd773d525f7",
+                CdnUrl = "https://ucarecdn.com/0b83b507-8c11-4c0e-96d2-5fd773d525f7/",
+                Name = "about me sample 3.PNG",
+                Size = 135083
+            };
+            AdPicture picture2 = new AdPicture
+            {
+                ID = 2,
+                Uuid = "c1df9f17-61ad-450a-87f9-d846c312dae0",
+                CdnUrl = "https://ucarecdn.com/c1df9f17-61ad-450a-87f9-d846c312dae0/",
+                Name = "about me sample 4.PNG",
+                Size = 146888
+            };
+            List<AdPicture> pictures = new List<AdPicture> { picture1, picture2 };
+
+            AdvertDetail advertDetail = new AdvertDetail
+            {
+                ID = 8,
+                Title = "Black Toyota for sale",
+                Body = "Black 4x4 Toyota cruiser",
+                Email = "pearl@email",
+                Phone = "71406569",
+                GroupCdn = "GroupCdnValue",
+                GroupCount = 2,
+                GroupSize = 2048,
+                GroupUuid = "GroupUuidValue",
+                Location = "Gaborone",
+                AdPictures = pictures
+            };
+
+            Advert advert = new Advert
+            {
+                ID = 8,
+                Status = EnumTypes.AdvertStatus.SUBMITTED.ToString(),
+                CategoryID = 6,
+                PublishedDate = new DateTime(2019,05,10),
+                Detail = advertDetail
+            };
+
+            return advert;
+        }
         /// <summary>
         /// Clear the database in preparation for the next test.
         /// Since each test executes the initContext method, it
@@ -169,6 +301,10 @@ namespace Classifieds.XUnitTest.Repository
         public void Dispose()
         {
             appContext.Menus.RemoveRange(appContext.Menus);
+            appContext.Categories.RemoveRange(appContext.Categories);
+            appContext.Adverts.RemoveRange(appContext.Adverts);
+            appContext.AdvertDetails.RemoveRange(appContext.AdvertDetails);
+            appContext.AdPictures.RemoveRange(appContext.AdPictures);
             int changed = appContext.SaveChanges();
         }
     }

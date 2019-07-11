@@ -1,6 +1,8 @@
 ﻿@model Classifieds.Web.Models.AdvertViewModel
 @{ 
-    var imageCdn = User.Claims.FirstOrDefault(u => u.Type == "ImageCdn").Value;
+    //var imageCdn = User.Claims.FirstOrDefault(u => u.Type == "ImageCdn").Value;
+    var imageCdn = Model.User.UserDetail.ImageCdn;
+    
 }
     <div class="modal fade" id="advert-detail-modal" tabindex="-1"
          role="dialog" aria-labelledby="advertDetailModal" aria-hidden="true">
@@ -11,7 +13,8 @@
                         @Html.DisplayFor(Model => Model.Detail.Title)
                     </h1>
                     <button type="button" class="close" data-dismiss="modal"
-                            aria-label="close">
+                            aria-label="close"
+                            onclick="ModalDismiss('advert-detail-modal')">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
@@ -101,10 +104,14 @@ i++;
                 </div>
                 <div class="modal-footer">
                     <!--
-                        <button type="button" class="btn btn-secondary"
-                            data-dismiss="modal">Cancel</button>
-                        <button type="button" class="btn btn-primary" onClick="ValidateUpdateMenu()">Save</button>
-                    -->
+        <button type="button" class="btn btn-secondary"
+            data-dismiss="modal">Cancel</button>
+        <button type="button" class="btn btn-primary" onClick="ValidateUpdateMenu()">Save</button>
+    -->
+                    <button id="edit-advert-btn" type="button" class="btn btn-primary" 
+                            onclick="ModalDismiss('advert-detail-modal'); EditAdvert(@Model.ID)" data-dismiss="modal">
+                        Edit
+                    </button>
                 </div>
             </div>
         </div>

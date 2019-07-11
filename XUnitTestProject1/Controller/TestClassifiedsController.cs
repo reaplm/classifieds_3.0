@@ -17,8 +17,6 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Security.Claims;
 using System.Security.Principal;
-using System.Text;
-using System.Threading.Tasks;
 using Xunit;
 
 namespace Classifieds.XUnitTest.Controller
@@ -161,14 +159,15 @@ namespace Classifieds.XUnitTest.Controller
         }
         /// <summary>
         /// Test { public IActionResult Create(AdvertViewModel model) }
-        /// Create a new advert and redict on success
+        /// Create a new advert and redirect on success
         /// </summary>
         [Fact]
         public void CreateValidModelState_POST()
         {
             AdvertViewModel model = GetAdvert();
 
-            var controller = new ClassifiedsController(mockAdvertService.Object, mockCatService.Object, mapper);
+            var controller = new ClassifiedsController(mockAdvertService.Object,
+                mockCatService.Object, mapper);
             var result = controller.Create(model) as RedirectToActionResult;
 
             Assert.Equal("Index", result.ActionName);
@@ -202,10 +201,129 @@ namespace Classifieds.XUnitTest.Controller
 
 
         }
-       /* private IEnumerable<Category> GetResults()
+        /// <summary>
+        /// Test { public IActionResult Edit(long id) }
+        /// </summary>
+        [Fact]
+        public void Edit_GET()
         {
+            var categories = GetCatList();
+            var subCategories = GetSubCatList();
 
-        }*/
+            var queue = new Queue<IEnumerable<Category>>();
+            queue.Enqueue(categories);
+            queue.Enqueue(subCategories);
+
+            mockAdvertService.Setup(m => m.Find(It.IsAny<long>(), It.IsAny< Expression<Func<Advert, object>>[]>()))
+                .Returns(mapper.Map<Advert>(GetAdvert()));
+            mockCatService.Setup(m => m.FindAll(It.IsAny<Expression<Func<Category, bool>>>(),
+                It.IsAny<Expression<Func<Category, object>>[]>()))
+                .Returns(queue.Dequeue);
+            mockCatService.Setup(m => m.FindAll(It.IsAny<Expression<Func<Category, bool>>>(),
+                It.IsAny<Expression<Func<Category, object>>[]>()))
+                .Returns(queue.Dequeue);
+
+            var controller = new ClassifiedsController(mockAdvertService.Object,
+                mockCatService.Object, mapper);
+
+
+            var result = controller.Edit(4L) as PartialViewResult;
+            var model = result.Model as AdvertViewModel;
+            var subs = result.ViewData["SubCategories"] as IEnumerable<SelectListItem>;
+            var cats = result.ViewData["Categories"] as IEnumerable<SelectListItem>;
+
+            Assert.Equal(2, model.ParentID);
+            Assert.Equal(6, model.CategoryID);
+            Assert.Equal(2, subs.Count());
+            Assert.Equal(3, cats.Count());
+        }
+        /// <summary>
+        /// Test { public IActionResult Edit(AdvertViewModel model) }
+        /// ModelState.Valid = false
+        /// </summary>
+        [Fact]
+        public void EditInvalidModelState_POST()
+        {
+            var categories = GetCatList();
+            var subCategories = GetSubCatList();
+
+            var queue = new Queue<IEnumerable<Category>>();
+            queue.Enqueue(categories);
+            queue.Enqueue(subCategories);
+
+            mockCatService.Setup(m => m.FindAll(It.IsAny<Expression<Func<Category, bool>>>(),
+                It.IsAny<Expression<Func<Category, object>>[]>()))
+                .Returns(queue.Dequeue);
+            mockCatService.Setup(m => m.FindAll(It.IsAny<Expression<Func<Category, bool>>>(),
+                It.IsAny<Expression<Func<Category, object>>[]>()))
+                .Returns(queue.Dequeue);
+
+            var model = GetAdvert();
+
+            var controller = new ClassifiedsController(mockAdvertService.Object,
+                mockCatService.Object, mapper);
+            controller.ControllerContext.HttpContext = new DefaultHttpContext();
+
+            //create ModelState.IsValid = false
+            controller.ModelState.AddModelError("Location","Location is required");
+
+            var result = controller.Edit(model) as PartialViewResult;
+            var resultModel = result.Model as AdvertViewModel;
+            var subs = result.ViewData["SubCategories"] as IEnumerable<SelectListItem>;
+            var cats = result.ViewData["Categories"] as IEnumerable<SelectListItem>;
+            var status = controller.HttpContext.Response.StatusCode;     
+
+            Assert.Equal(6, resultModel.CategoryID);
+            Assert.Equal(2, subs.Count());
+            Assert.Equal(3, cats.Count());
+            Assert.Equal(200, status);
+        }
+        /// <summary>
+        /// Test { public IActionResult Edit(AdvertViewModel model) }
+        /// ModelState.Valid = true
+        /// </summary>
+        [Fact]
+        public void EditValidModelState_POST_If()
+        {
+            mockAdvertService.Setup(m => m.Update(It.IsAny<Advert>(), It.IsAny<Object[]>(),
+                It.IsAny<string[]>())).Returns(1);
+
+            var model = GetAdvert();
+
+            var controller = new ClassifiedsController(mockAdvertService.Object,
+                mockCatService.Object, mapper);
+            controller.ControllerContext.HttpContext = new DefaultHttpContext();
+
+            var result = controller.Edit(model) as JsonResult;
+            var status = controller.HttpContext.Response.StatusCode;
+
+            Assert.Equal(201, status);
+            Assert.Equal("Ádvert Updated!", result.Value);
+
+        }
+        /// <summary>
+        /// Test { public IActionResult Edit(AdvertViewModel model) }
+        /// ModelState.Valid = true
+        /// </summary>
+        [Fact]
+        public void EditValidModelState_POST_Else()
+        {
+            mockAdvertService.Setup(m => m.Update(It.IsAny<Advert>(), It.IsAny<Object[]>(),
+                It.IsAny<string[]>())).Returns(0);
+
+            var model = GetAdvert();
+
+            var controller = new ClassifiedsController(mockAdvertService.Object,
+                mockCatService.Object, mapper);
+            controller.ControllerContext.HttpContext = new DefaultHttpContext();
+
+            var result = controller.Edit(model) as JsonResult;
+            var status = controller.HttpContext.Response.StatusCode;
+
+            Assert.Equal(201, status);
+            Assert.Equal("Process completed but no rows were affected", result.Value);
+
+        }
         /// <summary>
         /// Initialize AutoMapper
         /// </summary>
@@ -262,6 +380,9 @@ namespace Classifieds.XUnitTest.Controller
         /// <returns></returns>
         private AdvertViewModel GetAdvert()
         {
+
+            var category = new CategoryViewModel { ID = 6, Name = "subcat2", ParentID=2 };
+           
             AdPictureViewModel picture1 = new AdPictureViewModel
             {
                 ID = 1,
@@ -299,11 +420,13 @@ namespace Classifieds.XUnitTest.Controller
                 ID = 8,
                 Status = EnumTypes.AdvertStatus.SUBMITTED.ToString(),
                 CategoryID = 6,
-                Detail = advertDetail
+                Detail = advertDetail,
+                Category = category
             };
 
             return advert;
         }
+
         /// <summary>
         /// Mock Authentication Service
         /// </summary>

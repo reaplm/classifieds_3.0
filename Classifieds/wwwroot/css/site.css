@@ -231,7 +231,10 @@ p{
     border-bottom: solid 1px #e9eef2;
     font-size: 9pt;
 }
-
+.modal-form textarea {
+    border: solid 1px #e9eef2;
+    font-size: 9pt;
+}
 label{
     margin: 0;
 }

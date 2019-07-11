@@ -1,0 +1,172 @@
+﻿@model AdvertViewModel
+@using Classifieds.Web.Models
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<div class="modal fade" id="edit-advert-modal" tabindex="-1"
+     role="dialog" aria-labelledby="editAdvertModal" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1>
+                    @Html.DisplayFor(Model => Model.Detail.Title)
+                </h1>
+                <button type="button" class="close" data-dismiss="modal"
+                        aria-label="close" onclick="ModalDismiss('edit-advert-modal')">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="container color-e9e mt-5">
+                    @using (Html.BeginForm("Edit", "Classifieds", new { }, FormMethod.Post, true,
+                 htmlAttributes: new { @id = "edit-ad", @class = "form-horizontal modal-form" }))
+                    {
+                        @Html.AntiForgeryToken()
+                        
+                        @Html.ValidationMessageFor(model => model.UserID, "",
+                                                   new { @Class = "form-control-danger" })
+                           
+                        <div class="row form-group">
+                            <div class="col-xs-12 col-md-6 col-lg-4">
+                                @Html.DropDownList("category", ViewBag.Categories as IEnumerable<SelectListItem>,
+                                               "Select Category", new
+                                               {
+                                                   @class = "rounded-box size-lg form-control form-input " +
+                                               "text-capitalize", @onchange = "OnCategoryChanged('category')"
+                                               })
+                                @Html.ValidationMessageFor(model => model.ParentID, "",
+                                            new { @Class = "form-control-danger"
+                                            })
+                            </div>
+                            <div class="col-xs-12 col-md-6 col-lg-4">
+                                @Html.DropDownList("subcategory", ViewBag.SubCategories as IEnumerable<SelectListItem>,
+                                                      "Select Sub-Category", new
+                                                      {
+                                                          @class = "rounded-box size-lg form-control form-input " +
+                                                      "text-capitalize", @onchange = "OnSubCategoryChanged('subcategory')"
+                                                      })
+                                @Html.ValidationMessageFor(model => model.CategoryID, "",
+                                                       new { @Class = "form-control-danger" })
+                            </div>
+                            <div class="col-sm-3 col-lg-4">
+
+                            </div>
+                            <div class="col-sm-3">
+
+                            </div>
+                        </div>
+
+                        <div class="row form-group">
+                            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-8">
+                                @Html.TextBoxFor(model => model.Detail.Location,
+                                                     new
+                                                     {
+                                                         @class = "rounded-box size-lg form-control form-input",
+                                                         @placeholder = "Location"
+                                                     })
+                                @Html.ValidationMessageFor(model => model.Detail.Location, "",
+                                                   new { @Class = "form-control-danger" })
+                            </div>
+                            <div class="col-lg-4"></div>
+                        </div>
+                        <div class="row form-group">
+                            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-8">
+                                @Html.TextBoxFor(model => model.Detail.Title,
+                                                      new
+                                                      {
+                                                          @class = "rounded-box size-lg form-control form-input",
+                                                          @placeholder = "Title"
+                                                      })
+                                @Html.ValidationMessageFor(model => model.Detail.Title, "",
+                                                   new { @Class = "form-control-danger" })
+                            </div>
+                            <div class=" col-lg-4"></div>
+                        </div>
+                        <div class="row form-group">
+                            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                @Html.TextAreaFor(model => model.Detail.Body, 10, 1,
+                                               new { @class = "rounded-box form-control form-input" })
+                                @Html.ValidationMessageFor(model => model.Detail.Body, "",
+                                                   new { @Class = "form-control-danger" })
+                            </div>
+                        </div>
+                        <div class="row form-group">
+                            <div class="col-xs-12 col-md-6 col-sm-12 col-lg-4">
+                                @Html.TextBoxFor(model => model.Detail.Email,
+                                                      new
+                                                      {
+                                                          @class = "rounded-box size-lg form-control form-input",
+                                                          @placeholder = "Email"
+                                                      })
+                                @Html.ValidationMessageFor(model => model.Detail.Email, "",
+                                                   new {
+                                                           @Class = "form-control-danger",
+                                                           @placeholder = "Phone"
+                                                        })
+                            </div>
+                            <div class="col-xs-12 col-sm-12 col-md-6 col-lg-4">
+                                @Html.TextBoxFor(model => model.Detail.Phone,
+                                                     new
+                                                     {
+                                                         @class = "rounded-box size-lg form-control form-input",
+                                                         @placeholder = "Phone"
+                                                     })
+                                @Html.ValidationMessageFor(model => model.Detail.Phone, "",
+                                                   new { @Class = "form-control-danger" })
+                            </div>
+                            <div class="col-lg-4"></div>
+                        </div>
+                        <div class="row form-group">
+                            <div class="col-sm-12">
+                                <!--
+                        <input name="uploadCareUrl"
+                               id="uploadcareWidget"
+                               type="hidden"
+                               role="uploadcare-uploader"
+                               data-image-shrink="1024x1024"
+                               data-multiple="true"
+                               data-multiple-min="1"
+                               data-multiple-max="4" />
+                        -->
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <!-- Foreign keys -->
+                            @Html.HiddenFor(model => model.CategoryID)
+                            @Html.HiddenFor(model => model.ParentID)
+                            @Html.HiddenFor(model => model.UserID)
+                            @Html.HiddenFor(model => model.Detail.ID)
+                            @Html.HiddenFor(model => model.ID)
+
+                            <!-- Image group information-->
+                            @Html.HiddenFor(model => model.Detail.GroupCdn)
+                            @Html.HiddenFor(model => model.Detail.GroupCount)
+                            @Html.HiddenFor(model => model.Detail.GroupSize)
+                            @Html.HiddenFor(model => model.Detail.GroupUuid)
+
+
+
+                        </div>
+                        <!-- Advert Pictures-->
+                        <div class="form-group" id="pictures">
+
+                        </div>
+
+                    }
+                </div>
+            </div>
+
+            <div class="modal-footer">
+
+                <button id="edit-advert-btn" type="button" class="btn btn-primary"
+                        onclick="SubmitForm('edit-ad')" 
+                        data-dismiss="modal">
+                    Save
+                </button>
+
+            </div>
+        </div>
+    </div>
+</div>

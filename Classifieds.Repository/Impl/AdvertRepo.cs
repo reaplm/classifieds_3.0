@@ -27,5 +27,17 @@ namespace Classifieds.Repository.Impl
 
             return adverts;
         }
+        public new void Update(Advert advert)
+        {
+
+            var entry = context.Adverts.Single(ad => ad.ID == advert.ID);
+           context.Entry(entry).Reference(p => p.Detail).Load();
+
+            context.Entry(entry).CurrentValues.SetValues(advert);
+            context.Entry(entry.Detail).CurrentValues.SetValues(advert.Detail);
+
+            context.SaveChanges();
+
+        }
     }
 }

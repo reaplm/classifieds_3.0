@@ -58,5 +58,9 @@ namespace Classifieds.Service.Impl
         {
             return genericRepo.Find(id, includes);
         }
+        public int Update(T entity, Object[] keyValues, string[] includes)
+        {
+            return genericRepo.Update(entity, keyValues, includes);
+        }
     }
 }
