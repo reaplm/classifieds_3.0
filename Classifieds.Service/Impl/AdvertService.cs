@@ -18,5 +18,9 @@ namespace Classifieds.Service.Impl
         {
             return advertRepo.FindByCategory(id);
         }
+        public IEnumerable<Advert> FindBySubCategory(int id)
+        {
+            return advertRepo.FindBySubCategory(id);
+        }
     }
 }

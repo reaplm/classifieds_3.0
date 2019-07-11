@@ -1,0 +1,18 @@
+﻿
+@model IEnumerable<Classifieds.Web.Models.AdvertViewModel>
+@{
+    ViewData["Title"] = "Index";
+}
+<div class="col-layout mt-5">
+    @foreach (var advert in Model)
+    {
+        <h5 class="text-capitalize text-center">
+            @Html.ActionLink(advert.Detail.Title, "Detail", "Classifieds",
+            new {id=advert.ID},new {@class="modal-link",
+                @data_target= "#advert-detail-modal", @data_toggle="modal" })
+        </h5>
+        <p>@advert.Detail.BodySubString</p>
+        <hr />
+    }
+</div>
+

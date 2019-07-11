@@ -55,6 +55,17 @@ namespace Classifieds.Web.Controllers
             return View(adverts);
         }
         /// <summary>
+        /// Displays adverts belonging to the subcategory category of the given id
+        /// url: Classifieds/SubCategory/id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public IActionResult SubCategory(int id)
+        {
+            var adverts = mapper.Map<IEnumerable<AdvertViewModel>>(advertService.FindBySubCategory(id));
+            return View(adverts);
+        }
+        /// <summary>
         /// Creates an advert. 
         /// User must log in inorder to post an advert
         /// url: Classifieds/create

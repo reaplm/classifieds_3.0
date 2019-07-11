@@ -8,5 +8,6 @@ namespace Classifieds.Repository
     public interface IAdvertRepo : IGenericRepo<Advert>
     {
         IEnumerable<Advert> FindByCategory(int id);
+        IEnumerable<Advert> FindBySubCategory(int id);
     }
 }

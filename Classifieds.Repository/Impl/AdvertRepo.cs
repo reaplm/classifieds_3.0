@@ -27,6 +27,18 @@ namespace Classifieds.Repository.Impl
 
             return adverts;
         }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public IEnumerable<Advert> FindBySubCategory(int id)
+        {
+            var adverts = context.Adverts.Where(x => x.Category.ID == id)
+                .Include(x => x.Detail);
+
+            return adverts;
+        }
         public new void Update(Advert advert)
         {
 
