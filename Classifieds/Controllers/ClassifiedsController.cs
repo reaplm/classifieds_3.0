@@ -51,7 +51,7 @@ namespace Classifieds.Web.Controllers
         /// <returns></returns>
         public IActionResult Category(int id)
         {
-            var adverts = advertService.FindByCategory(id);
+            var adverts = mapper.Map<IEnumerable<AdvertViewModel>>(advertService.FindByCategory(id));
             return View(adverts);
         }
         /// <summary>
