@@ -22,5 +22,9 @@ namespace Classifieds.Service.Impl
         {
             return advertRepo.FindBySubCategory(id);
         }
+        public int RemoveAllPictures(long id)
+        {
+            return advertRepo.RemoveAllPictures(id);
+        }
     }
 }

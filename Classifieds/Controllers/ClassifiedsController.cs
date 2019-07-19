@@ -169,6 +169,9 @@ namespace Classifieds.Web.Controllers
                     "Detail"
                 };
 
+                //remove pictures
+                int count = advertService.RemoveAllPictures(model.ID);
+
                 int changed = advertService.Update(mapper.Map<Advert>(model), 
                     keyValues: new object[] { model.ID }, includes: includes);
 

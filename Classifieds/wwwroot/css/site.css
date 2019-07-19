@@ -205,13 +205,20 @@ p{
 .modal-footer {
     background-color: #e9eef2;
 }
-
-/*--------------------------------Modal Forms---------------------------*/
-
-.modal-form label {
-    font-size: 9pt;
-    color: #999;
+.modal-footer .uploadcare--widget__button_type_open {
+    background-color: #007bff;
+    border-color: #007bff;
 }
+
+
+.modal-footer .uploadcare--widget__button_type_open:hover {
+    background-color: #2c2a33;
+}
+/*--------------------------------Modal Forms---------------------------*/
+    .modal-form label {
+        font-size: 9pt;
+        color: #999;
+    }
 .modal-form .form-group {
     margin-bottom: 10px;
 }

@@ -120,16 +120,9 @@
                         </div>
                         <div class="row form-group">
                             <div class="col-sm-12">
-                                <!--
-                        <input name="uploadCareUrl"
-                               id="uploadcareWidget"
-                               type="hidden"
-                               role="uploadcare-uploader"
-                               data-image-shrink="1024x1024"
-                               data-multiple="true"
-                               data-multiple-min="1"
-                               data-multiple-max="4" />
-                        -->
+                                
+                       
+                        
                             </div>
                         </div>
                         <div class="form-group">
@@ -159,9 +152,26 @@
             </div>
 
             <div class="modal-footer">
-
+                @Html.HiddenFor(m => m.Detail.UcareWidget, htmlAttributes:
+               new {@role= "uploadcare-uploader", @class= "btn btn-primary",
+                   data_image_shrink = "1024x1024", data_multiple = "true",
+                   data_multiple_min = "1", data_multiple_max = "4"
+               }
+               )
+                <!--
+                <input name="uploadCareUrl"
+                       id="editAdWidget"
+                       type="hidden"
+                       role="uploadcare-uploader"
+                       data-image-shrink="1024x1024"
+                       data-multiple="true"
+                       data-multiple-min="1"
+                       data-multiple-max="4"
+                       class="btn btn-primary"
+                        />
+                    -->
                 <button id="edit-advert-btn" type="button" class="btn btn-primary"
-                        onclick="SubmitForm('edit-ad')" 
+                        onclick="SubmitForm('edit-ad')"
                         data-dismiss="modal">
                     Save
                 </button>

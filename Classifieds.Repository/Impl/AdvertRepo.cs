@@ -1,5 +1,7 @@
 ﻿using Classifieds.Domain.Model;
+using Classifieds.Domain.Uploadcare;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -51,5 +53,54 @@ namespace Classifieds.Repository.Impl
             context.SaveChanges();
 
         }
+        /// <summary>
+        /// Remove all pictures belonging to advert with pk {id}
+        /// </summary>
+        /// <param name="id">Primary key of the advert</param>
+        /// <returns></returns>
+        public int RemoveAllPictures(long id)
+        {
+            Uploadcare ucare = new Uploadcare();
+            int changed = 0;
+
+            var entry = context.Adverts.Single(ad => ad.ID == id);
+            context.Entry(entry).Reference(p => p.Detail).Load();
+            context.Entry(entry.Detail).Collection(p => p.AdPictures).Load();
+
+            if(entry.Detail.AdPictures != null)
+            {
+                
+                foreach (var picture in entry.Detail.AdPictures)
+                {
+                    //Delete from storage first
+                    JObject response = DeleteFromStorage(picture.Uuid);
+                    int status = (int)response.Property("status").Value;
+
+                    if(status == 400)
+                    {
+                        //log this info to delete later
+                    }
+
+                    //delete from database
+                    context.Entry(picture).State = EntityState.Deleted;
+    
+                }
+                changed = context.SaveChanges();
+            }
+            return changed;
+        }
+        public JObject DeleteFromStorage(string uuid)
+        {
+            Uploadcare ucare = new Uploadcare();
+
+            return JObject.Parse(ucare.DeleteFile(uuid));
+        }
+        public JObject DeleteFromStorage(List<string> uuidGroup)
+        {
+            Uploadcare ucare = new Uploadcare();
+
+            return JObject.Parse(ucare.DeleteBatch(uuidGroup));
+        }
     }
+
 }

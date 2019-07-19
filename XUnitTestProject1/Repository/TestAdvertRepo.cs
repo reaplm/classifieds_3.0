@@ -3,6 +3,7 @@ using Classifieds.Domain.Model;
 using Classifieds.Repository;
 using Classifieds.Repository.Impl;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -54,6 +55,103 @@ namespace Classifieds.XUnitTest.Repository
             Assert.Equal("Black Toyota for sale", ad.Detail.Title);
             Assert.Equal(2, ad.Detail.AdPictures.Count());
 
+        }
+        /// <summary>
+        /// Test for public int RemoveAllPictures(int id)
+        /// </summary>
+        [Fact]
+        public void RemoveAllPictures()
+        {
+            var repo = new AdvertRepo(appContext);
+
+            int changedRows = repo.RemoveAllPictures(7);
+
+            Advert advert = repo.Find(7);
+            int count = advert.Detail.AdPictures.Count();
+
+            Assert.Equal(2, changedRows);
+            Assert.Equal(0, count);
+
+        }
+        /// <summary>
+        /// Test for public JObject DeleteFromStorage(string uuid)
+        /// </summary>
+        [Fact]
+        public void DeleteFile()
+        {
+            var repo = new AdvertRepo(appContext);
+
+            JObject result = repo.DeleteFromStorage("57ef964b-6fa4-44f9-b019-f1622ace0587");
+
+            string uuid = result.Property("uuid").Value.ToString();
+            string url = result.Property("url").Value.ToString(); 
+            int status = (int)result.Property("status").Value;
+
+            Assert.Equal(200, status);
+            Assert.Equal("57ef964b-6fa4-44f9-b019-f1622ace0587", uuid );
+            Assert.Equal("https://api.uploadcare.com/files/57ef964b-6fa4-44f9-b019-f1622ace0587/", url);
+        }
+        /// <summary>
+        /// Test for public JObject DeleteFromStorage(string uuid)
+        /// Test when bad request is returned from the server
+        /// </summary>
+        [Fact]
+        public void DeleteFile_BadRequest()
+        {
+            var repo = new AdvertRepo(appContext);
+
+            JObject result = repo.DeleteFromStorage("98b9adf1-7019-4236-9d06-0bc7cecdc9e3");
+
+            int status = (int)result.Property("status").Value;
+
+            Assert.Equal(400, status);
+        }
+        /// <summary>
+        /// Test for public JObject DeleteFromStorage(List<string> uuidGroup)
+        /// Test when response from the server is successful
+        /// </summary>
+        [Fact]
+        public void DeleteBatch_Successs()
+        {
+            var repo = new AdvertRepo(appContext);
+            List<string> files = new List<string>
+            {
+                "07fac068-1eb8-4b32-92a4-96bf40d9f9d8",
+                "624f9274-f568-484b-8f13-aed558d742b1"
+            };
+
+            JObject result = repo.DeleteFromStorage(files);
+
+            string status = result.Property("status").Value.ToString();
+            JArray results = (JArray)result.Property("result").Value;
+
+            Assert.Equal("ok", status);
+            Assert.NotEmpty(results);
+            Assert.Equal(2, results.Count);
+        }
+        /// <summary>
+        /// Test for public JObject DeleteFromStorage(List<string> uuidGroup)
+        /// Test when wrong uuid values are supplied
+        /// </summary>
+        [Fact]
+        public void DeleteBatch_ErrorResponse()
+        {
+            var repo = new AdvertRepo(appContext);
+            List<string> files = new List<string>
+            {
+                "307cbed4-2f11-46ce-a3a4-f1d6fc5c268b",
+                "fbc85a6f-baf8-4aad-866e-79c52e017b71"
+            };
+
+            JObject result = repo.DeleteFromStorage(files);
+
+            string status = result.Property("status").Value.ToString();
+            JObject problems = (JObject)result.Property("problems").Value;
+            
+
+            Assert.Equal("ok", status);
+            Assert.Equal("Missing in the project", problems.Property(files[0]).Value);
+            Assert.Equal("Missing in the project", problems.Property(files[1]).Value);
         }
         /// <summary>
         /// Test data
@@ -123,17 +221,6 @@ namespace Classifieds.XUnitTest.Repository
                 new Menu{ID=6, Name="cars",Type="SUBMENU",ParentID=1}
             };
 
-            List<Advert> adverts = new List<Advert>
-            {
-                new Advert{ID=1, Status="SUBMITTED", SubmittedDate= new DateTime(2019,1,3), CategoryID=5},
-                new Advert{ID=2, Status="REJECTED", SubmittedDate= new DateTime(2018,10,5), CategoryID=6},
-                new Advert{ID=3, Status="APPROVED", SubmittedDate= new DateTime(2018,12,20), CategoryID=6},
-                new Advert{ID=4, Status="SUBMITTED", SubmittedDate= new DateTime(2019,3,11), CategoryID=6},
-                new Advert{ID=5, Status="APPROVED", SubmittedDate= new DateTime(2018,10,15), CategoryID=4},
-                new Advert{ID=6, Status="SUBMITTED", SubmittedDate= new DateTime(2019,2,28), CategoryID=5 },
-                new Advert{ID=7, Status="SUBMITTED", SubmittedDate= new DateTime(2018,7,3), CategoryID=4}
-            };
-
             List<AdvertDetail> advertDetails = new List<AdvertDetail>
             {
                 new AdvertDetail{ID=1,Title="room for rent", Body="A LARGE ROOM- can be shared by 2 people", Email="my@email.com",AdvertID=1},
@@ -142,8 +229,45 @@ namespace Classifieds.XUnitTest.Repository
                 new AdvertDetail{ID=4,Title="GOLF POLO GTI MODEL 2013", Body="Full serviced car.Aircon sound system.Price 130000 negotiable", Email="my@email.com", AdvertID=4},
                 new AdvertDetail{ID=5,Title="Handheld Car Vacuum Cleaners", Body="Fine Living Handheld Vacuum Cleaner", Email="my@email.com", AdvertID=5},
                 new AdvertDetail{ID=6,Title="3 bedroom bhc house for Rent", Body="3 bedroom bhc house available in Gaborone ", Email="my@email.com", AdvertID=6},
-                new AdvertDetail{ID=7,Title="Samsung J1 Ace For Sale",Body="3month Samsung J1 Ace For Sale. P650 ", Email="my@email.com", AdvertID=7}
+                new AdvertDetail
+                {
+                    ID =7,Title="Samsung J1 Ace For Sale",Body="3month Samsung J1 Ace For Sale. P650 ", Email="my@email.com", AdvertID=7,
+                    AdPictures = new List<AdPicture>
+                    {
+                        new AdPicture
+                        {
+                            ID = 1,
+                            Uuid = "0b83b507-8c11-4c0e-96d2-5fd773d525f7",
+                            CdnUrl = "https://ucarecdn.com/0b83b507-8c11-4c0e-96d2-5fd773d525f7/",
+                            Name = "about me sample 3.PNG",
+                            Size = 135083
+                        },
+                        new AdPicture
+                        {
+                            ID = 2,
+                            Uuid = "c1df9f17-61ad-450a-87f9-d846c312dae0",
+                            CdnUrl = "https://ucarecdn.com/c1df9f17-61ad-450a-87f9-d846c312dae0/",
+                            Name = "about me sample 4.PNG",
+                            Size = 146888
+                        }
+                    }
+                }
+
             };
+
+            List<Advert> adverts = new List<Advert>
+            {
+                new Advert{ID=1, Status="SUBMITTED", SubmittedDate= new DateTime(2019,1,3), CategoryID=5},
+                new Advert{ID=2, Status="REJECTED", SubmittedDate= new DateTime(2018,10,5), CategoryID=6},
+                new Advert{ID=3, Status="APPROVED", SubmittedDate= new DateTime(2018,12,20), CategoryID=6},
+                new Advert{ID=4, Status="SUBMITTED", SubmittedDate= new DateTime(2019,3,11), CategoryID=6},
+                new Advert{ID=5, Status="APPROVED", SubmittedDate= new DateTime(2018,10,15), CategoryID=4},
+                new Advert{ID=6, Status="SUBMITTED", SubmittedDate= new DateTime(2019,2,28), CategoryID=5},
+                new Advert{ID=7, Status="SUBMITTED", SubmittedDate= new DateTime(2018,7,3), CategoryID=4, Detail=advertDetails[6]}
+            };
+
+            Advert Ad = GetAdvert();
+            
 
             context.AddRange(menus);
             context.AddRange(adverts);

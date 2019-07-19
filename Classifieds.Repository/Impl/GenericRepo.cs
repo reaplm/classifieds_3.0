@@ -205,8 +205,8 @@ namespace Classifieds.Repository.Impl
                             {
                                 object propValue = childProperty.GetValue(includeObject);//property value  
 
-                                if (propValue != null)
-                                    childProperty.SetValue(includeProperty.GetValue(entry), propValue);
+                                childProperty.SetValue(includeProperty.GetValue(entry), propValue);
+
 
                             }
                         }
@@ -221,11 +221,8 @@ namespace Classifieds.Repository.Impl
                         {
                         
                             object propValue = property.GetValue(entity, null);
-                            if(propValue != null)
-                            {
-                                entry.GetType().GetProperty(property.Name)
+                            entry.GetType().GetProperty(property.Name)
                                 .SetValue(entry, propValue);
-                            }
                         }
                     }
                 }

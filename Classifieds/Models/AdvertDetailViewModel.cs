@@ -31,6 +31,13 @@ namespace Classifieds.Web.Models
                 else return "";
             }
         }
+        public string UcareWidget
+        {
+            get
+            {
+                return GroupUuid;
+            }
+        }
         [Required(ErrorMessage = "Please enter email address")]
         [EmailAddress(ErrorMessage ="Invalid email address")]
         [Display(Name = "Email Address")]

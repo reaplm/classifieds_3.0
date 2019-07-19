@@ -175,11 +175,22 @@ namespace Classifieds.XUnitTest.Repository
 
             AdvertDetail newAdDetail = new AdvertDetail
             {
-                ID = 6,
+                ID = 8,
                 Title = "Black Toyota for sale in mogoditshane",
                 Body = "Black 4x4 Toyota cruiser",
                 Email = "pearl@email.com",
-                Location = "Mogoditshane"
+                Location = "Mogoditshane",
+                AdPictures = new List<AdPicture>
+                {
+                    new AdPicture
+                    {
+                        ID = 3,
+                        Uuid = "new image",
+                        CdnUrl = "new cdn url",
+                        Name = "about me sampl.PNG",
+                        Size = 135083
+                    }
+                }
             };
 
             Advert newAd = new Advert
@@ -207,6 +218,7 @@ namespace Classifieds.XUnitTest.Repository
             Assert.Equal("Mogoditshane", editedAd.Detail.Location);
             Assert.Equal(new DateTime(2019, 05, 10), editedAd.PublishedDate);
             Assert.Equal("71406569", editedAd.Detail.Phone);
+            Assert.Single(editedAd.Detail.AdPictures);
         }
         /// <summary>
         ///Create a context and initialize the database with test Data

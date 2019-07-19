@@ -14,7 +14,6 @@ function ModalDismiss(modalId) {
     $('body').removeClass('modal-open');
     $('.modal-backdrop').remove();
 }
-
 function OnCategoryChanged(elementId) {
     var element = document.getElementById(elementId);
     var id = element.value;
@@ -44,14 +43,66 @@ function OnSubCategoryChanged(elementId) {
     document.getElementById("CategoryID").value = id;
     console.log("CategoryID: " + id);
 }
-
+/**
+ * Edit advert modal
+ * @param {id} id adver id
+ */
 function EditAdvert(id) {
 
     var url = "/Classifieds/Edit/" + id;
 
     GetPartialView(url, function (data) {
-        $(data).modal();
+        $(data).modal().on('shown.bs.modal', function () {
+
+            //-------------------------------------Upload Pictures--------------------------
+            var multiWidget = uploadcare.MultipleWidget('#Detail_UcareWidget');
+
+            multiWidget.onUploadComplete(function (group) {
+                if (group) {
+                    group;
+
+                    document.getElementById("Detail_GroupCdn").value = group.cdnUrl;
+                    document.getElementById("Detail_GroupCount").value = group.count;
+                    document.getElementById("Detail_GroupSize").value = group.size;
+                    document.getElementById("Detail_GroupUuid").value = group.uuid;
+
+                }
+            });
+            //Get information for individual files
+            multiWidget.onChange(function (group) {
+                var count = 0;
+                var html = "";
+                $("#pictures").empty();
+
+                if (group) {
+                    group.files().forEach(function (file) {
+                        file.done(function (info) {
+                            console.log(info); // fileInfo object
+                            html += "<input type='hidden' id='Detail_AdPictures' name=Detail.AdPictures[" + count + "].Uuid " +
+                                "value = '" + info.uuid + "' />";
+                            html += "<input type='hidden' id='Detail_AdPictures' name=Detail.AdPictures[" + count + "].CdnUrl " +
+                                "value = '" + info.cdnUrl + "' />";
+                            html += "<input type='hidden' id='Detail_AdPictures' name=Detail.AdPictures[" + count + "].Name " +
+                                "value = '" + info.name + "' />";
+                            html += "<input type='hidden' id='Detail_AdPictures' name=Detail.AdPictures[" + count + "].Size " +
+                                "value = '" + info.size + "' />";
+
+                            count++;
+                        });
+                    });
+                    $("#pictures").append(html);
+                }
+                else {
+
+                    document.getElementById("Detail_GroupCdn").value = "";
+                    document.getElementById("Detail_GroupCount").value = 0;
+                    document.getElementById("Detail_GroupSize").value = "";
+                    document.getElementById("Detail_GroupUuid").value = "";
+                }
+            });
+        });
     });
+
 }
 function GetMenuUrl(elementId) {
     var element = document.getElementById(elementId);
@@ -222,6 +273,7 @@ $(document).ready(function () {
         });
 
     }
+    
     //=======================================ACCORDION ACTIVE============================
     $(".acc-nav-link").each(function () {
         

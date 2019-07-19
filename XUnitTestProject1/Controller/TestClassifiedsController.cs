@@ -287,6 +287,8 @@ namespace Classifieds.XUnitTest.Controller
         {
             mockAdvertService.Setup(m => m.Update(It.IsAny<Advert>(), It.IsAny<Object[]>(),
                 It.IsAny<string[]>())).Returns(1);
+            mockAdvertService.Setup(m => m.RemoveAllPictures(It.IsAny<long>()))
+                .Returns(2);
 
             var model = GetAdvert();
 
@@ -310,6 +312,8 @@ namespace Classifieds.XUnitTest.Controller
         {
             mockAdvertService.Setup(m => m.Update(It.IsAny<Advert>(), It.IsAny<Object[]>(),
                 It.IsAny<string[]>())).Returns(0);
+            mockAdvertService.Setup(m => m.RemoveAllPictures(It.IsAny<long>()))
+                .Returns(2);
 
             var model = GetAdvert();
 
