@@ -7,6 +7,25 @@ function OpenSidebar() {
 function CloseSidebar() {
     document.getElementById("sideNavigation").style.width = "0";
 }
+function UpdateStatus(id, controller, checkbox) {
+    var url = '/' + controller + '/Status/';
+    $.ajax({
+        url: url,
+        type: 'get',
+        data: { id: id, approved: checkbox.checked}
+    }).done(function (data, textStatus, jqXHR) {
+        if (data === "success") {
+            window.location.reload();
+        }
+        else 
+            alert("Sorry. Failed to update.");
+        
+    })
+    .fail(function (jqXHR, errorText, errorThrown) {
+        alert("Failed to submit. Internal error.");
+    });
+   
+}
 function ModalDismiss(modalId) {
     var modal = "#" + modalId;
 

@@ -116,7 +116,11 @@ namespace Classifieds
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
 
-              
+                routes.MapRoute(
+                 "StatusUpdate",
+                 "Classifieds/Status/{id}/{status}",
+                 new { controller = "Classifieds", Action = "Status" }
+                );
             });
 
             

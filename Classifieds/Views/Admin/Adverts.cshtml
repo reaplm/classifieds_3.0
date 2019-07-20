@@ -39,11 +39,11 @@
                     @Html.Raw("</td><td class=''>")
                     if (advert.Status == "APPROVED")
                     {
-                        @Html.CheckBox("approve", false, new { })
+                        @Html.CheckBox("approve", true, new {@onchange="UpdateStatus("+ @advert.ID + ",'Classifieds', this)" })
                     }
                     else
                     {
-                        @Html.CheckBox("approve", false, new { })
+                        @Html.CheckBox("approve", false, new { @onchange = "UpdateStatus(" + @advert.ID + ",'Classifieds', this )" })
                     }
                     @Html.Raw("</td><td class=''>")
                     @Html.ActionLink("Edit", "action", "controller", new { id = advert.ID })

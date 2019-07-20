@@ -329,6 +329,39 @@ namespace Classifieds.XUnitTest.Controller
 
         }
         /// <summary>
+        /// Test for public IActionResult Status(long id, bool approved)
+        /// </summary>
+        [Fact]
+        public void Status()
+        {
+            AdvertDetail advertDetail = new AdvertDetail
+            {
+                ID = 8,
+                Title = "Black Toyota for sale",
+                Body = "Black 4x4 Toyota cruiser",
+                Email = "pearl@email",
+                GroupCdn = "GroupCdnValue",
+                GroupCount = 2,
+                GroupSize = 2048,
+                GroupUuid = "GroupUuidValue",
+                Location = "Gaborone"
+            };
+
+            Advert advert = new Advert
+            {
+                ID = 1,
+                Status = EnumTypes.AdvertStatus.SUBMITTED.ToString(),
+                Detail = advertDetail
+            };
+            mockAdvertService.Setup(m => m.Find(It.IsAny<long>())).Returns(advert);
+            var controller = new ClassifiedsController(mockAdvertService.Object,
+                mockCatService.Object, mapper);
+
+            var result = controller.Status(1, true) as JsonResult;
+
+            Assert.Equal("success", result.Value);
+        }
+        /// <summary>
         /// Initialize AutoMapper
         /// </summary>
         private void Inialize()

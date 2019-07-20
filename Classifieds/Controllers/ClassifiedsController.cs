@@ -192,6 +192,35 @@ namespace Classifieds.Web.Controllers
             return PartialView(model);
         }
         /// <summary>
+        /// Update status of advert (approve/reject)
+        /// url: /classifieds/Status/id/approved
+        /// </summary>
+        /// <param name="id">Advert id</param>
+        /// <param name="approved">status</param>
+        /// <returns></returns>
+        [Authorize]
+        public IActionResult Status(long id, bool approved)
+        {
+            var advert = advertService.Find(id);
+
+            if (approved)
+            {
+                advert.Status = EnumTypes.AdvertStatus.APPROVED.ToString();
+                advert.ApprovedDate = new DateTime();
+                
+            }
+            else
+            {
+                advert.Status = EnumTypes.AdvertStatus.REJECTED.ToString();
+                advert.RejectedDate = new DateTime();
+            }
+
+            advertService.Update(advert);
+            advertService.Save();
+
+            return new JsonResult("success");
+        }
+        /// <summary>
         /// Fetch parent categories
         /// </summary>
         /// <param name="selectedVal">The ID of the selected item</param>
