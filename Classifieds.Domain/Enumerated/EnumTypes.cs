@@ -15,8 +15,9 @@ namespace Classifieds.Domain.Enumerated
 
         public enum Status
         {
-            ACTIVE,
-            INACTIVE
+            
+            INACTIVE,
+            ACTIVE
         }
 
         public enum AdvertStatus

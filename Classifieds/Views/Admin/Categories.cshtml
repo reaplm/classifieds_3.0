@@ -47,7 +47,8 @@
                         @Html.Raw("</td><td class='w-25'>")
                         @Html.DisplayFor(model => subcat.Label)
                         @Html.Raw("</td><td class=''>")
-                        @Html.CheckBoxFor(model => subcat.Status)
+                        @Html.CheckBoxFor(model => subcat.Status, 
+                            new { @onchange="UpdateStatus(" + subcat.ID + ", 'Category', this)" })
                         @Html.Raw("</td><td>");
                         @Html.Raw("<button type='button' class='close' " +
                               "onclick='DeleteMenu()'><span></span></button></td>")
