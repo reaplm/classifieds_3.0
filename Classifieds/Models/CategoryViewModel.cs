@@ -23,7 +23,7 @@ namespace Classifieds.Web.Models
 
         public bool Status { set; get; }
  
-        public long ParentID { set; get; }
+        public long? ParentID { set; get; }
         public virtual CategoryViewModel Parent { set; get; }
 
         public virtual List<CategoryViewModel> SubCategories { set; get; }
