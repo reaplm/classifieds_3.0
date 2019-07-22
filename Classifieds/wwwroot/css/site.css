@@ -201,7 +201,9 @@ p{
     text-transform: Capitalize;
     background-color: #e9eef2;
 }
-
+.modal-header img{
+    width: 50px;
+}
 .modal-footer {
     background-color: #e9eef2;
 }

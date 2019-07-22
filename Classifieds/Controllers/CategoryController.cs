@@ -2,13 +2,17 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Net;
 using System.Threading.Tasks;
 using AutoMapper;
 using Classifieds.Domain.Enumerated;
 using Classifieds.Domain.Model;
 using Classifieds.Service;
+using Classifieds.Web.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.Data.OData.Query.SemanticAst;
 
 namespace Classifieds.Web.Controllers
 {
@@ -22,6 +26,46 @@ namespace Classifieds.Web.Controllers
             this.categoryService = categoryService;
             this.mapper = mapper;
         }
+        /// <summary>
+        /// Edit category
+        /// </summary>
+        /// <param name="id">id of the category to edit</param>
+        /// <returns></returns>
+        [Authorize]
+        public IActionResult Edit(long id)
+        {
+            CategoryViewModel model = mapper.Map<CategoryViewModel>
+                (categoryService.Find(id));
+
+            ViewBag.Categories = ParentCategories(null);
+
+            return PartialView(model);
+        }
+        /// <summary>
+        /// Edit category submit 
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        [Authorize]
+        [ValidateAntiForgeryToken]
+        [HttpPost]
+        public IActionResult Edit(CategoryViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                model.Label = model.Name.Replace(" ", "");
+                categoryService.Update(mapper.Map<Category>(model));
+                categoryService.Save();
+
+                HttpContext.Response.StatusCode = (int)HttpStatusCode.Created ;
+                return new JsonResult ( "Edit Successful!" );
+            }
+
+            ViewBag.Categories = ParentCategories(model.ParentID);
+            HttpContext.Response.StatusCode = (int)HttpStatusCode.OK;
+            return PartialView(model);
+        }
+        
         /// <summary>
         /// Fetch all subcategories where ParentID is equal to id
         /// /Category/SubCategories/id
@@ -62,6 +106,32 @@ namespace Classifieds.Web.Controllers
             categoryService.Save();
 
             return new JsonResult("success");
+        }
+        /// <summary>
+        /// Fetch all parent categories to pupulate select list
+        /// </summary>
+        /// <param name="selectedIndex"></param>
+        /// <returns></returns>
+        private IEnumerable<SelectListItem> ParentCategories(long? selectedIndex)
+        {
+            List<SelectListItem> selectItems = new List<SelectListItem>();
+            Expression<Func<Category, bool>> where = c => c.ParentID == null;
+            var categories = categoryService.FindAll(where, null);
+
+
+            foreach (var category in categories)
+            {
+                selectItems.Add(
+                    new SelectListItem
+                    {
+                        Text = category.Name,
+                        Value = category.ID.ToString(),
+                        Selected = category.ID == selectedIndex ? true: false
+                    }
+                );
+            }
+
+            return selectItems;
         }
     }
 }

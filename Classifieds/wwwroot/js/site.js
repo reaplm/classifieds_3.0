@@ -123,11 +123,22 @@ function EditAdvert(id) {
     });
 
 }
+
 function GetMenuUrl(elementId) {
     var element = document.getElementById(elementId);
     var string = element.value;
     if (string !== null || string !== "") {
         var url = "/Admin/" + string.charAt(0).toUpperCase() + string.slice(1);
+        url = url.replace(/\s+/g, '');
+        $("#Url").attr("value", url);
+    }
+}
+function GetCategoryUrl(elementId) {
+    var element = document.getElementById(elementId);
+    var string = element.value;
+    if (string !== null || string !== "") {
+        var url = "/Admin/" + string.charAt(0).toUpperCase() + string.slice(1);
+        url = url.replace(/\s+/g, '');
         $("#Url").attr("value", url);
     }
 }
@@ -243,7 +254,16 @@ $(document).ready(function () {
     $("#add-menu").on("click", function (e) {
         e.preventDefault();
 
-        var url = "/Menu/Create"
+        var url = "/Menu/Create";
+
+        GetPartialView(url, function (data) {
+            $(data).modal();
+        });
+    });
+    $(".edit-link ").on("click", function (e) {
+        e.preventDefault();
+
+        var url = this.href;
 
         GetPartialView(url, function (data) {
             $(data).modal();

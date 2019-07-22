@@ -14,8 +14,8 @@
             <div class="clearfix mt-2">
                 <img src="~/images/home/@category.Icon" class="mr-3 float-left" />
                 <h5 class="pt-2">
-                    <a href="/adpostm/menus/detail?id=@category.ID"
-                       class="dtl-link text-capitalize">@category.Name</a>
+                    @Html.ActionLink(category.Name, "Edit", "Category",new {id=@category.ID },
+                   new {@class="edit-link text-capitalize" })    
                 </h5>
             </div>
             @if (category.SubCategories.Count() > 0)
@@ -41,13 +41,14 @@
                             { @Html.Raw("<tr class='even-row'>")
                         }
                         @Html.Raw("<td class='text-capitalize  w-25'>")
-                        @Html.ActionLink(subcat.Name, "action", "controller")
+                        @Html.ActionLink(subcat.Name, "Edit", "Category",new { id = subcat.ID },
+                                new {@class="edit-link text-capitalize" })
                         @Html.Raw("</td><td class='w-25'>")
                         @Html.DisplayFor(model => subcat.Url)
                         @Html.Raw("</td><td class='w-25'>")
                         @Html.DisplayFor(model => subcat.Label)
                         @Html.Raw("</td><td class=''>")
-                        @Html.CheckBoxFor(model => subcat.Status, 
+                        @Html.CheckBoxFor(model => subcat.Status,
                             new { @onchange="UpdateStatus(" + subcat.ID + ", 'Category', this)" })
                         @Html.Raw("</td><td>");
                         @Html.Raw("<button type='button' class='close' " +
