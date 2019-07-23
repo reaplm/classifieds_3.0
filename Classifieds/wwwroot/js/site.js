@@ -12,7 +12,7 @@ function UpdateStatus(id, controller, checkbox) {
     $.ajax({
         url: url,
         type: 'get',
-        data: { id: id, approved: checkbox.checked}
+        data: { id: id, active: checkbox.checked}
     }).done(function (data, textStatus, jqXHR) {
         if (data === "success") {
             window.location.reload();
