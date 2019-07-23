@@ -84,7 +84,7 @@ namespace Classifieds.XUnitTest.Controller
         /// Test when ModelState.Valid = false
         /// </summary>
         [Fact]
-        public void EditInvalidModelState_POST()
+        public void Edit_InvalidModelState_POST()
         {
             CategoryViewModel model = new CategoryViewModel
             {
@@ -118,7 +118,7 @@ namespace Classifieds.XUnitTest.Controller
         /// Test when ModelState.Valid = true
         /// </summary>
         [Fact]
-        public void EditValidModelState_POST()
+        public void Edit_ValidModelState_POST()
         {
             CategoryViewModel model = new CategoryViewModel
             {
@@ -139,6 +139,77 @@ namespace Classifieds.XUnitTest.Controller
             Assert.Equal("Edit Successful!", result.Value);
             Assert.Equal(201, controller.HttpContext.Response.StatusCode);
         }
+        [Fact]
+        public void Create_GET()
+        {
+            mockCategoryService.Setup(m => m.FindAll(It.IsAny<Expression<Func<Category, bool>>>(),
+                It.IsAny<Expression<Func<Category, object>>[]>())).Returns(ParentCategories());
+
+            var controller = new CategoryController(mockCategoryService.Object,
+                mapper);
+
+            var result = controller.Create() as PartialViewResult;
+            List<SelectListItem> categories = (List < SelectListItem > )result.ViewData["Categories"];
+
+            Assert.Equal(4, categories.Count);
+        }
+        [Fact]
+        public void Create_ValidModelState_POST()
+        {
+           
+            CategoryViewModel model = new CategoryViewModel
+            {
+                ID = 8,
+                Name = "cars",
+                Desc = "cars Category",
+                ParentID = 1,
+                Label = "cars",
+                Status = true
+            };
+
+            var controller = new CategoryController(mockCategoryService.Object,
+                mapper);
+            controller.ControllerContext.HttpContext = new DefaultHttpContext();
+
+            var result = controller.Create(model) as JsonResult;
+
+            Assert.Equal("Category created successfully!", result.Value);
+            Assert.Equal(201, controller.HttpContext.Response.StatusCode);
+
+        }
+        [Fact]
+        public void Create_InvalidModelState_POST()
+        {
+
+            CategoryViewModel model = new CategoryViewModel
+            {
+                ID = 8,
+                Desc = "cars Category",
+                ParentID = 1,
+                Label = "cars",
+                Status = true
+            };
+
+            mockCategoryService.Setup(m => m.FindAll(It.IsAny<Expression<Func<Category, bool>>>(),
+                It.IsAny<Expression<Func<Category, object>>[]>())).Returns(ParentCategories());
+
+            var controller = new CategoryController(mockCategoryService.Object,
+                mapper);
+            controller.ControllerContext.HttpContext = new DefaultHttpContext();
+            controller.ModelState.AddModelError("Name", "Name is required");
+
+            var result = controller.Create(model) as PartialViewResult;
+            var resultModel = result.Model as CategoryViewModel;
+            var categories = result.ViewData["Categories"] as List<SelectListItem>;
+
+            Assert.Equal(200, controller.HttpContext.Response.StatusCode);
+            Assert.Equal(4, categories.Count);
+            Assert.True(categories[0].Selected);
+        }
+        /// <summary>
+        /// Test data
+        /// </summary>
+        /// <returns></returns>
         private List<Category> ParentCategories()
         {
             return new List<Category>

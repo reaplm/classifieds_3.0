@@ -224,10 +224,7 @@ $(document).ready(function () {
         document.getElementById("CategoryID").value = 0;
         console.log($(this).val());
     });
-    /**
-     * Advert details modal
-     * 
-     * */
+    //================================Partial View Modals============================
     $(".modal-link").on("click", function (e) {
         e.preventDefault();
 
@@ -255,6 +252,15 @@ $(document).ready(function () {
         e.preventDefault();
 
         var url = "/Menu/Create";
+
+        GetPartialView(url, function (data) {
+            $(data).modal();
+        });
+    });
+    $("#add-category").on("click", function (e) {
+        e.preventDefault();
+
+        var url = "/Category/Create";
 
         GetPartialView(url, function (data) {
             $(data).modal();

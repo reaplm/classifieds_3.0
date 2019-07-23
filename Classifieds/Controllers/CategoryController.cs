@@ -26,6 +26,27 @@ namespace Classifieds.Web.Controllers
             this.categoryService = categoryService;
             this.mapper = mapper;
         }
+        public IActionResult Create()
+        {
+            ViewBag.Categories = ParentCategories(null);
+            return PartialView();
+        }
+        [HttpPost]
+        public IActionResult Create(CategoryViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                categoryService.Create(mapper.Map<Category>(model));
+                categoryService.Save();
+
+                HttpContext.Response.StatusCode = (int)HttpStatusCode.Created;
+                return new JsonResult("Category created successfully!");
+            }
+
+            ViewBag.Categories = ParentCategories(model.ParentID);
+            HttpContext.Response.StatusCode = (int)HttpStatusCode.OK;
+            return PartialView(model);
+        }
         /// <summary>
         /// Edit category
         /// </summary>
