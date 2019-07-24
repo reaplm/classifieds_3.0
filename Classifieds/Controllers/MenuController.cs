@@ -38,9 +38,13 @@ namespace Classifieds.Web.Controllers
 
             var subMenus = menuService.FindAll(whereCondition, null) as List<Menu>;
 
-            return Ok(new { results = subMenus });
+            return Ok(subMenus);
 
         }
+        /// <summary>
+        /// Create a new menu item
+        /// </summary>
+        /// <returns></returns>
         [Authorize]
         public IActionResult Create()
         {
@@ -49,6 +53,11 @@ namespace Classifieds.Web.Controllers
             ViewBag.Menus = MenuSelectListItems(-1);
             return PartialView();
         }
+        /// <summary>
+        /// Create menu submit method
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
         [HttpPost]
         [Authorize]
         public IActionResult Create(MenuViewModel model)
@@ -74,13 +83,17 @@ namespace Classifieds.Web.Controllers
               }));
 
                 HttpContext.Response.StatusCode = (int)HttpStatusCode.Created;
-                return new JsonResult("Menus Created!");
+                return new JsonResult("Menu Created!");
             }
 
             ViewBag.Menus = MenuSelectListItems(model.ParentID);
             HttpContext.Response.StatusCode = (int)HttpStatusCode.OK;
             return PartialView(model);
         }
+        /// <summary>
+        /// Get menu list using predicate
+        /// </summary>
+        /// <returns></returns>
         private IEnumerable<MenuViewModel> GetMenus()
         {
             Expression<Func<Menu, bool>> where = m => m.ParentID == null;
@@ -94,6 +107,11 @@ namespace Classifieds.Web.Controllers
 
             return menus;
         }
+        /// <summary>
+        /// Get SelectList items to popolate dropdown list
+        /// </summary>
+        /// <param name="selectedItem"></param>
+        /// <returns></returns>
         private List<SelectListItem> MenuSelectListItems(long? selectedItem)
         {
             Expression<Func<Menu, bool>> whereCondition = m => m.ParentID == null;

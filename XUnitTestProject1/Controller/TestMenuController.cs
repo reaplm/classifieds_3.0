@@ -6,13 +6,16 @@ using Classifieds.Web.Controllers;
 using Classifieds.Web.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Moq;
 using MySqlX.XDevAPI.Common;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
+using System.Net;
 using System.Text;
 using Xunit;
 
@@ -22,10 +25,12 @@ namespace Classifieds.XUnitTest.Controller
     {
         private Mock<IMenuService> mockMenuService;
         private IMapper mapper;
+        private Mock<ISession> mockSession;
 
         public TestMenuController()
         {
             mockMenuService = new Mock<IMenuService>();
+            mockSession = new Mock<ISession>();
             Initialize();
         }
         /// <summary>
@@ -42,10 +47,10 @@ namespace Classifieds.XUnitTest.Controller
 
             var controller = new MenuController(mockMenuService.Object, mapper);
             OkObjectResult result = controller.SubMenus(1) as OkObjectResult;
-            List<Menu> model = Assert.IsType<List<Menu>>(result.Value);
+            List<Menu> model = (List < Menu > )result.Value;
 
             Assert.Equal(200, result.StatusCode);
-            //Assert.Equal(6, model.);
+            Assert.Equal(6, model.Count);
 
         }
         /// <summary>
@@ -54,34 +59,49 @@ namespace Classifieds.XUnitTest.Controller
         [Fact]
         public void Create_GET()
         {
+
+            mockMenuService.Setup(m => m.FindAll(It.IsAny<Expression<Func<Menu, bool>>>(),
+                It.IsAny<Expression<Func<Menu, object>>[]>())).Returns(FindAll());
+
             var controller = new MenuController(mockMenuService.Object, mapper);
 
-            var result = controller.Create() as IActionResult;
+            var result = controller.Create() as PartialViewResult;
+            var menus = result.ViewData["Menus"] as List<SelectListItem>;
 
+            Assert.Equal(6, menus.Count);
             
         }
         /// <summary>
         /// Test for public IActionResult Create
         /// </summary>
         [Fact]
-        public void CreateModelIsInvalid_POST()
+        public void Create_ModelStateIsInvalid_POST()
         {
             MenuViewModel model = new MenuViewModel
             {
-                Name = "menu1",
                 Desc = "menu1 description",
-                Url = "/Admin/Menu1"
+                Url = "/Admin/Menu1",
+                 ParentID = 3
             };
+            mockMenuService.Setup(m => m.FindAll(It.IsAny<Expression<Func<Menu, bool>>>(),
+                It.IsAny<Expression<Func<Menu, object>>[]>())).Returns(FindAll());
 
             var controller = new MenuController(mockMenuService.Object, mapper);
             controller.ControllerContext = new ControllerContext();
             controller.ControllerContext.HttpContext = new DefaultHttpContext();
             controller.ModelState.AddModelError("Name", "Name is required");
 
-            var result = controller.Create(model) as IActionResult;
+            var result = controller.Create(model) as PartialViewResult;
             var statusCode = controller.HttpContext.Response.StatusCode;
+            var menus = result.ViewData["Menus"] as List<SelectListItem>;
+            var resultModel = result.Model as MenuViewModel;
 
             Assert.Equal(200, statusCode);
+            Assert.Equal(6,menus.Count);
+            Assert.True(menus[2].Selected);
+            Assert.Equal("menu1 description", resultModel.Desc);
+            Assert.Equal("menu1 description", model.Desc);
+            Assert.Null(resultModel.Name);
         }
         /// <summary>
         /// Test for public IActionResult Create(MenuViewModel model)
@@ -93,15 +113,22 @@ namespace Classifieds.XUnitTest.Controller
             {
                 Name="menu1", Desc="menu1 description", Url="/Admin/Menu1"
             };
+
+            mockMenuService.Setup(m => m.FindAll(It.IsAny<Expression<Func<Menu, bool>>>(),
+                It.IsAny<Expression<Func<Menu, object>>[]>())).Returns(FindAll());
+           
+
             var controller = new MenuController(mockMenuService.Object, mapper);
             controller.ControllerContext = new ControllerContext();
             controller.ControllerContext.HttpContext = new DefaultHttpContext();
+            controller.ControllerContext.HttpContext.Session = mockSession.Object;
 
             var result = controller.Create(model) as JsonResult;
             var statusCode = controller.HttpContext.Response.StatusCode;
 
+
             Assert.Equal(201, statusCode);
-            Assert.Equal("Menus Created!", result.Value);
+            Assert.Equal("Menu Created!", result.Value);
         }
         /// <summary>
         /// Initialize Mapper
