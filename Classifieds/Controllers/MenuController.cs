@@ -91,6 +91,33 @@ namespace Classifieds.Web.Controllers
             return PartialView(model);
         }
         /// <summary>
+        /// Update checkbox for admin 
+        /// </summary>
+        /// <param name="id">ID of menu</param>
+        /// <param name="isAdmin">checkbox true/false</param>
+        /// <returns></returns>
+        [Authorize]
+        public IActionResult Admin(long id, bool isAdmin)
+        {
+            Menu menu = menuService.Find(id);
+
+            if (isAdmin)
+            {
+                menu.Admin = 1;
+
+            }
+            else
+            {
+                menu.Admin = 0;
+            }
+
+            menuService.Update(menu);
+            menuService.Save();
+
+            return new JsonResult("Saved!");
+
+        }
+        /// <summary>
         /// Get menu list using predicate
         /// </summary>
         /// <returns></returns>

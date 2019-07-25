@@ -17,7 +17,8 @@
                 <a href="/adpostm/menus/detail?id=@menu.ID"
                    class="dtl-link text-capitalize">@menu.Name</a>
             </h5>
-            @Html.CheckBoxFor(model => menu.Admin,new { @class="float-right"})
+            @Html.CheckBoxFor(model => menu.Admin,new { @class="float-right"
+       })
         </div>
         @if(menu.SubMenus.Count() > 0)
         {
@@ -49,7 +50,8 @@
         @Html.Raw("</td><td class='w-25'>")
         @Html.DisplayFor(model => submenu.Label)
         @Html.Raw("</td><td class=''>")
-        @Html.CheckBoxFor(model => submenu.Admin)
+        @Html.CheckBoxFor(model => submenu.Admin, new {
+            @onchange = "UpdateAdmin(" + @menu.ID + ", 'Menu', this )"})
         @Html.Raw("</td><td class=''>")
         @Html.CheckBoxFor(model => submenu.Active)
         @Html.Raw("</td><td>");

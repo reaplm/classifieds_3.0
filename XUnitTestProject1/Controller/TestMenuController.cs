@@ -130,10 +130,31 @@ namespace Classifieds.XUnitTest.Controller
             Assert.Equal(201, statusCode);
             Assert.Equal("Menu Created!", result.Value);
         }
-        /// <summary>
-        /// Initialize Mapper
-        /// </summary>
-        private void Initialize()
+        [Fact]
+        public void Admin()
+        {
+            Menu menu = new Menu
+            {
+                ID = 2,
+                Name = "menu1",
+                Desc = "menu1 description",
+                Url = "/Admin/Menu1",
+                Admin = 0
+            };
+
+            mockMenuService.Setup(m => m.Find(It.IsAny<long>())).Returns(menu);
+
+            var controller = new MenuController(mockMenuService.Object, mapper);
+
+            var result = controller.Admin(2, true) as JsonResult;
+
+            Assert.Equal("Saved!", result.Value);
+        }
+
+            /// <summary>
+            /// Initialize Mapper
+            /// </summary>
+            private void Initialize()
         {
             var configuration = new MapperConfiguration(cfg =>
             {
