@@ -18,7 +18,6 @@ namespace Classifieds.Web.Models
         [EmailAddress(ErrorMessage = "Invalid email address")]
         public String Email { set; get; }
 
-        [Required(ErrorMessage = "Password is required")]
         public String Password { set; get; }
 
         public DateTime? LastLogin { set; get; }

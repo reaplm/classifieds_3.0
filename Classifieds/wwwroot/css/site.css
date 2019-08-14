@@ -60,7 +60,18 @@ a:hover, a.active {
     margin-top: 10px;
     margin: 1em auto;
 }
+/*==================================REGISTRATION PAGE=================================*/
+#pg-register {
+    width: 600px;
+    margin: 2em auto;
+    background-color: #e9eef2;
+}
 
+#register {
+    width: 80%;
+    margin-top: 10px;
+    margin: 1em auto;
+}
        
 /*====================================CREATE ADVERT=================================*/
 

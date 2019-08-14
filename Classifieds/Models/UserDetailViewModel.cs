@@ -21,8 +21,6 @@ namespace Classifieds.Web.Models
         public String ImageName { set; get; }
         public String ImageUuid { set; get; }
 
-        [Display(Name = "Mobile No")]
-        [Required(ErrorMessage = "Mobile Number is required")]
         public String MobileNo { set; get; }
 
         public long UserID { set; get; }
