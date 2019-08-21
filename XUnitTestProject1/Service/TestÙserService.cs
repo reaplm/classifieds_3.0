@@ -12,6 +12,12 @@ namespace Classifieds.XUnitTest.Service
 {
     public class TestÙserService
     {
+        private Mock<IEmailService> mockEmailService;
+
+        public TestÙserService()
+        {
+            mockEmailService = new Mock<IEmailService>();
+        }
         /// <summary>
         /// Test { public User AuthenticateUser(String email, String password) }
         /// </summary>
@@ -22,7 +28,7 @@ namespace Classifieds.XUnitTest.Service
             mockRepo.Setup(x => x.AuthenticateUser(It.IsAny<String>(), It.IsAny<String>()))
                 .Returns(new Domain.Model.User { ID = 5, Email = "user@email.com" });
 
-            var service = new UserService(mockRepo.Object);
+            var service = new UserService(mockRepo.Object, mockEmailService.Object);
 
             var result = service.AuthenticateUser(It.IsAny<String>(), It.IsAny<String>());
 
@@ -36,7 +42,7 @@ namespace Classifieds.XUnitTest.Service
         public void GetEncryptedPassword()
         {
             var mockRepo = new Mock<IUserRepo>();
-            var service = new UserService(mockRepo.Object);
+            var service = new UserService(mockRepo.Object , mockEmailService.Object);
 
             var result = service.GetEncryptedPassword("password2");
 

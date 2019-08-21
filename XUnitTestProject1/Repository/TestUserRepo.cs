@@ -43,6 +43,33 @@ namespace Classifieds.XUnitTest.Repository
                 repo.AuthenticateUser("my@email", "7c6a180b36896a0a8c02787eeafb0e4c"));
 
         }
+        [Fact]
+        public void CreateVerificationToken()
+        {
+            var userRepo = new UserRepo(mockContext);
+
+            //create a user
+            var detail = new UserDetail { ID = 4, FirstName = "pearl", LastName = "molefe"};
+
+            var user = new User
+            {
+                ID = 4,
+                Email = "pearlmolefe@gmail.com",
+                Password = "7c6a180b36896a0a8c02787eeafb0e4c",
+                RegDate = DateTime.Now,
+                UserDetail = detail
+            };
+
+            userRepo.Create(user);
+            userRepo.Save();
+
+            //update token
+            var result = userRepo.CreateVerificationToken(4, "NewEmailToken");
+            var newUser = userRepo.Find(4);
+
+            Assert.Equal("NewEmailToken", newUser.VerificationToken);
+            Assert.True(result);
+    }
         /// <summary>
         /// Initialize context
         /// 

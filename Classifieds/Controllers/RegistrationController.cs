@@ -26,9 +26,15 @@ namespace Classifieds.Web.Controllers
         /// <returns></returns>
         public IActionResult Index()
         {
-            ViewBag.ReturnUrl = "/Login/";
+            ViewBag.ReturnUrl = "/Registration/ConfirmRegistration/";
             return View();
         }
+        /// <summary>
+        /// Submit registration
+        /// </summary>
+        /// <param name="model">Form data</param>
+        /// <param name="ReturnUrl">Url to redirect to</param>
+        /// <returns></returns>
         [HttpPost]
         public IActionResult Index(RegistrationViewModel model, string ReturnUrl)
         {
@@ -37,13 +43,49 @@ namespace Classifieds.Web.Controllers
                 //encrypt password
                 model.User.Password = userService.GetEncryptedPassword(model.Password);
                 model.User.RegDate = DateTime.Now;
-                userService.Create(mapper.Map<User>(model.User));
+                User user = userService.Create(mapper.Map<User>(model.User));
                 userService.Save();
 
-                return Redirect(ReturnUrl);
+                if (user != null)
+                {
+                    //confirm Registration
+                    //Generate Token
+                    string verificationToken = Guid.NewGuid().ToString();
+
+                    if (userService.CreateVerificationToken(user.ID, verificationToken))
+                    {
+                        //send email
+                        SendConfirmationEmail(user.Email, verificationToken);
+                    }
+
+                    return Redirect(ReturnUrl);
+                }
             }
 
             return View(model);
+        }
+        /// <summary>
+        /// Registration success page
+        /// </summary>
+        /// <returns></returns>
+        public IActionResult ConfirmRegistration()
+        {
+            return View();
+        }
+        /// <summary>
+        /// After successful registration, send email for user activate account
+        /// </summary>
+        /// <param name="email">User's email</param>
+        /// <param name="token">Verification token</param>
+        /// <returns></returns>
+        public Task SendConfirmationEmail(string email, string token)
+        {
+            string url = "localhost/Registration/ConfirmRegistration?token=" + token;
+            string subject  = "Classifieds Registration";
+            string message = "<p>Click the url below to activate your registration<p><p>" +
+                "<a href='" + url + "'>" + url + "</a></p>";
+
+            return userService.SendVerificationEmailAsync(email, subject, message);
         }
     }
 }

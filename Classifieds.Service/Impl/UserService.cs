@@ -4,16 +4,19 @@ using System;
 using System.Collections.Generic;
 using System.Security.Cryptography;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace Classifieds.Service.Impl
 {
     public class UserService : GenericService<User>, IUserService
     {
         private IUserRepo userRepository;
+        private IEmailService emailService;
 
-        public UserService(IUserRepo userRepository) : base(userRepository)
+        public UserService(IUserRepo userRepository, IEmailService emailService) : base(userRepository)
         {
             this.userRepository = userRepository;
+            this.emailService = emailService;
         }
         /// <summary>
         /// Authentication Service
@@ -27,6 +30,12 @@ namespace Classifieds.Service.Impl
 
             return userRepository.AuthenticateUser(email, encryptedPass);
         }
+
+        public bool CreateVerificationToken(long id, string token)
+        {
+            return userRepository.CreateVerificationToken(id, token);
+        }
+
         /// <summary>
         /// Return encrypted password
         /// </summary>
@@ -54,5 +63,17 @@ namespace Classifieds.Service.Impl
                 return sb.ToString();
             }
         }
+
+        public async Task SendVerificationEmailAsync(string email, string subject, string message)
+        {
+            await emailService.SendEmailAsync(email, subject, message);
+
+        }
+
+        User IUserService.Create(User user)
+        {
+            return userRepository.Create(user);
+        }
+
     }
 }

@@ -27,6 +27,9 @@ namespace Classifieds.Web.Models
         public DateTime RegDate { set; get; }
         public DateTime? PasswordExpiry { set; get; }
 
+        public int IsVerified { set; get; }
+        public string VerificationToken { set; get; }
+
         public virtual UserDetailViewModel UserDetail{set;get;}
         
     }

@@ -12,7 +12,6 @@
     <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.6" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="2.2.3" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.0.4" />
-    <PackageReference Include="MySql.Data" Version="8.0.15" />
     <PackageReference Include="MySql.Data.EntityFrameworkCore" Version="8.0.15" />
     <PackageReference Include="Unity" Version="5.10.1" />
   </ItemGroup>
@@ -41,6 +40,12 @@
     <Reference Include="MySql.Web">
       <HintPath>..\..\..\..\..\..\Program Files (x86)\MySQL\MySQL Connector Net 8.0.15\Assemblies\v4.5.2\MySql.Web.dll</HintPath>
     </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Update="appsettings.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 
 </Project>

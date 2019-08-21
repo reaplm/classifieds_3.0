@@ -69,6 +69,10 @@ namespace Classifieds
                 options.Cookie.HttpOnly = true;
             });
 
+            //email settings
+            services.AddOptions();
+            services.Configure<EmailSettings>(Configuration.GetSection("EmailSettings"));
+
             services.AddMvc()
                 .AddJsonOptions(opts => opts.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
 
@@ -87,6 +91,7 @@ namespace Classifieds
             services.AddScoped<IAddressRepo, AddressRepo>();
             services.AddScoped<IUserDetailService, UserDetailService>();
             services.AddScoped<IUserDetailRepo, UserDetailRepo>();
+            services.AddSingleton<IEmailService, EmailService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -17,6 +17,12 @@ namespace Classifieds.Domain.Model
         [Column(name: "activated")]
         public int? Activated { set; get; }
 
+        [Column(name: "verified")]
+        public int? IsVerified { set; get; }
+
+        [Column(name: "verification_token")]
+        public string VerificationToken { set; get; }
+
         [Column(name: "activation_code")]
         public String ActivationCode { set; get; }
 

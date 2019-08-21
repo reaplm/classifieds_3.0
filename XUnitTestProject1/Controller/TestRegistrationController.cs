@@ -8,6 +8,7 @@ using Moq;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 using Xunit;
 
 namespace Classifieds.XUnitTest.Controller
@@ -28,17 +29,26 @@ namespace Classifieds.XUnitTest.Controller
             var controller = new RegistrationController(mapper, mockUserService.Object);
             var result = controller.Index() as ViewResult;
 
-            Assert.Equal("/Login/", result.ViewData["ReturnUrl"]);
+            Assert.Equal("/Registration/ConfirmRegistration/", result.ViewData["ReturnUrl"]);
         }
         [Fact]
         public void Index_ModelStateIsValid_POST()
         {
             var model = GetData();
+
+            mockUserService.Setup(m => m.CreateVerificationToken(It.IsAny<long>(),
+                It.IsAny<string>())).Returns(true);
+            mockUserService.Setup(m => m.SendVerificationEmailAsync(It.IsAny<string>(),
+                It.IsAny<string>(), It.IsAny<string>())).Returns(Task.CompletedTask);
+            mockUserService.Setup(m => m.Create(It.IsAny<User>()))
+            .Returns(mapper.Map<User>(model.User));
+
+            
             var controller = new RegistrationController(mapper, mockUserService.Object);
 
-            var result = controller.Index(model, "/Login/") as RedirectResult;
+            var result = controller.Index(model, "/Registration/ConfirmRegistration/") as RedirectResult;
 
-            Assert.Equal("/Login/", result.Url);
+            Assert.Equal("/Registration/ConfirmRegistration/", result.Url);
         }
         [Fact]
         public void Index_ModelStateIsInvalid_POST()
@@ -46,7 +56,7 @@ namespace Classifieds.XUnitTest.Controller
             var model = GetData();
             var controller = new RegistrationController(mapper, mockUserService.Object);
             controller.ModelState.AddModelError("Password", "Password is required");
-            var result = controller.Index(model, "/Login/") as ViewResult;
+            var result = controller.Index(model, "/Registration/Confirm/") as ViewResult;
             var resultModel = result.Model as RegistrationViewModel;
 
             Assert.Equal("pearl19", resultModel.Password);
