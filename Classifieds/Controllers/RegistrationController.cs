@@ -55,7 +55,7 @@ namespace Classifieds.Web.Controllers
                     if (userService.CreateVerificationToken(user.ID, verificationToken))
                     {
                         //send email
-                        SendConfirmationEmail(user.Email, verificationToken);
+                        SendConfirmationEmail(user, verificationToken);
                     }
 
                     return Redirect(ReturnUrl);
@@ -68,8 +68,30 @@ namespace Classifieds.Web.Controllers
         /// Registration success page
         /// </summary>
         /// <returns></returns>
-        public IActionResult ConfirmRegistration()
+        /// /Registration/ConfirmRegistration
+
+        /// <summary>
+        /// Registration success page
+        /// </summary>
+        /// <returns></returns>
+        /// /Registration/ConfirmRegistration/{token}
+        public IActionResult ConfirmRegistration(long id, string token)
         {
+            if(token != null)
+            {
+                int changed = userService.ActivateAccount(id, token);
+                ViewBag.IsActivated = true;
+
+                if (changed > 0)
+                    ViewBag.Error = false;
+                else
+                    //something went wrong
+                    ViewBag.Error = true;
+            }
+            else
+            {
+                ViewBag.IsActivated = false;
+            }
             return View();
         }
         /// <summary>
@@ -78,14 +100,16 @@ namespace Classifieds.Web.Controllers
         /// <param name="email">User's email</param>
         /// <param name="token">Verification token</param>
         /// <returns></returns>
-        public Task SendConfirmationEmail(string email, string token)
+        public Task SendConfirmationEmail(User user, string token)
         {
-            string url = "localhost/Registration/ConfirmRegistration?token=" + token;
+            var url = Url.Action("ConfirmRegistration", "Registration",
+               new {id=user.ID, token = token },
+               Request.Scheme);
             string subject  = "Classifieds Registration";
             string message = "<p>Click the url below to activate your registration<p><p>" +
                 "<a href='" + url + "'>" + url + "</a></p>";
 
-            return userService.SendVerificationEmailAsync(email, subject, message);
+            return userService.SendVerificationEmailAsync(user.Email, subject, message);
         }
     }
 }

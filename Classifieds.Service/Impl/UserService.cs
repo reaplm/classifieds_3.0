@@ -18,6 +18,12 @@ namespace Classifieds.Service.Impl
             this.userRepository = userRepository;
             this.emailService = emailService;
         }
+
+        public int ActivateAccount(long id, string token)
+        {
+            return userRepository.ActivateAccount(id, token);
+        }
+
         /// <summary>
         /// Authentication Service
         /// </summary>

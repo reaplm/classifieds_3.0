@@ -3,7 +3,9 @@ using Classifieds.Domain.Model;
 using Classifieds.Service;
 using Classifieds.Web.Controllers;
 using Classifieds.Web.Models;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Routing;
 using Moq;
 using System;
 using System.Collections.Generic;
@@ -45,6 +47,8 @@ namespace Classifieds.XUnitTest.Controller
 
             
             var controller = new RegistrationController(mapper, mockUserService.Object);
+            controller.ControllerContext.HttpContext = new DefaultHttpContext();
+            controller.Url = new Mock<IUrlHelper>().Object;
 
             var result = controller.Index(model, "/Registration/ConfirmRegistration/") as RedirectResult;
 
@@ -62,6 +66,49 @@ namespace Classifieds.XUnitTest.Controller
             Assert.Equal("pearl19", resultModel.Password);
             Assert.Equal("pearl19", resultModel.ConfirmPassword );
             Assert.True(resultModel.AcceptTerms);
+        }
+        /// <summary>
+        /// Test for {public IActionResult ConfirmRegistration(long id, string token)}
+        /// </summary>
+        [Fact]
+        public void ConfirmRegistration_TokenIsNull()
+        {
+            var controller = new RegistrationController(mapper, mockUserService.Object);
+            var result = controller.ConfirmRegistration(1, null) as ViewResult;
+
+            Assert.False((bool)result.ViewData["IsActivated"]);
+        }
+        /// <summary>
+        /// Test for {public IActionResult ConfirmRegistration(long id, string token)}
+        /// </summary>
+        [Fact]
+        public void ConfirmRegistration_TokenIsNotNull()
+        {
+            mockUserService.Setup(m => m.ActivateAccount(It.IsAny<long>(), It.IsAny<string>()))
+                .Returns(1);
+
+            var controller = new RegistrationController(mapper, mockUserService.Object);
+            var result = controller.ConfirmRegistration(1, "cd-2a-hk") as ViewResult;
+
+            Assert.True((bool)result.ViewData["IsActivated"]);
+            Assert.False((bool)result.ViewData["Error"]);
+        }
+        /// <summary>
+        /// Test for {public IActionResult ConfirmRegistration(long id, string token)}
+        /// </summary>
+        [Fact]
+        public void ConfirmRegistration_ChangedIsLessThanZero()
+        {
+
+            mockUserService.Setup(m => m.ActivateAccount(It.IsAny<long>(), It.IsAny<string>()))
+                .Returns(0);
+
+            var controller = new RegistrationController(mapper, mockUserService.Object);
+            var result = controller.ConfirmRegistration(1, "cd-2a-hk") as ViewResult;
+
+            Assert.True((bool)result.ViewData["IsActivated"]);
+            Assert.True((bool)result.ViewData["Error"]);
+
         }
         private RegistrationViewModel GetData()
         {

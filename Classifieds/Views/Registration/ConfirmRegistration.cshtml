@@ -4,13 +4,37 @@
 
     <h3 class="text-center mt-3">Registration Confirmation</h3>
 
-    <p class="m-3">
-        Congratulations, your registration was successful! <br />
-        You will be sent a confirmation email shortly.
-        After confirmation your registration, proceed to
-        the <a href='/Login/'> login </a> page.
-        If you haven't received the confirmtation email, contact
-        <a href='/Login/'>Classifieds.Registration</a>
-    </p>
+
+    @if (ViewBag.IsActivated)
+    {
+        if (ViewBag.Error)
+        {
+            <p class="m-3">
+                Something went wrong while activating your account.<br />
+                Please contact <a href='/Login/'> Classifieds.Registration </a> for
+                assistance.
+            </p>
+        }
+        else
+        {
+            <p class="m-3">
+                Congratulations, you have successfully activated your account! <br />
+                You many now proceed to <a href='/Login/'>login </a>
+            </p>
+        }
+
+
+    }
+    else
+    {
+        <p class="m-3">
+            Congratulations, your registration was successful! <br />
+            You will be sent a confirmation email shortly.
+            After confirming your registration, proceed to
+            the <a href='/Login/'> login </a> page.
+            If you do not receive the confirmtation email, contact
+            <a href='/Login/'> Classifieds.Registration </a>
+        </p>
+    }
+
 </div>
-<div class="mb-5 mt-5"></div>

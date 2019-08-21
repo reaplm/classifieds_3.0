@@ -80,5 +80,31 @@ namespace Classifieds.Repository.Impl
         {
            return context.Add(user).Entity;
         }
+        /// <summary>
+        /// User token to activate account
+        /// </summary>
+        /// <param name="token">user's token</param>
+        /// <returns>number of rows changed</returns>
+        public int ActivateAccount(long id, string token)
+        {
+            int changed = 0;
+            try
+            {
+                var user = context.Users.SingleOrDefault(u => u.VerificationToken == token && u.ID==id);
+
+                if(user != null)
+                {
+                    user.IsVerified = 1;
+                    context.Entry(user).Property(x => x.IsVerified).IsModified = true;
+                    changed = context.SaveChanges();
+                }
+            }
+            catch(Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+
+            return changed;
+        }
     }
 }

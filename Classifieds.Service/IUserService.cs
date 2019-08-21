@@ -13,5 +13,6 @@ namespace Classifieds.Service
         bool CreateVerificationToken(long id, string token);
         Task SendVerificationEmailAsync(string email, string subject, string message);
         new User Create(User user);
+        int ActivateAccount(long id, string token);
     }
 }
