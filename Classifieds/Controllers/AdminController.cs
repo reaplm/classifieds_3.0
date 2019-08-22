@@ -115,7 +115,8 @@ namespace Classifieds.Web.Controllers
         {
             Expression<Func<User, object>>[] include =
             {
-                m => m.UserDetail
+                m => m.UserDetail,
+                m => m.Roles
             };
 
             var users= mapper.Map<IEnumerable<UserViewModel>>

@@ -35,6 +35,8 @@ namespace Classifieds
             var config = new AutoMapper.MapperConfiguration(cfg =>
             {
                 cfg.CreateMap<UserViewModel, User>();
+                cfg.CreateMap<User, UserViewModel>()
+                .ForMember(m => m.RoleList, opts => opts.Ignore());
                 cfg.CreateMap<UserDetailViewModel, UserDetail>();
                 cfg.CreateMap<MenuViewModel, Menu>();
                 cfg.CreateMap<AdvertViewModel, Advert>();
@@ -48,6 +50,7 @@ namespace Classifieds
                 cfg.CreateMap<Category, CategoryViewModel>();
                 cfg.CreateMap<Address, AddressViewModel>();
                 cfg.CreateMap<AddressViewModel, Address>();
+                cfg.CreateMap<RoleViewModel, Role>();
             });
 
             IMapper mapper = config.CreateMapper();

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
+using Classifieds.Domain.Enumerated;
 using Classifieds.Domain.Model;
 using Classifieds.Service;
 using Classifieds.Web.Models;
@@ -43,6 +44,10 @@ namespace Classifieds.Web.Controllers
                 //encrypt password
                 model.User.Password = userService.GetEncryptedPassword(model.Password);
                 model.User.RegDate = DateTime.Now;
+                model.User.Roles = new List<RoleViewModel>
+                {
+                    new RoleViewModel{ Name=EnumTypes.Roles.ROLE_USER.ToString()}
+                };
                 User user = userService.Create(mapper.Map<User>(model.User));
                 userService.Save();
 

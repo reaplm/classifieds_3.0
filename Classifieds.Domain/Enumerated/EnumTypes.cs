@@ -32,5 +32,11 @@ namespace Classifieds.Domain.Enumerated
             MAILING,
             PHYSICAL
         }
+
+        public enum Roles
+        {
+            ROLE_ADMIN,
+            ROLE_USER
+        }
     }
 }

@@ -44,5 +44,7 @@ namespace Classifieds.Domain.Model
         public DateTime? PasswordExpiry { set; get; }
 
         public UserDetail UserDetail { set; get; }
+
+        public IEnumerable<Role> Roles { set; get; }
     }
 }

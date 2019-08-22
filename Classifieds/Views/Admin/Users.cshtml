@@ -7,10 +7,11 @@
                 <tr>
                     <th>@Html.DisplayNameFor(model => model.UserDetail.FirstName)</th>
                     <th>@Html.DisplayNameFor(model => model.Email)</th>
-                    <th>Roles</th>
+                    <th>@Html.DisplayNameFor(model => model.Roles)</th>
                     <th>@Html.DisplayNameFor(model => model.UserDetail.MobileNo)</th>
                     <th>@Html.DisplayNameFor(model => model.LastLogin)</th>
                     <th>@Html.DisplayNameFor(model => model.RegDate)</th>
+
                 </tr>
             </thead>
             <tbody>
@@ -33,8 +34,7 @@
                     @Html.Raw("</td><td class='w-25'>")
                     @Html.DisplayFor(model => user.Email)
                     @Html.Raw("</td><td class='w-25'>")
-                    @Html.Raw("<p></p>")
-
+                    @Html.DisplayFor(model => user.RoleList)
                     @Html.Raw("</td><td class='w-25'>")
 
                     @Html.DisplayFor(model => user.UserDetail.MobileNo)
@@ -51,6 +51,6 @@
                     odd = !odd;
                 }
             </tbody>
-        </table>
+            </table>
         </div>
     </div>
