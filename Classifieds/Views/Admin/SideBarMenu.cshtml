@@ -6,22 +6,22 @@
 @{ 
     String ImageCdn = User.Claims.FirstOrDefault(u => u.Type == "ImageCdn").Value;
 }
-<div id="sideNavigation"class="sidebar shadow pl-2 container-fluid pr-0">
-    <button type="button" class="close mr-4 mt-4 d-inline d-lg-none" 
+<div id="sideNavigation"class="sidebar shadow pl-2 container-fluid pr-0 " >
+    <button type="button" class="close mr-4 mt-4 d-inline d-lg-none position-absolute right" 
             aria-label="Close" onclick="CloseSidebar()">
         <span aria-hidden="true">&times;</span>
     </button>
     <div class="m-auto user-img text-center">
 
-        <img src="@ImageCdn" class="img-round mt-4" />
+        <img src="@ImageCdn" class="img-round mt-4"/>
 
     </div>
 
-    <div class="user-info mb-4 text-center">
+    <div class="user-info mb-4 text-center m-auto">
         <p>@User.Identity.Name </p>
-        <button class="btn p-1"><img src="~/images/icons/multimedia.png" class="" /></button>
-        <button class="btn p-1"><img src="~/images/icons/settings1.png" class="" /></button>
-        <button class="btn p-1"><img src="~/images/icons/edit.png" class="" /></button>
+        <button class="btn p-1"><img src="~/images/icons/multimedia.png" class="" ></button>
+        <button class="btn p-1"><img src="~/images/icons/settings1.png" class=""></button>
+        <button class="btn p-1"><img src="~/images/icons/edit.png" class=""></button>
 
     </div>
     @if (ViewContext.HttpContext.Session.GetString("SideMenus") != null)
