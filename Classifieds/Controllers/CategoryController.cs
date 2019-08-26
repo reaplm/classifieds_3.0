@@ -97,7 +97,26 @@ namespace Classifieds.Web.Controllers
             HttpContext.Response.StatusCode = (int)HttpStatusCode.OK;
             return PartialView(model);
         }
-        
+        /// <summary>
+        /// Delete Category
+        /// </summary>
+        /// <param name="id">id of the category to delete</param>
+        /// <returns></returns>
+        [Authorize]
+        public IActionResult Delete(long id)
+        {
+            int changed = categoryService.Delete(id);
+
+            if(changed > 0)
+            {
+                return new JsonResult("Delete Successful!");
+
+            }
+            else
+            {
+                return new JsonResult("Sorry, failed to delete the category.");
+            }
+        }
         /// <summary>
         /// Fetch all subcategories where ParentID is equal to id
         /// /Category/SubCategories/id

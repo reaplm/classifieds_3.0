@@ -7,6 +7,42 @@ function OpenSidebar() {
 function CloseSidebar() {
     document.getElementById("sideNavigation").style.width = "0";
 }
+/**
+ * Delete a category
+ * @param {id} catId category id
+ * @param {boolean} parent is it parent menu?
+ * 
+ */
+function DeleteCategory(catId, parent) {
+
+    var result = false;
+
+    if (parent) {
+        result = confirm('This will delete this category and all sub-categories!');
+    }
+    else {
+        result = confirm('Are you sure you want to delete?');
+    }
+
+    if (result) {
+        $.ajax({
+            url: '/Category/Delete/' + catId,
+            type: 'get',
+            dataType: 'json'
+
+        }).done(function (data, textStatus, jqXHR) {
+            alert(data);
+            window.location.reload();
+        })
+            .fail(function (jqXHR, errorText, errorThrown) {
+                alert('Sorry there was an error');
+                window.location.reload();
+            });
+
+
+    }
+
+}
 function DeleteMenu(menuId, parent) {
 
     var result = false;
@@ -135,7 +171,7 @@ function OnSubCategoryChanged(elementId) {
 }
 /**
  * Edit advert modal
- * @param {id} id adver id
+ * @param {id} id advert id
  */
 function EditAdvert(id) {
 

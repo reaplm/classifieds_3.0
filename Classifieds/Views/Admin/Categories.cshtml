@@ -11,13 +11,16 @@
     <div class="content pt-5 pl-2 pr-2">
         @foreach (var category in Model)
         {
-            <div class="clearfix mt-2">
-                <img src="~/images/home/@category.Icon" class="mr-3 float-left" />
-                <h5 class="pt-2">
-                    @Html.ActionLink(category.Name, "Edit", "Category",new {id=@category.ID },
-                   new {@class="edit-link text-capitalize" })    
-                </h5>
-            </div>
+        <div class="clearfix mt-2">
+            <img src="~/images/home/@category.Icon" class="mr-3 float-left" />
+            <h5 class="pt-2">
+                @Html.ActionLink(category.Name, "Edit", "Category",new {id=@category.ID },
+               new {@class="edit-link text-capitalize" })
+            </h5>
+            @Html.Raw("<button type='button' class='close' title='Delete' " +
+                       "onclick='DeleteCategory(" + category.ID + ", true)'><span>&times;</span>" +
+                       "</button>")
+        </div>
             @if (category.SubCategories.Count() > 0)
             {
                 <div class="table-responsive-sm">
@@ -51,8 +54,9 @@
                         @Html.CheckBoxFor(model => subcat.Status,
                             new { @onchange="UpdateStatus(" + subcat.ID + ", 'Category', this)" })
                         @Html.Raw("</td><td>");
-                        @Html.Raw("<button type='button' class='close' " +
-                              "onclick='DeleteMenu()'><span></span></button></td>")
+                        @Html.Raw("<button type='button' class='close' title='Delete' " +
+                           "onclick='DeleteCategory(" + subcat.ID + ", true)'><span>&times;</span>" +
+                           "</button></td>")
                         @Html.Raw("</tr>")
 
                         odd = !odd;
