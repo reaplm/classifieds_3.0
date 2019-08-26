@@ -13,28 +13,28 @@ namespace Classifieds.Domain.Model
         public long ID { set; get; }
 
         [Column(name: "menu_name")]
-        public String Name { set; get; }
+        public string Name { set; get; }
 
         [Column(name: "admin_menu")]
         public int Admin { set; get; }
 
         [Column(name: "icon")]
-        public String Icon { set; get; }
+        public string Icon { set; get; }
 
         [Column(name: "label")]
-        public String Label { set; get; }
+        public string Label { set; get; }
 
         [Column(name: "menu_desc")]
-        public String Desc { set; get; }
+        public string Desc { set; get; }
 
         [Column(name: "menu_status")]
         public int Active { set; get; }
 
         [Column(name: "menu_type")]
-        public String Type { set; get; }
+        public string Type { set; get; }
 
         [Column(name: "url")]
-        public String Url { set; get; }
+        public string Url { set; get; }
 
         [Column(name: "fk_menu_id")]
         public long? ParentID { set; get; }

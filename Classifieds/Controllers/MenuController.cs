@@ -89,6 +89,34 @@ namespace Classifieds.Web.Controllers
             ViewBag.Menus = MenuSelectListItems(model.ParentID);
             HttpContext.Response.StatusCode = (int)HttpStatusCode.OK;
             return PartialView(model);
+        }/// <summary>
+        /// Delete menu item
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [Authorize]
+        public IActionResult Delete(long id)
+        {
+            if(id > 0)
+            {
+                int changed = menuService.Delete(id);
+
+                if (changed > 0)
+                {
+                    //Update session variables
+                    HttpContext.Session.SetString("SideMenus", JsonConvert.SerializeObject(GetMenus(),
+                  Formatting.Indented, new JsonSerializerSettings
+                  {
+                      ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+                  }));
+
+                    return new JsonResult("Menu deleted successfully!");
+                }
+                    
+                else
+                    return new JsonResult("sorry, something went wrong.");
+            }
+            return new JsonResult("Can't delete that");
         }
         /// <summary>
         /// Update checkbox for admin 

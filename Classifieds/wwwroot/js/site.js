@@ -7,6 +7,36 @@ function OpenSidebar() {
 function CloseSidebar() {
     document.getElementById("sideNavigation").style.width = "0";
 }
+function DeleteMenu(menuId, parent) {
+
+    var result = false;
+
+    if (parent) {
+        result = confirm('This will delete this menu and all sub-menus!');
+    }
+    else {
+        result = confirm('Are you sure you want to delete?');
+    }
+
+    if (result) {
+        $.ajax({
+            url: '/Menu/Delete/' + menuId,
+            type: 'get',
+            dataType: 'json'
+
+        }).done(function (data, textStatus, jqXHR) {
+            alert(data);
+            window.location.reload();
+        })
+            .fail(function (jqXHR, errorText, errorThrown) {
+                alert('Sorry there was an error');
+                window.location.reload();
+            });
+
+
+    }
+
+}
 function DeleteUser(userId) {
     var result = confirm("Are you sure?");
 
