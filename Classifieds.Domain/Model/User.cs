@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Text;
 
 
 namespace Classifieds.Domain.Model
@@ -24,13 +23,13 @@ namespace Classifieds.Domain.Model
         public string VerificationToken { set; get; }
 
         [Column(name: "activation_code")]
-        public String ActivationCode { set; get; }
+        public string ActivationCode { set; get; }
 
         [Column(name: "email")]
-        public String Email { set; get; }
+        public string Email { set; get; }
 
         [Column(name: "password")]
-        public String Password { set; get; }
+        public string Password { set; get; }
 
         public int? Notified { set; get; }
 
@@ -44,7 +43,6 @@ namespace Classifieds.Domain.Model
         public DateTime? PasswordExpiry { set; get; }
 
         public UserDetail UserDetail { set; get; }
-
         public IEnumerable<Role> Roles { set; get; }
     }
 }

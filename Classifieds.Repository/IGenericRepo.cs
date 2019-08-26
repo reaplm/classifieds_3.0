@@ -39,7 +39,7 @@ namespace Classifieds.Repository
          * @return
          * @throws Exception 
          */
-        void Delete(long id);
+        int Delete(long id);
         void DeleteRange(List<T> entities);
         /**
          * Retrieve a list of all objects of class T

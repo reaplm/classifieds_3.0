@@ -7,6 +7,28 @@ function OpenSidebar() {
 function CloseSidebar() {
     document.getElementById("sideNavigation").style.width = "0";
 }
+function DeleteUser(userId) {
+    var result = confirm("Are you sure?");
+
+    if (result) {
+        $.ajax({
+            url: '/User/Delete/' + userId,
+            type: 'get',
+            dataType: 'json'
+
+        }).done(function (data, textStatus, jqXHR) {
+            alert(data);
+            window.location.reload();
+        })
+        .fail(function (jqXHR, errorText, errorThrown){
+            alert('Sorry there was an error');
+            window.location.reload();
+         });
+
+        
+    }
+    
+}
 function UpdateStatus(id, controller, checkbox) {
     var url = '/' + controller + '/Status/';
     $.ajax({

@@ -95,6 +95,26 @@ namespace Classifieds.XUnitTest.Repository
             Assert.Equal(4, appContext.Menus.Count());
         }
         /// <summary>
+        /// Test Method { public void Delete(long id) }
+        /// </summary>
+        [Fact]
+        public void Repository_DeleteCascade()
+        {
+
+            var advertRepo = new AdvertRepo(appContext);
+
+            Assert.Equal(2, appContext.Adverts.Count());
+            Assert.Equal(2, appContext.AdvertDetails.Count());
+            Assert.Equal(4, appContext.AdPictures.Count());
+
+            advertRepo.Delete(6);
+            advertRepo.Save();
+
+            Assert.Equal(1, appContext.Adverts.Count());
+            Assert.Equal(1, appContext.AdvertDetails.Count());
+            Assert.Equal(2, appContext.AdPictures.Count());
+        }
+        /// <summary>
         /// Test Method { public T Find(long id) }
         /// </summary>
         [Fact]
@@ -248,14 +268,14 @@ namespace Classifieds.XUnitTest.Repository
                 new Category{ID=5, Name="cars", ParentID = 2}
             };
 
-            var advert = GetAdvert();
+            var adverts = GetAdvert();
 
             appContext.AddRange(menus);
             appContext.AddRange(categories);
-            appContext.Add(advert);
+            appContext.AddRange(adverts);
             int changed = appContext.SaveChanges();
         }
-        private Advert GetAdvert()
+        private List<Advert> GetAdvert()
         {
 
             
@@ -302,8 +322,55 @@ namespace Classifieds.XUnitTest.Repository
                 Detail = advertDetail
             };
 
-            return advert;
+            //Second Advert
+            AdPicture picture3 = new AdPicture
+            {
+                ID = 3,
+                Uuid = "0b83b507-8c11-4c0e-96d2-5fd773d525f7",
+                CdnUrl = "https://ucarecdn.com/0b83b507-8c11-4c0e-96d2-5fd773d525f7/",
+                Name = "about me sample 3.PNG",
+                Size = 135083
+            };
+            AdPicture picture4 = new AdPicture
+            {
+                ID = 4,
+                Uuid = "c1df9f17-61ad-450a-87f9-d846c312dae0",
+                CdnUrl = "https://ucarecdn.com/c1df9f17-61ad-450a-87f9-d846c312dae0/",
+                Name = "about me sample 4.PNG",
+                Size = 146888
+            };
+            List<AdPicture> ad2Pictures = new List<AdPicture> { picture3, picture4 };
+
+            AdvertDetail advertDetail2 = new AdvertDetail
+            {
+                ID = 6,
+                Title = "Black Toyota for sale",
+                Body = "Black 4x4 Toyota cruiser",
+                Email = "pearl@email",
+                Phone = "71406569",
+                GroupCdn = "GroupCdnValue",
+                GroupCount = 2,
+                GroupSize = 2048,
+                GroupUuid = "GroupUuidValue",
+                Location = "Gaborone",
+                AdPictures = ad2Pictures
+            };
+
+            Advert advert2 = new Advert
+            {
+                ID = 6,
+                Status = EnumTypes.AdvertStatus.SUBMITTED.ToString(),
+                CategoryID = 2,
+                PublishedDate = new DateTime(2019, 05, 10),
+                Detail = advertDetail2
+            };
+            List<Advert> adverts = new List<Advert>();
+            adverts.Add(advert);
+            adverts.Add(advert2);
+
+            return adverts;
         }
+        
         /// <summary>
         /// Clear the database in preparation for the next test.
         /// Since each test executes the initContext method, it

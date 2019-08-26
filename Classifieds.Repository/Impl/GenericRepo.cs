@@ -41,18 +41,29 @@ namespace Classifieds.Repository.Impl
             context.Entry(entity).State = EntityState.Modified;
         }
         /// <summary>
-        /// Delete an object from the database
+        /// Delete object from the database
         /// </summary>
-        /// <param name="id"></param>
-        public void Delete(long id)
+        /// <param name="id">id of the object to delete</param>
+        /// <returns>number of rows deleted</returns>
+        public int Delete(long id)
         {
-            T entity = Find(id);
-
-            if (entity != null)
+            int changed = 0;
+            try
             {
-                context.Set<T>().Remove(entity);
-            }
+                T entity = Find(id);
 
+                if (entity != null)
+                {
+                    context.Set<T>().Remove(entity);
+                }
+                changed =  context.SaveChanges();
+            }
+            catch(Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+            return changed;
+           
         }
         /// <summary>
         /// Delete multiple objects

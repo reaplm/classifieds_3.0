@@ -23,9 +23,9 @@ namespace Classifieds.Service.Impl
         {
             genericRepo.Update(entity);
         }
-        public void Delete(Int64 id)
+        public int Delete(long id)
         {
-            genericRepo.Delete(id);
+            return genericRepo.Delete(id);
 
         }
         public void DeleteRange(List<T> entities)

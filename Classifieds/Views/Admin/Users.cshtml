@@ -11,7 +11,7 @@
                     <th>@Html.DisplayNameFor(model => model.UserDetail.MobileNo)</th>
                     <th>@Html.DisplayNameFor(model => model.LastLogin)</th>
                     <th>@Html.DisplayNameFor(model => model.RegDate)</th>
-
+                    <th></th>
                 </tr>
             </thead>
             <tbody>
@@ -44,8 +44,9 @@
                     @Html.Raw("</td><td class=''>")
                     @Html.DisplayFor(model => user.RegDate)
                     @Html.Raw("</td><td>");
-                    @Html.Raw("<button type='button' class='close' " +
-                           "onclick='DeleteAdvert()'><span></span></button></td>")
+                    @Html.Raw("<button type='button' class='close' title='Delete'" + 
+                           "onclick='DeleteUser(" + user.ID + ")'><span>&times;</span>" +
+                           "</button></td>")
                     @Html.Raw("</tr>")
 
                     odd = !odd;

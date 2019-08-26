@@ -14,22 +14,23 @@ namespace Classifieds.Domain.Model
         public long ID { set; get; }
 
         [Column(name: "first_name")]
-        public String FirstName { set; get; }
+   
+        public string FirstName { set; get; }
 
         [Column(name: "last_name" )]
-        public String LastName { set; get; }
+        public string LastName { set; get; }
 
         [Column(name: "image_cdn")]
-        public String ImageCdn { set; get; }
+        public string ImageCdn { set; get; }
 
         [Column(name: "image_name")]
-        public String ImageName { set; get; }
+        public string ImageName { set; get; }
 
         [Column(name:"image_uuid")]
-        public String ImageUuid { set; get; }
+        public string ImageUuid { set; get; }
 
         [Column(name: "mobile_no")]
-        public String MobileNo { set; get; }
+        public string MobileNo { set; get; }
 
         [Column(name: "fk_user_id")]
         public long UserID { set; get; }
