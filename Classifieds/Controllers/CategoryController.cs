@@ -26,12 +26,23 @@ namespace Classifieds.Web.Controllers
             this.categoryService = categoryService;
             this.mapper = mapper;
         }
+        /// <summary>
+        /// Create a category modal
+        /// </summary>
+        /// <returns></returns>
+        [Authorize]
         public IActionResult Create()
         {
             ViewBag.Categories = ParentCategories(null);
             return PartialView();
         }
+        /// <summary>
+        /// Create category submit
+        /// </summary>
+        /// <param name="model">category object</param>
+        /// <returns>jsonResullt or partial view if modelError</returns>
         [HttpPost]
+        [Authorize]
         public IActionResult Create(CategoryViewModel model)
         {
             if (ModelState.IsValid)
