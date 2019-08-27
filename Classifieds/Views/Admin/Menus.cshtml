@@ -55,7 +55,8 @@
                 @Html.CheckBoxFor(model => submenu.Admin, new {
                     @onchange = "UpdateAdmin(" + submenu.ID + ", 'Menu', this )"})
                 @Html.Raw("</td><td class=''>")
-                @Html.CheckBoxFor(model => submenu.Active)
+                @Html.CheckBoxFor(model => submenu.Active, new {
+                    @onchange = "UpdateStatus(" + submenu.ID + ", 'Menu', this )"})
                 @Html.Raw("</td><td>");
                 @Html.Raw("<button type='button' class='close' title='Delete' " +
                  "onclick='DeleteMenu(" + submenu.ID + ", false)'><span>&times</span></button></td>")

@@ -152,6 +152,39 @@ namespace Classifieds.Web.Controllers
 
         }
         /// <summary>
+        /// Update checkbox for status
+        /// </summary>
+        /// <param name="id">ID of menu</param>
+        /// <param name="active">checkbox true/false</param>
+        /// <returns></returns>
+        [Authorize]
+        public IActionResult Status(long id, bool active)
+        {
+            Expression<Func<Menu, object>>[] include =
+            {
+                m => m.SubMenus
+            };
+            Menu menu = menuService.Find(id, include);
+
+
+            if (active)
+            {
+                menu.Active = 1;
+
+            }
+            else
+            {
+                menu.Active = 0;
+
+            }
+
+            menuService.Update(menu);
+            menuService.Save();
+
+            return new JsonResult("Saved!");
+
+        }
+        /// <summary>
         /// Get menu list using predicate
         /// </summary>
         /// <returns></returns>
