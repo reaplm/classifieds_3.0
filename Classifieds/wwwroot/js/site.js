@@ -102,34 +102,29 @@ function UpdateStatus(id, controller, checkbox) {
         type: 'get',
         data: { id: id, active: checkbox.checked}
     }).done(function (data, textStatus, jqXHR) {
-        if (data === "success") {
-            window.location.reload();
-        }
-        else 
-            alert("Sorry. Failed to update.");
-        
+        alert(data);
+        window.location.reload(); 
     })
     .fail(function (jqXHR, errorText, errorThrown) {
         alert("Failed to submit. Internal error.");
+        window.location.reload();
     });
    
 }
 function UpdateAdmin(id, controller, checkbox) {
+
     var url = '/' + controller + '/Admin/';
     $.ajax({
         url: url,
         type: 'get',
         data: { id: id, isAdmin: checkbox.checked }
     }).done(function (data, textStatus, jqXHR) {
-        if (data === "success") {
-            window.location.reload();
-        }
-        else
-            alert("Sorry. Failed to update.");
-
+        alert(data);
+        window.location.reload(); 
     })
         .fail(function (jqXHR, errorText, errorThrown) {
             alert("Failed to submit. Internal error.");
+            window.location.reload();
         });
 
 }
@@ -298,10 +293,12 @@ function GetSubCategories(categoryId,url, callback) {
         alert("Failed to load sub-categories!");
     });
 }
+
 $(document).ready(function () {
     $(document).on('hidden.bs.modal', '.modal', function () {
         $(".modal-dialog").remove();
     });
+
 
 
     $("#category").on("change", function () {

@@ -127,16 +127,22 @@ namespace Classifieds.Web.Controllers
         [Authorize]
         public IActionResult Admin(long id, bool isAdmin)
         {
-            Menu menu = menuService.Find(id);
+            Expression<Func<Menu, object>>[] include =
+            {
+                m => m.SubMenus
+            };
+            Menu menu = menuService.Find(id,include);
 
+            
             if (isAdmin)
             {
                 menu.Admin = 1;
-
+                
             }
             else
             {
                 menu.Admin = 0;
+               
             }
 
             menuService.Update(menu);

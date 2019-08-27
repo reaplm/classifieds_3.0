@@ -38,31 +38,32 @@
                 <tbody>
                     @{ bool odd = true; }
                     @foreach (var submenu in menu.SubMenus)
-            {
-                if (odd)
-                {@Html.Raw("<tr class='odd-row'>")
-    }
-    else
-    { @Html.Raw("<tr class='even-row'>")
-}
-        @Html.Raw("<td class='text-capitalize  w-25'>")
-        @Html.ActionLink(submenu.Name, "action", "controller")
-        @Html.Raw("</td><td class='w-25'>")
-        @Html.DisplayFor(model => submenu.Url)
-        @Html.Raw("</td><td class='w-25'>")
-        @Html.DisplayFor(model => submenu.Label)
-        @Html.Raw("</td><td class=''>")
-        @Html.CheckBoxFor(model => submenu.Admin, new {
-            @onchange = "UpdateAdmin(" + @menu.ID + ", 'Menu', this )"})
-        @Html.Raw("</td><td class=''>")
-        @Html.CheckBoxFor(model => submenu.Active)
-        @Html.Raw("</td><td>");
-        @Html.Raw("<button type='button' class='close' title='Delete' " +
-         "onclick='DeleteMenu(" + submenu.ID + ", false)'><span>&times</span></button></td>")
-        @Html.Raw("</tr>")
+                    {
+                        if (odd)
+                        {@Html.Raw("<tr class='odd-row'>")
+                    }
+                    else
+                    { @Html.Raw("<tr class='even-row'>")
+                }
+                @Html.Raw("<td class='text-capitalize  w-25'>")
+                @Html.ActionLink(submenu.Name, "action", "controller")
+                @Html.Raw("</td><td class='w-25'>")
+                @Html.DisplayFor(model => submenu.Url)
+                @Html.Raw("</td><td class='w-25'>")
+                @Html.DisplayFor(model => submenu.Label)
+                @Html.Raw("</td><td class=''>")
+                @Html.CheckBoxFor(model => submenu.Admin, new {
+                    @onchange = "UpdateAdmin(" + submenu.ID + ", 'Menu', this )"})
+                @Html.Raw("</td><td class=''>")
+                @Html.CheckBoxFor(model => submenu.Active)
+                @Html.Raw("</td><td>");
+                @Html.Raw("<button type='button' class='close' title='Delete' " +
+                 "onclick='DeleteMenu(" + submenu.ID + ", false)'><span>&times</span></button></td>")
+                @Html.Raw("</tr>")
 
-odd = !odd;
-}
+                odd = !odd;
+            }
+                    @Html.Raw("</td></tr>")
                 </tbody>
             </table>
         </div>
