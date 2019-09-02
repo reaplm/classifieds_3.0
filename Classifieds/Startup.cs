@@ -79,8 +79,10 @@ namespace Classifieds
             services.AddMvc()
                 .AddJsonOptions(opts => opts.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
 
+            //MySQL Connection
+            var connectionString = Configuration.GetSection("mysqlconnection")["connectionString"];
+            
             //Dependency Injection
-            var connectionString = "server=localhost;port=3306;database=ad_post;uid=developer;password=Sweet05p06=";
             services.AddDbContext<ApplicationContext>(options => options.UseMySQL(connectionString));
             services.AddScoped<IMenuService, MenuService>();
             services.AddScoped<IMenuRepo, MenuRepo>();
