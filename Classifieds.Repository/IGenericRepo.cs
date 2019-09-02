@@ -7,59 +7,68 @@ namespace Classifieds.Repository
 {
     public interface IGenericRepo<T> where T : class
     {
-        /**
-        * Persist a new object into the database
-        * @param newInstance
-        * @return
-        */
+        /// <summary>
+        /// Create a new object
+        /// </summary>
+        /// <param name="entity">Object to add to the DB</param>
         void Create(T entity);
-        /**
-         * Retrieve an object from the database with the given primary key
-         * @param id
-         * @return
-         */
+        /// <summary>
+        /// Retrieve an object from the database with the given primary key
+        /// </summary>
+        /// <param name="id">The PK of the object</param>
+        /// <returns></returns>
         T Find(long id);
-        /**
-         * Retrieve object, include child entities
-         * @param id of entity
-         * @param includes linq eager fetch statements
-         */
+        /// <summary>
+        /// Retrieve object, include child entities
+        /// </summary>
+        /// <param name="id">PK of object to retrieve</param>
+        /// <param name="includes">array of children to fetch</param>
+        /// <returns></returns>
         T Find(long id, Expression<Func<T, Object>>[] includes);
-        /**
-         * Save changes made to a persistent object
-         * @param transientObject
-         * @return
-         */
+        /// <summary>
+        /// Retrieve object using condition
+        /// </summary>
+        /// <param name="where">Where condition</param>
+        /// <param name="includes">Linq statements of childrent to include</param>
+        /// <returns></returns>
         T Find(Expression<Func<T, bool>> where,
            Expression<Func<T, Object>>[] includes);
+        /// <summary>
+        /// Update an object
+        /// </summary>
+        /// <param name="entity">The object to update</param>
         void Update(T entity);
-        /**
-         * Remove an object from the database
-         * @param persistentObject
-         * @return
-         * @throws Exception 
-         */
+        /// <summary>
+        /// Update object
+        /// </summary>
+        /// <param name="entity">The object to update</param>
+        /// <param name="keyValues">PKs of entiti</param>
+        /// <param name="includes">Linq statements of children to include</param>
+        /// <returns>Number of rows changed</returns>
+        int Update(T entity, Object[] keyValues, string[] includes);
+        /// <summary>
+        /// Delete an object from the DB
+        /// </summary>
+        /// <param name="id">PK of the object</param>
+        /// <returns>Number of rows changed</returns>
         int Delete(long id);
-        void DeleteRange(List<T> entities);
-        /**
-         * Retrieve a list of all objects of class T
-         * @param clazz
-         * @return
-         */
+        /// <summary>
+        /// Retrieve all objects of type T
+        /// </summary>
+        /// <returns>List of objects</returns>
         IEnumerable<T> FindAll();
-        /**
-          * Retrieve all objects, include child entities and Where statement
-          * @param id of entity
-          * @param includes eager fetch statements
-          */
+        /// <summary>
+        /// Retrieve all objects of type T
+        /// </summary>
+        /// <param name="wherePredicate">Where condition</param>
+        /// <param name="includes">Linq statements of children to include</param>
+        /// <returns></returns>
         IEnumerable<T> FindAll(Expression<Func<T, bool>> wherePredicate,
             Expression<Func<T, Object>>[] includes);
-
-        /**
-         * Save changes to the database
-         * 
-         */
+        /// <summary>
+        /// Commit changes
+        /// </summary>
         void Save();
-        int Update(T entity, Object[] keyValues, string[] includes);
+        
     }
 }

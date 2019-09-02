@@ -28,10 +28,6 @@ namespace Classifieds.Service.Impl
             return genericRepo.Delete(id);
 
         }
-        public void DeleteRange(List<T> entities)
-        {
-            genericRepo.DeleteRange(entities);
-        }
         public void Save()
         {
             genericRepo.Save();

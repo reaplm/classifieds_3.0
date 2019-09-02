@@ -66,19 +66,6 @@ namespace Classifieds.Repository.Impl
            
         }
         /// <summary>
-        /// Delete multiple objects
-        /// </summary>
-        /// <param name="entities"></param>
-        public void DeleteRange(List<T> entities)
-        {
-
-            if (entities != null)
-            {
-                context.Set<T>().RemoveRange(entities);
-            }
-
-        }
-        /// <summary>
         /// Save changes to the database
         /// </summary>
         public void Save()
