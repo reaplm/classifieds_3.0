@@ -30,7 +30,7 @@
 
                     @Html.Raw("<td class='text-capitalize  w-25'>")
                     @Html.ActionLink(user.UserDetail.FirstName + user.UserDetail.LastName,
-                              "action", "controller")
+                              "Detail", "User",new {id = user.ID },new { @class="userDetailLink"})
                     @Html.Raw("</td><td class='w-25'>")
                     @Html.DisplayFor(model => user.Email)
                     @Html.Raw("</td><td class='w-25'>")

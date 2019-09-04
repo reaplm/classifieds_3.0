@@ -1,0 +1,83 @@
+﻿@model Classifieds.Web.Models.UserViewModel
+
+<div class="modal fade" id="user-detail-modal" tabindex="-1"
+     role="dialog" aria-labelledby="userDetailModal" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1>
+                    @Model.UserDetail.FirstName @Model.UserDetail.LastName
+                </h1>
+                <button type="button" class="close" data-dismiss="modal"
+                        aria-label="close" onclick="ModalDismiss('user-detail-modal')">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="container color-e9e mt-5">
+                    <div class="card mt-2">
+                        <div class="w-100 card-img-container w-100">
+                            <img class="card-img-top" src="~/images/chris-barbalis-255972-unsplash.png" alt="Card image cap">
+                            <div class="m-auto user-img card-profile-img text-center">
+                                <img src="@Model.UserDetail.ImageCdn" class="img-round mt-4 img-fluid" />
+
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <h5 class="card-title mt-5">@Model.UserDetail.FirstName</h5>
+                            <p></p>
+                        </div>
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item">
+                                <div class="d-flex  justify-content-between">
+                                    <p class="d-inline-block">Name</p>
+                                    <p class="d-inline-block">@Model.UserDetail.FirstName @Model.UserDetail.LastName</p>
+                                </div>
+                                <div class="d-flex  justify-content-between">
+                                    <p class="d-inline-block">Primary Email</p>
+                                    <p class="d-inline-block">@Model.Email</p>
+                                </div>
+                                <div class="d-flex  justify-content-between">
+                                    <p class="d-inline-block">Secondary Email</p>
+                                    <p class="d-inline-block"></p>
+                                </div>
+                                
+                            </li>
+                            <li class="list-group-item">
+                                <div class="d-flex  justify-content-between">
+                                    <p class="d-inline-block">Account Type</p>
+                                    <p class="d-inline-block">Free</p>
+                                </div>
+                                <div class="d-flex  justify-content-between">
+                                    <p class="d-inline-block">Location</p>
+                                    <p class="d-inline-block">Location</p>
+                                </div>
+                                <div class="d-flex  justify-content-between">
+                                    <p class="d-inline-block">Phone</p>
+                                    <p class="d-inline-block">@Model.UserDetail.MobileNo</p>
+                                </div>
+                            </li>
+
+                            <li class="list-group-item">
+                                <div class="d-flex  justify-content-between">
+                                    <p class="d-inline-block">Registration Date</p>
+                                    <p class="d-inline-block">@Model.RegDate</p>
+                                </div>
+                                <div class="d-flex  justify-content-between">
+                                    <p class="d-inline-block">Last Logged In</p>
+                                    <p class="d-inline-block">@Model.LastLogin</p>
+                                </div>
+                            </li>
+
+                        </ul>
+                        <div class="card-body">
+                            <a href="#" class="card-link float-right">Delete Account</a>
+                        </div>
+                    </div>
+                    <div class="modal-footer"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

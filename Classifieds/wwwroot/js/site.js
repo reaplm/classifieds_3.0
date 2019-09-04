@@ -379,6 +379,17 @@ $(document).ready(function () {
             $(data).modal();
         });
     });
+    $(".userDetailLink").on("click", function (e) {
+        e.preventDefault();
+
+        
+
+        var url = $(this).attr("href");
+
+        GetPartialView(url, function (data) {
+            $(data).modal();
+        });
+    });
     //===================================UPLOADCARE WIDGET=================================
     if ($("#create-ad").is(":visible")) {
         var multiWidget = uploadcare.MultipleWidget('#uploadcareWidget');
