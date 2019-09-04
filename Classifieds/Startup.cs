@@ -105,11 +105,14 @@ namespace Classifieds
             if (env.IsDevelopment())
             {
                 app.UseBrowserLink();
-                app.UseDeveloperExceptionPage();
+               app.UseDeveloperExceptionPage();
+                //app.UseExceptionHandler("/Error/500");
+                //app.UseStatusCodePagesWithReExecute("/Error/{0}");
             }
             else
             {
-                app.UseExceptionHandler("/Home/Error");
+                app.UseExceptionHandler("/Error/500");
+                app.UseStatusCodePagesWithReExecute("/Error/{0}");
             }
 
             app.UseStaticFiles();
@@ -131,6 +134,16 @@ namespace Classifieds
                  "Classifieds/Status/{id}/{status}",
                  new { controller = "Classifieds", Action = "Status" }
                 );
+                routes.MapRoute(
+                "ErrorHandler",
+                "Error/{statusCode}",
+                new { controller = "Error", Action = "HandleErrorCode" }
+               );
+                routes.MapRoute(
+               "Error500Handler",
+               "Error/500",
+               new { controller = "Error", Action = "Error500" }
+              );
             });
 
             

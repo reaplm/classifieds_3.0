@@ -61,13 +61,5 @@ namespace Classifieds.Controllers
         {
             return View();
         }
-        /// <summary>
-        /// Error page
-        /// </summary>
-        /// <returns></returns>
-        public IActionResult Error()
-        {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
-        }
     }
 }
