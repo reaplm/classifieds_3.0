@@ -6,7 +6,7 @@
 @{ 
     String ImageCdn = User.Claims.FirstOrDefault(u => u.Type == "ImageCdn").Value;
 }
-<div id="sideNavigation"class="sidebar shadow pl-2 container-fluid pr-0 " >
+<div id="sideNavigation"class="sidebar shadow container-fluid pr-0 " >
     <button type="button" class="close mr-4 mt-4 d-inline d-lg-none position-absolute right" 
             aria-label="Close" onclick="CloseSidebar()">
         <span aria-hidden="true">&times;</span>
@@ -18,12 +18,13 @@
     </div>
 
     <div class="user-info mb-4 text-center m-auto">
-        <p>@User.Identity.Name </p>
-        <button class="btn p-1"><img src="~/images/icons/multimedia.png" class="" ></button>
-        <button class="btn p-1"><img src="~/images/icons/settings1.png" class=""></button>
-        <button class="btn p-1"><img src="~/images/icons/edit.png" class=""></button>
-
+        <p><a href="/Admin/Profile">@User.Identity.Name </a></p>
+        <button class="btn p-1"><img src="~/images/icons/multimedia.png" class="" title="messages"></button>
+        <button class="btn p-1"><img src="~/images/icons/settings1.png" class="" title="settings"></button>
+        <button class="btn p-1"><img src="~/images/icons/edit.png" class="" title="edit"></button>
+        <hr />
     </div>
+    
     @if (ViewContext.HttpContext.Session.GetString("SideMenus") != null)
     {
         IEnumerable<MenuViewModel> menus = JsonConvert.DeserializeObject<List<MenuViewModel>>
@@ -41,16 +42,17 @@
                 string target = "collapse" + i.ToString();
                 <div class="">
 
-                    <div class="p-3 acc-heading" id="@heading">
-                        <img src="~/images/icons/@menu.Icon" />
-                        <h6 class="mb-0 d-inline-block">
-                            <a class="card-link align-bottom" data-toggle="collapse"
+                    <div class="p-3 acc-heading " id="@heading">
+                        
+                        <p class="mb-0 d-inline-block font-weight-normal">
+                            <img src="~/images/icons/@menu.Icon" class="float-left mr-3" />
+                            <a class="card-link text-capitalize" data-toggle="collapse"
                                data-target="#@target"
                                @if (j == 0) { @Html.Raw("aria-expanded='true'")  } else { @Html.Raw("aria-expanded='false'") }
                                aria-controls="@target">
                                 @menu.Name
                             </a>
-                        </h6>
+                        </p>
                     </div>
                     @if (menu.SubMenus.Count() > 0)
                     {
@@ -61,9 +63,9 @@
                             <ul class="list-unstyled">
                                 @foreach (var submenu in menu.SubMenus)
                                 {
-                                    <li>
+                                    <li class="ml-5">
                                         <a href="@submenu.Url"
-                                           class="acc-nav-link pl-4">
+                                           class="acc-nav-link ml-2">
                                             @submenu.Name
                                         </a>
                                     </li>
