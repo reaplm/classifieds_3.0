@@ -28,31 +28,35 @@
                     }
 
 
-                    @Html.Raw("<td class='text-capitalize  w-25'>")
-                    @Html.ActionLink(advert.Detail.Title, "action", "controller")
-                    @Html.Raw("</td><td class='w-25'>")
-                    @Html.DisplayFor(model => advert.Detail.Location)
-                    @Html.Raw("</td><td class='w-25'>")
-                    @Html.DisplayFor(model => advert.SubmittedDate)
-                    @Html.Raw("</td><td class='w-25'>")
-                    @Html.DisplayFor(model => advert.Status)
-                    @Html.Raw("</td><td class=''>")
-                    if (advert.Status == "APPROVED")
+                        @Html.Raw("<td class='text-capitalize  w-25'>")
+                        @Html.ActionLink(advert.Detail.Title, "Detail", "Classifieds",
+                            new { id = advert.ID }, new
+                            {
+                                @class = "modal-link",
+                                @data_target = "#advert-detail-modal",
+                                @data_toggle = "modal"
+                            })
+                        @Html.Raw("</td><td class='w-25'>")
+                        @Html.DisplayFor(model => advert.Detail.Location)
+                        @Html.Raw("</td><td class='w-25'>")
+                        @Html.DisplayFor(model => advert.SubmittedDate)
+                        @Html.Raw("</td><td class='w-25'>")
+                        @Html.DisplayFor(model => advert.Status)
+                        @Html.Raw("</td><td class=''>")
+                        if (advert.Status == "APPROVED")
                     {
-                        @Html.CheckBox("approve", true, new {@onchange="UpdateStatus("+ @advert.ID + ",'Classifieds', this)" })
+                        @Html.CheckBox("approve", true, new { @onchange = "UpdateStatus(" + @advert.ID + ",'Classifieds', this)" })
                     }
                     else
                     {
                         @Html.CheckBox("approve", false, new { @onchange = "UpdateStatus(" + @advert.ID + ",'Classifieds', this )" })
-                    }
-                    @Html.Raw("</td><td class=''>")
-                    @Html.ActionLink("Edit", "action", "controller", new { id = advert.ID })
-                    @Html.Raw("</td><td>");
+                        }
+                        @Html.Raw("</td><td>");
                     @Html.Raw("<button type='button' class='close' " +
-                    "onclick='DeleteAdvert()'><span></span></button></td>")
-                    @Html.Raw("</tr>")
+                    "onclick='DeleteAdvert()'><span>&times</span></button></td>")
+                        @Html.Raw("</tr>")
 
-                    odd = !odd;
+                        odd = !odd;
                 }
             </tbody>
         </table>
