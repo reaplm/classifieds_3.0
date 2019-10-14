@@ -150,11 +150,98 @@ namespace Classifieds.XUnitTest.Controller
 
             Assert.Equal("Saved!", result.Value);
         }
+        /// <summary>
+        /// Test for public IActionResult Edit(long id)
+        /// </summary>
+        [Fact]
+        public void Edit_GET()
+        {
+            Menu menu = new Menu
+            {
+                ID = 6,
+                Name = "Home",
+                Desc = "Home Menu",
+                ParentID = 2
+            };
 
-            /// <summary>
-            /// Initialize Mapper
-            /// </summary>
-            private void Initialize()
+            mockMenuService.Setup(m => m.FindAll(It.IsAny<Expression<Func<Menu, bool>>>(),
+                It.IsAny<Expression<Func<Menu, object>>[]>())).Returns(FindAllParent);
+
+            mockMenuService.Setup(m => m.Find(It.IsAny<long>())).Returns(menu);
+
+            var controller = new MenuController(mockMenuService.Object,
+                mapper);
+
+            var result = controller.Edit(1) as PartialViewResult;
+            var model = result.Model as MenuViewModel;
+            var menus = result.ViewData["Menus"] as List<SelectListItem>;
+
+            Assert.Equal("Home", model.Name);
+            Assert.Equal("Home Menu", model.Desc);
+            Assert.Equal(3, menus.Count);
+        }
+        /// <summary>
+        /// Test for public IActionResult Edit(long id) post
+        /// Test when ModelState.Valid = false
+        /// </summary>
+        [Fact]
+        public void Edit_InvalidModelState_POST()
+        {
+            MenuViewModel model = new MenuViewModel
+            {
+
+                ID = 6,
+                Name = "Home",
+                Desc = "Home Menu",
+                ParentID = 2
+            };
+
+        
+            mockMenuService.Setup(m => m.FindAll(It.IsAny<Expression<Func<Menu, bool>>>(),
+                It.IsAny<Expression<Func<Menu, object>>[]>())).Returns(FindAllParent());
+
+            var controller = new MenuController(mockMenuService.Object,
+                mapper);
+
+            controller.ControllerContext.HttpContext = new DefaultHttpContext();
+            controller.ModelState.AddModelError("Name", "Name is required");
+
+            var result = controller.Edit(model) as PartialViewResult;
+            var menus = result.ViewData["Menus"] as List<SelectListItem>;
+
+            Assert.Equal(200, controller.HttpContext.Response.StatusCode);
+            Assert.Equal(3, menus.Count);
+            Assert.True(menus[1].Selected);
+        }
+        /// <summary>
+        /// Test for public IActionResult Edit(long id) post
+        /// Test when ModelState.Valid = true
+        /// </summary>
+        [Fact]
+        public void Edit_ValidModelState_POST()
+        {
+            MenuViewModel model = new MenuViewModel
+            {
+
+                ID = 6,
+                Name = "Home",
+                Desc = "Home Menu",
+                ParentID = 2
+            };
+
+            var controller = new MenuController(mockMenuService.Object,
+                mapper);
+
+            controller.ControllerContext.HttpContext = new DefaultHttpContext();
+            var result = controller.Edit(model) as JsonResult;
+
+            Assert.Equal("Edit Successful!", result.Value);
+            Assert.Equal(201, controller.HttpContext.Response.StatusCode);
+        }
+        /// <summary>
+        /// Initialize Mapper
+        /// </summary>
+        private void Initialize()
         {
             var configuration = new MapperConfiguration(cfg =>
             {
@@ -168,15 +255,27 @@ namespace Classifieds.XUnitTest.Controller
         {
             var menus = new List<Menu>
             {
-                new Menu{ID=1, Name="vehicles",Type="HOME"},
-                new Menu{ID=2, Name="gardening", Type="HOME"},
-                new Menu{ID=3, Name="travel",Type="SIDEBAR"},
-                new Menu{ID=4, Name="fashion",Type="SUBMENU"},
-                new Menu{ID=5, Name="cars",Type="SUBMENU",ParentID=1},
-                new Menu{ID=6, Name="trucks",Type="SUBMENU",ParentID=1}
+                new Menu{ID=1, Name="Home",Type="HOME"},
+                new Menu{ID=2, Name="Settings", Type="HOME"},
+                new Menu{ID=3, Name="Manage",Type="SIDEBAR"},
+                new Menu{ID=4, Name="Users",Type="SUBMENU",ParentID=3},
+                new Menu{ID=5, Name="Categories",Type="SUBMENU",ParentID=3}
             };
 
             return menus;
+        }
+        private IEnumerable<Menu> FindAllParent()
+        {
+            var menus = new List<Menu>
+            {
+                new Menu{ID=1, Name="Home",Type="HOME"},
+                new Menu{ID=2, Name="Settings", Type="HOME"},
+                new Menu{ID=3, Name="Manage",Type="SIDEBAR"},
+                new Menu{ID=4, Name="Users",Type="SUBMENU",ParentID=3},
+                new Menu{ID=5, Name="Categories",Type="SUBMENU",ParentID=3}
+            };
+
+            return menus.GetRange(0,3);
         }
     }
 }

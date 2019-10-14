@@ -89,7 +89,48 @@ namespace Classifieds.Web.Controllers
             ViewBag.Menus = MenuSelectListItems(model.ParentID);
             HttpContext.Response.StatusCode = (int)HttpStatusCode.OK;
             return PartialView(model);
-        }/// <summary>
+        }
+        /// <summary>
+        /// Edit menu
+        /// </summary>
+        /// <param name="id">id of the menu to edit</param>
+        /// <returns></returns>
+        [Authorize]
+        public IActionResult Edit(long id)
+        {
+            MenuViewModel model = mapper.Map<MenuViewModel>
+                (menuService.Find(id));
+
+            ViewBag.Menus = MenuSelectListItems(null);
+
+            return PartialView(model);
+        }
+        /// <summary>
+        /// Edit category submit 
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        [Authorize]
+        [ValidateAntiForgeryToken]
+        [HttpPost]
+        public IActionResult Edit(MenuViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                model.Label = model.Name.Replace(" ", "");
+                menuService.Update(mapper.Map<Menu>(model));
+                menuService.Save();
+
+                HttpContext.Response.StatusCode = (int)HttpStatusCode.Created;
+                return new JsonResult("Edit Successful!");
+            }
+
+            ViewBag.Menus = MenuSelectListItems(model.ParentID);
+            HttpContext.Response.StatusCode = (int)HttpStatusCode.OK;
+            return PartialView(model);
+        }
+
+        /// <summary>
         /// Delete menu item
         /// </summary>
         /// <param name="id"></param>

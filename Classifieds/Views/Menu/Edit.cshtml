@@ -1,0 +1,96 @@
+﻿@model Classifieds.Web.Models.MenuViewModel
+
+<div class="modal fade" id="editMenuModal" tabindex="-1" role="dialog"
+     aria-labelledby="editMenuModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                @if (Model.Icon != null && Model.Icon != "")
+                {
+                    <img src="~/images/home/@Model.Icon" class="mr-3 float-left" />
+                }
+                <h3 class="modal-title" id="editMenuModalLabel">@Model.Name</h3>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"
+                        onclick="ModalDismiss('edit-menu-modal')">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                @using (Html.BeginForm("Edit", "Menu", "", FormMethod.Post, true,
+          htmlAttributes: new { @id = "edit-menu", @class = "modal-form form-horizontal" }))
+                {
+                    @Html.AntiForgeryToken()
+                    <div class="row form-group">
+                        <div class="col-12">
+                            @Html.DropDownListFor(model => model.ParentID, ViewBag.Menus as IEnumerable<SelectListItem>,
+                                                               "Select Parent Menu", new
+                                                               {
+                                                                   @class = "rounded-box size-lg form-control form-input " +
+                                                               "text-capitalize"
+                                                               })
+                            @Html.ValidationMessageFor(model => model.ParentID, "",
+                                                            new { @Class = "form-control-danger" })
+                        </div>
+                    </div>
+
+                    <div class="row form-group">
+                        <div class="col-6">
+                            @Html.LabelFor(model => model.Name)
+                            @Html.TextBoxFor(model => model.Name,
+                                                      new
+                                                      {
+                                                          @class = "rounded-box size-lg form-control form-input",
+                                                          @onblur="GetCategoryUrl('Name')"
+                                                      })
+                            @Html.ValidationMessageFor(model => model.Name, "",
+                                                    new { @Class = "form-control-danger" })
+                        </div>
+                        <div class="col-6">
+                            @Html.LabelFor(model => model.Desc)
+                            @Html.TextBoxFor(model => model.Desc,
+                                                new
+                                                {
+                                                    @class = "rounded-box size-lg form-control form-input",
+                                                })
+                            @Html.ValidationMessageFor(model => model.Desc, "",
+                                             new { @Class = "form-control-danger" })
+                        </div>
+                    </div>
+                    <div class="row form-group">
+                        <div class="col-6">
+                            @Html.LabelFor(model => model.Icon)
+                            @Html.TextBoxFor(model => model.Icon,
+                                                               new
+                                                               {
+                                                                   @class = "rounded-box size-lg form-control form-input",
+                                                               })
+                            @Html.ValidationMessageFor(model => model.Icon, "",
+                                                            new { @Class = "form-control-danger" })
+                        </div>
+                        <div class="col-6">
+                            @Html.LabelFor(model => model.Url)
+                            @Html.TextBoxFor(model => model.Url,
+                                                                     new
+                                                                     {
+                                                                         @class = "rounded-box size-lg form-control form-input",
+                                                                         @readonly = "readonly"
+                                                                     })
+                            @Html.ValidationMessageFor(model => model.Url, "",
+                                                                   new { @Class = "form-control-danger"
+                                                                   })
+                        </div>
+                    </div>
+
+                }
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-primary" onclick="SubmitForm('edit-menu')"
+                        data-dismiss="modal">
+                    Save
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+

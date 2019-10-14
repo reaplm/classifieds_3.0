@@ -14,8 +14,8 @@
     <div class="clearfix mt-2">
         <img src="~/images/icons/@menu.Icon" class="mr-3 float-left" />
         <h5 class="pt-2">
-            <a href="/adpostm/menus/detail?id=@menu.ID"
-               class="dtl-link text-capitalize">@menu.Name</a>
+            @Html.ActionLink(menu.Name, "Edit", "Menu",new {id=@menu.ID },
+               new {@class="edit-link text-capitalize" })
         </h5>
         @Html.Raw("<button type='button' class='close' title='Delete' " +
                            "onclick='DeleteMenu(" + menu.ID + ", true)'><span>&times;</span>" +
@@ -46,7 +46,8 @@
                     { @Html.Raw("<tr class='even-row'>")
                 }
                 @Html.Raw("<td class='text-capitalize  w-25'>")
-                @Html.ActionLink(submenu.Name, "action", "controller")
+                @Html.ActionLink(submenu.Name, "Edit", "Menu", new { id = submenu.ID },
+                                new { @class = "edit-link text-capitalize" })
                 @Html.Raw("</td><td class='w-25'>")
                 @Html.DisplayFor(model => submenu.Url)
                 @Html.Raw("</td><td class='w-25'>")
