@@ -196,10 +196,10 @@ namespace Classifieds.Web.Controllers
         /// Update checkbox for status
         /// </summary>
         /// <param name="id">ID of menu</param>
-        /// <param name="active">checkbox true/false</param>
+        /// <param name="approved">checkbox true/false</param>
         /// <returns></returns>
         [Authorize]
-        public IActionResult Status(long id, bool active)
+        public IActionResult Status(long id, bool approved)
         {
             Expression<Func<Menu, object>>[] include =
             {
@@ -208,7 +208,7 @@ namespace Classifieds.Web.Controllers
             Menu menu = menuService.Find(id, include);
 
 
-            if (active)
+            if (approved)
             {
                 menu.Active = 1;
 
