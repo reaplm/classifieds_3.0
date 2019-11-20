@@ -6,25 +6,26 @@
 @{ 
     String ImageCdn = User.Claims.FirstOrDefault(u => u.Type == "ImageCdn").Value;
 }
-<div id="sideNavigation"class="sidebar shadow container-fluid pr-0 " >
-    <button type="button" class="close mr-4 mt-4 d-inline d-lg-none position-absolute right" 
+<div id="sideNavigation" class="sidebar container-fluid pr-0 pl-0 mt-0 float-right bg-fd8">
+    <button type="button" class="close mr-4 mt-4 d-inline d-lg-none position-absolute right"
             aria-label="Close" onclick="CloseSidebar()">
         <span aria-hidden="true">&times;</span>
     </button>
+    <div class="text-center">
+        <a asp-area="" asp-controller="Home" asp-action="Index" class="navbar-brand pt-2 mr-0">Classifieds</a>
+    </div>
     <div class="m-auto user-img text-center">
 
-        <img src="@ImageCdn" class="img-round mt-4"/>
+        <img src="@ImageCdn" class="img-round mt-4" />
 
     </div>
 
     <div class="user-info mb-4 text-center m-auto">
         <p><a href="/Admin/Profile">@User.Identity.Name </a></p>
-        <button class="btn p-1"><img src="~/images/icons/multimedia.png" class="" title="messages"></button>
-        <button class="btn p-1"><img src="~/images/icons/settings1.png" class="" title="settings"></button>
-        <button class="btn p-1"><img src="~/images/icons/edit.png" class="" title="edit"></button>
+        
         <hr />
     </div>
-    
+
     @if (ViewContext.HttpContext.Session.GetString("SideMenus") != null)
     {
         IEnumerable<MenuViewModel> menus = JsonConvert.DeserializeObject<List<MenuViewModel>>
@@ -42,8 +43,8 @@
                 string target = "collapse" + i.ToString();
                 <div class="">
 
-                    <div class="p-3 acc-heading " id="@heading">
-                        
+                    <div class="p-3 acc-heading ml-4" id="@heading">
+
                         <p class="mb-0 d-inline-block font-weight-normal">
                             <img src="~/images/icons/@menu.Icon" class="float-left mr-3" />
                             <a class="card-link text-capitalize" data-toggle="collapse"
@@ -52,6 +53,7 @@
                                aria-controls="@target">
                                 @menu.Name
                             </a>
+
                         </p>
                     </div>
                     @if (menu.SubMenus.Count() > 0)
@@ -60,15 +62,17 @@
                         <div id="@target" aria-labelledby="@heading"
                              @if (j == 0) { @Html.Raw("class='collapse show pt-0 pb-0'")  } else { @Html.Raw("class='collapse'") }
                              data-parent="#adm-sb-accordion">
-                            <ul class="list-unstyled">
+                            <ul class="list-unstyled bg-f9f">
                                 @foreach (var submenu in menu.SubMenus)
                                 {
-                                    <li class="ml-5">
-                                        <a href="@submenu.Url"
-                                           class="acc-nav-link ml-2">
-                                            @submenu.Name
-                                        </a>
-                                    </li>
+                                <li class="rounded-box">
+                                    <a href="@submenu.Url"
+                                       class="acc-nav-link ml-4">
+                                        @submenu.Name
+                                    </a>
+                                   
+                                </li>
+                                    
 
                                 }
                             </ul>

@@ -131,6 +131,9 @@ textarea {
 .rounded-box {
     border-radius: 0.25rem;
 }
+.oval-box {
+    border-radius: 25%;
+}
 .form-input {
     border: solid 1px #f8d650;
 }
@@ -192,6 +195,9 @@ p{
 .bg-fff {
     background-color: #fff;
 }
+.bg-f9f {
+    background-color: #f9f2a2;
+}
 .bg-transparent{
     background-color: transparent;
 }
@@ -200,6 +206,12 @@ p{
     -webkit-box-shadow: 1px 2px 1px 1px #ccc; /* Safari 3-4, iOS 4.0.2 - 4.2, Android 2.3+ */
     -moz-box-shadow: 1px 2px 1px 1px #ccc; /* Firefox 3.5 - 3.6 */
     box-shadow: 1px 2px 1px 1px #ccc; /* Opera 10.5, IE 9, Firefox 4+, Chrome 6+, iOS 5 */
+}
+.shadow-left {
+    /* offset-x | offset-y | blur-radius | spread-radius | color */
+    -webkit-box-shadow: -1px 2px 1px 1px #ccc; /* Safari 3-4, iOS 4.0.2 - 4.2, Android 2.3+ */
+    -moz-box-shadow: -1px 2px 1px 1px #ccc; /* Firefox 3.5 - 3.6 */
+    box-shadow: -1px 2px 1px 1px #ccc; /* Opera 10.5, IE 9, Firefox 4+, Chrome 6+, iOS 5 */
 }
 /*=============================MODAL=============================*/
 .modal-content {
@@ -253,6 +265,7 @@ p{
 }
 .modal-form textarea {
     border: solid 1px #e9eef2;
+
     font-size: 9pt;
 }
 label{
@@ -269,7 +282,6 @@ label{
 /*====================================SIDEBAR===============*/
 .user-info {
     color: #f8d650;
-    background-color: #fff;
     font-size: small;
     width: 200px;
     overflow: hidden;
@@ -285,8 +297,7 @@ label{
 }
 #sideNavigation {
     height: 100%;
-    width: 100%;
-    background-color: #fff;
+    width: 80%;
     color: #333;
     font-size: medium;
     overflow: hidden;
@@ -303,15 +314,13 @@ label{
 }
 .sidebar .acc-heading {
     color: #666;
-    font-size:large;
-    width: 300px;
+    width: 100%;
 }
 .accordion img{
-    width: 25px;
+    width: 20px;
     height: auto;
 }
 .accordion {
-    background-color: #fff;
     color: #666;
     font-size: small;
 }
@@ -320,14 +329,25 @@ label{
     height: 50px;
     width: 100%;
 }
-    .accordion li a{
-        padding-top: 5px;
+    .accordion ul {
+        background-color: #f8db6b;
     }
-.accordion li.active {
-    background-color: #e9eef2;
-    border-left: solid 5px #f8d650;
+
+.accordion li a {
+    display: block;
+    line-height: 40px;
+    padding-left: 50px;
 }
-    .accordion .acc-heading.active {
+    .accordion li.active {
+        border: 1px solid #fff;
+        background-color: #fff;
+    }
+
+    .accordion .acc-heading {
+        
+    }
+
+    .accordion .acc-heading .acc-link.active {
         background-color: #ccc;
     }
 /*====================================DASHBOARD PAGE===============*/

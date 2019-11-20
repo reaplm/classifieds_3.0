@@ -300,7 +300,6 @@ $(document).ready(function () {
     });
 
 
-
     $("#category").on("change", function () {
         var id = $(this).val();
         var url = "/Category/SubCategories/";
@@ -444,14 +443,21 @@ $(document).ready(function () {
             //remove previous classes
             $(".accordion li").removeClass("active");
             $(".accordion .acc-heading").removeClass("active");
+            $(".accordion .acc-heading .acc-link").removeClass("active");
             $(".accordion h6 a").attr("aria-expanded", "false");
             $(".accordion div").removeClass("show");
+            //arrow icon
+            var image = $(this).closest(".arrow-icon");
+            image.src = "arrow-right.png";
 
             //add new classes
             $(this).addClass("active");
             $(this).closest("li").addClass("active");
             $(this).closest(".acc-heading").addClass("active");
+            $(".accordion .acc-heading .acc-link").addClass("active");
             $(this).closest("h6 a").attr("aria-expanded", "true");
+            //arrow icon
+            image.src = "arrow-down.png";
 
             var divId = $(this).closest("div").attr("id");
             var div = document.getElementById(divId);

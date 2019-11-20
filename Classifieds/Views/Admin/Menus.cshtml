@@ -2,75 +2,76 @@
 
 
 
-<div id="menus" class="m-0">
-    <div class="menu-icon w-100 pt-2">
-        <img src="~/images/icons/ic_add_circle_outline_black_36dp.png" 
-             class="mr-3 float-right" id="add-menu" data-toggle="modal"/>
-    </div>
-
-<div class="content pt-5 pl-2 pr-2">
-    @foreach (var menu in Model)
-    {
-    <div class="clearfix mt-2">
-        <img src="~/images/icons/@menu.Icon" class="mr-3 float-left" />
-        <h5 class="pt-2">
-            @Html.ActionLink(menu.Name, "Edit", "Menu",new {id=@menu.ID },
-               new {@class="edit-link text-capitalize" })
-        </h5>
-        @Html.Raw("<button type='button' class='close' title='Delete' " +
-                           "onclick='DeleteMenu(" + menu.ID + ", true)'><span>&times;</span>" +
-                           "</button>")
-
-    </div>
-        @if(menu.SubMenus.Count() > 0)
-        {
-        <div class="table-responsive-sm">
-            <table class="table w-100">
-                <thead>
-                    <tr>
-                        <th>@Html.DisplayNameFor(model => menu.Name)</th>
-                        <th>@Html.DisplayNameFor(model => menu.Url)</th>
-                        <th>@Html.DisplayNameFor(model => menu.Label)</th>
-                        <th>@Html.DisplayNameFor(model => menu.Admin)</th>
-                        <th>@Html.DisplayNameFor(model => menu.Active)</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @{ bool odd = true; }
-                    @foreach (var submenu in menu.SubMenus)
-                    {
-                        if (odd)
-                        {@Html.Raw("<tr class='odd-row'>")
-                    }
-                    else
-                    { @Html.Raw("<tr class='even-row'>")
-                }
-                @Html.Raw("<td class='text-capitalize  w-25'>")
-                @Html.ActionLink(submenu.Name, "Edit", "Menu", new { id = submenu.ID },
-                                new { @class = "edit-link text-capitalize" })
-                @Html.Raw("</td><td class='w-25'>")
-                @Html.DisplayFor(model => submenu.Url)
-                @Html.Raw("</td><td class='w-25'>")
-                @Html.DisplayFor(model => submenu.Label)
-                @Html.Raw("</td><td class=''>")
-                @Html.CheckBoxFor(model => submenu.Admin, new {
-                    @onchange = "UpdateAdmin(" + submenu.ID + ", 'Menu', this )"})
-                @Html.Raw("</td><td class=''>")
-                @Html.CheckBoxFor(model => submenu.Active, new {
-                    @onchange = "UpdateStatus(" + submenu.ID + ", 'Menu', this )"})
-                @Html.Raw("</td><td>");
-                @Html.Raw("<button type='button' class='close' title='Delete' " +
-                 "onclick='DeleteMenu(" + submenu.ID + ", false)'><span>&times</span></button></td>")
-                @Html.Raw("</tr>")
-
-                odd = !odd;
-            }
-                    @Html.Raw("</td></tr>")
-                </tbody>
-            </table>
+<div id="menus" class="container-fluid pl-0 m-2">
+        <h3 class="pb-4">
+            Menus
+        </h3>
+        <div class="menu-icon w-100">
+            <img src="~/images/icons/ic_add_circle_outline_black_36dp.png"
+                 class="mr-3 float-right" id="add-category" data-toggle="modal" />
         </div>
-        }
-              
-    }
+
+        <div class="content pl-2 pr-2">
+            @foreach (var menu in Model)
+            {
+                <div class="clearfix mt-2">
+                    <img src="~/images/icons/@menu.Icon" class="mr-3 float-left" />
+                    <h5 class="pt-2">
+                        @Html.ActionLink(menu.Name, "Edit", "Menu",new {id=@menu.ID },
+                           new {@class="edit-link text-capitalize" })
+                    </h5>
+
+                </div>
+                @if (menu.SubMenus.Count() > 0)
+                {
+                    <div class="table-responsive-sm">
+                        <table class="table w-100">
+                            <thead>
+                                <tr>
+                                    <th>@Html.DisplayNameFor(model => menu.Name)</th>
+                                    <th>@Html.DisplayNameFor(model => menu.Url)</th>
+                                    <th>@Html.DisplayNameFor(model => menu.Label)</th>
+                                    <th>@Html.DisplayNameFor(model => menu.Admin)</th>
+                                    <th>@Html.DisplayNameFor(model => menu.Active)</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @{ bool odd = true; }
+                                @foreach (var submenu in menu.SubMenus)
+                                {
+                                    if (odd)
+                                    {@Html.Raw("<tr class='odd-row'>")
+                                }
+                                else
+                                { @Html.Raw("<tr class='even-row'>")
+                            }
+                            @Html.Raw("<td class='text-capitalize  w-25'>")
+                            @Html.ActionLink(submenu.Name, "Edit", "Menu", new { id = submenu.ID },
+                                            new { @class = "edit-link text-capitalize" })
+                            @Html.Raw("</td><td class='w-25'>")
+                            @Html.DisplayFor(model => submenu.Url)
+                            @Html.Raw("</td><td class='w-25'>")
+                            @Html.DisplayFor(model => submenu.Label)
+                            @Html.Raw("</td><td class=''>")
+                            @Html.CheckBoxFor(model => submenu.Admin, new {
+                                @onchange = "UpdateAdmin(" + submenu.ID + ", 'Menu', this )"})
+                            @Html.Raw("</td><td class=''>")
+                            @Html.CheckBoxFor(model => submenu.Active, new {
+                                @onchange = "UpdateStatus(" + submenu.ID + ", 'Menu', this )"})
+                            @Html.Raw("</td><td>");
+                            @Html.Raw("<button type='button' class='close' title='Delete' " +
+                             "onclick='DeleteMenu(" + submenu.ID + ", false)'><span>&times</span></button></td>")
+                            @Html.Raw("</tr>")
+
+                            odd = !odd;
+                        }
+                                @Html.Raw("</td></tr>")
+                            </tbody>
+                        </table>
+                    </div>
+                }
+
+            }
+        </div>
     </div>
-</div>

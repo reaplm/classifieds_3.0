@@ -28,23 +28,24 @@
         <link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true" />
     </environment>
 </head>
-<body class="bg-e9e">
+<body class="bg-fff">
     <div class="container-fluid">
         <div class="row">
-            <div class="col-lg-3 pl-0">
+            <div class="col-lg-3 pr-0">
                 <!-- Html.RenderPartial(action, controller ) -->
                 @{Html.RenderPartial("SideBarMenu"); }
             </div>
-            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-9">
-                <nav class="navbar navbar-expand-lg admin-menu mt-4 bg-fff rounded-box shadow" 
-                     role="navigation">
-                    
-                        
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-9 bg-fff pl-2">
+                <div class="shadow mt-0">
+                    <nav class="navbar navbar-expand-lg admin-menu rounded-box mb-4"
+                         role="navigation">
+
+
                         <div class="navbar-header">
                             <button type="button" class="btn float-left d-lg-none mr-1 bg-transparent" onclick="OpenSidebar()">
                                 <span class="navbar-toggler-icon" aria-hidden="true"><img src="~/images/icons/menu-s.png" /></span>
                             </button>
-                            <a asp-area="" asp-controller="Home" asp-action="Index" class="navbar-brand">Classifieds</a>
+
                         </div>
                         <button type="button" class="navbar-toggler border
                         hidden-lg " data-toggle="collapse" data-target=".navbar-collapse" aria-expanded="false">
@@ -78,36 +79,44 @@
                                         Post Ad
                                     </a>
                                 </li>
+                                <li class="nav-item">
+                                    <a asp-area="" asp-controller="Home" asp-action="Index"
+                                       class="@((ViewContext.RouteData.Values["Controller"].ToString().Equals("Settings")
+&& ViewContext.RouteData.Values["Action"].ToString().Equals("Index")) ? "active" : "")
+                           nav-link">
+                                        Settings
+                                    </a>
+                                </li>
                                 @if (User.Identity.IsAuthenticated)
-            {
-                    <li class="nav-item">
-                        <a asp-area="" asp-controller="Login" asp-action="SignOut"
-                           class="@((ViewContext.RouteData.Values["Controller"].ToString().Equals("User")
+                                {
+                                    <li class="nav-item">
+                                        <a asp-area="" asp-controller="Login" asp-action="SignOut"
+                                           class="@((ViewContext.RouteData.Values["Controller"].ToString().Equals("User")
 && ViewContext.RouteData.Values["Action"].ToString().Equals("Index")) ? "active" : "")
                            nav-link">
-                            Logout
-                        </a>
-                    </li>
+                                            Logout
+                                        </a>
+                                    </li>
 
 
-}
-else
-{
-                    <li class="nav-item">
-                        <a asp-area="" asp-controller="Login" asp-action="Index"
-                           class="@((ViewContext.RouteData.Values["Controller"].ToString().Equals("User")
+                                }
+                                else
+                                {
+                                    <li class="nav-item">
+                                        <a asp-area="" asp-controller="Login" asp-action="Index"
+                                           class="@((ViewContext.RouteData.Values["Controller"].ToString().Equals("User")
 && ViewContext.RouteData.Values["Action"].ToString().Equals("Index")) ? "active" : "")
                            nav-link">
-                            Login
-                        </a>
-                    </li>
+                                            Login
+                                        </a>
+                                    </li>
 
-}
+                                }
                             </ul>
                         </div>
-                    
-                </nav>
-                <div class="">
+
+                    </nav>
+
                     @RenderBody()
                 </div>
             </div>
