@@ -93,16 +93,25 @@ namespace Classifieds.Repository.Impl
         /// <returns>number of rows changed</returns>
         public int ActivateAccount(long id, string token)
         {
-            int changed = 0;
+            int result = -1;
             try
             {
                 var user = context.Users.SingleOrDefault(u => u.VerificationToken == token && u.ID==id);
-
+                
                 if(user != null)
                 {
-                    user.IsVerified = 1;
-                    context.Entry(user).Property(x => x.IsVerified).IsModified = true;
-                    changed = context.SaveChanges();
+                    if (user.IsVerified == 1)
+                    {
+                        result = 0;
+                    }
+                        if (user.IsVerified != 1)
+                    {
+                        user.IsVerified = 1;
+                        context.Entry(user).Property(x => x.IsVerified).IsModified = true;
+                        context.SaveChanges();
+                        result = 1;
+                    }
+                    
                 }
             }
             catch(Exception ex)
@@ -110,7 +119,7 @@ namespace Classifieds.Repository.Impl
                 Console.WriteLine(ex.Message);
             }
 
-            return changed;
+            return result;
         }
         
     }

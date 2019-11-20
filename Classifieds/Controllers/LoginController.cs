@@ -51,7 +51,11 @@ namespace Classifieds.Web.Controllers
             if (authenticatedUser == null){
                 ModelState.AddModelError("Password", "Wrong email or password");
             }
-            if (ModelState.IsValid)
+            else if (authenticatedUser.IsVerified == 0)
+            {
+                ModelState.AddModelError("Activated", "This account is not activated");
+            }
+            else if (ModelState.IsValid)
             {
                 var claims = new List<Claim>
                 {

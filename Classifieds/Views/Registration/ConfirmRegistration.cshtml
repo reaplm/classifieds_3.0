@@ -10,15 +10,13 @@
         if (ViewBag.Error)
         {
             <p class="m-3">
-                Something went wrong while activating your account.<br />
-                Please contact <a href='/Login/'> Classifieds.Registration </a> for
-                assistance.
+                @ViewBag.Message
             </p>
         }
         else
         {
             <p class="m-3">
-                Congratulations, you have successfully activated your account! <br />
+                @ViewBag.Message <br />
                 You many now proceed to <a href='/Login/'>login </a>
             </p>
         }

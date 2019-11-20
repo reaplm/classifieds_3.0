@@ -83,14 +83,31 @@ namespace Classifieds.Web.Controllers
         {
             if(token != null)
             {
-                int changed = userService.ActivateAccount(id, token);
+                int result = userService.ActivateAccount(id, token);
                 ViewBag.IsActivated = true;
 
-                if (changed > 0)
+                if (result == 1)
+                {
                     ViewBag.Error = false;
-                else
+                    ViewBag.Message = "You have successfully activated your account!";
+
+                }
+                else if(result == 0)
+                {
                     //something went wrong
                     ViewBag.Error = true;
+                    ViewBag.Message = "This acount is already verified. If you are " +
+                        "having difficulty logging in please contact <a href=#>administrator</a> for assistance";
+                }
+                else if(result == -1)
+                {
+
+                    //something went wrong
+                    ViewBag.Error = true;
+                    ViewBag.Message = "I'm sorry we failed to verify your account. " +
+                        "Please contact <a href=#>administrator</a> for assistance";
+                }
+                    
             }
             else
             {
