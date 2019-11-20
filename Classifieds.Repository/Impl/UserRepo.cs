@@ -75,10 +75,16 @@ namespace Classifieds.Repository.Impl
 
             return success;
         }
-
+        /// <summary>
+        /// Override generic method to return tracked entity
+        /// </summary>
+        /// <param name="user"></param>
+        /// <returns></returns>
         public new User Create(User user)
         {
-           return context.Add(user).Entity;
+            context.Entry(user).State = EntityState.Added;
+            context.SaveChanges();
+            return user;
         }
         /// <summary>
         /// User token to activate account
@@ -106,5 +112,6 @@ namespace Classifieds.Repository.Impl
 
             return changed;
         }
+        
     }
 }

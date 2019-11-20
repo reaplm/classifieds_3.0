@@ -48,10 +48,9 @@ namespace Classifieds.Web.Controllers
                 {
                     new RoleViewModel{ Name=EnumTypes.Roles.ROLE_USER.ToString()}
                 };
-                User user = userService.Create(mapper.Map<User>(model.User));
-                userService.Save();
+                var user = userService.Create(mapper.Map<User>(model.User));
 
-                if (user != null)
+                if (user.ID > 0)
                 {
                     //confirm Registration
                     //Generate Token
@@ -60,7 +59,7 @@ namespace Classifieds.Web.Controllers
                     if (userService.CreateVerificationToken(user.ID, verificationToken))
                     {
                         //send email
-                        SendConfirmationEmail(user, verificationToken);
+                        SendConfirmationEmail(model.User.Email, user.ID, verificationToken);
                     }
 
                     return Redirect(ReturnUrl);
@@ -105,16 +104,16 @@ namespace Classifieds.Web.Controllers
         /// <param name="email">User's email</param>
         /// <param name="token">Verification token</param>
         /// <returns></returns>
-        public Task SendConfirmationEmail(User user, string token)
+        public Task SendConfirmationEmail(string email, long userId, string token)
         {
             var url = Url.Action("ConfirmRegistration", "Registration",
-               new {id=user.ID, token = token },
+               new {id=userId, token = token },
                Request.Scheme);
             string subject  = "Classifieds Registration";
             string message = "<p>Click the url below to activate your registration<p><p>" +
                 "<a href='" + url + "'>" + url + "</a></p>";
 
-            return userService.SendVerificationEmailAsync(user.Email, subject, message);
+            return userService.SendVerificationEmailAsync(email, subject, message);
         }
     }
 }
