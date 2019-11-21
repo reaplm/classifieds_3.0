@@ -70,7 +70,7 @@ namespace Classifieds.Service.Impl
             }
         }
 
-        public async Task SendVerificationEmailAsync(string email, string subject, string message)
+        public async Task SendEmailAsync(string email, string subject, string message)
         {
             await emailService.SendEmailAsync(email, subject, message);
 
@@ -80,6 +80,22 @@ namespace Classifieds.Service.Impl
         {
             return userRepository.Create(user);
         }
+        public User ValidateEmailAddress(string email)
+        {
+            return userRepository.ValidateEmailAddress(email);
+        }
+        public string RandomCodeGenerator()
+        {
+            StringBuilder sb = new StringBuilder();
+            int codeLen = 8;
+            Random r = new Random();
 
+            for (int i = 0; i < codeLen; i++)
+            {
+                //get ascii character
+                sb.Append((char)r.Next(48, 91));
+            }
+            return sb.ToString();
+        }
     }
 }

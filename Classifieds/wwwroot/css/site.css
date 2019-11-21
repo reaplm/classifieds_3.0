@@ -346,10 +346,6 @@ label{
         background-color: #fff;
     }
 
-    .accordion .acc-heading {
-        
-    }
-
     .accordion .acc-heading .acc-link.active {
         background-color: #ccc;
     }

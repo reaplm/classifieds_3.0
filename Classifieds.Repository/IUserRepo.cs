@@ -11,5 +11,6 @@ namespace Classifieds.Repository
         bool CreateVerificationToken(long id, string token);
         new User Create(User user);
         int ActivateAccount(long id, string token);
+        User ValidateEmailAddress(string email);
     }
 }

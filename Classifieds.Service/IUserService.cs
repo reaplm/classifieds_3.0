@@ -11,8 +11,10 @@ namespace Classifieds.Service
         User AuthenticateUser(String email, String password);
         String GetEncryptedPassword(String password);
         bool CreateVerificationToken(long id, string token);
-        Task SendVerificationEmailAsync(string email, string subject, string message);
+        Task SendEmailAsync(string email, string subject, string message);
         new User Create(User user);
         int ActivateAccount(long id, string token);
+        User ValidateEmailAddress(string email);
+        string RandomCodeGenerator();
     }
 }

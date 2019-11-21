@@ -1,0 +1,34 @@
+﻿@{
+    ViewData["Title"] = "Reset Password";
+}
+
+<div id="pg-passreset" class="container mt-3">
+    <h2 class="text-center">Password Reset</h2>
+    <p class="text-center">Enter the email address you used to register. We will send you an email with a link to reset your password</p>
+    @using (Html.BeginForm("Index", "Password", new {}, FormMethod.Post, true,
+htmlAttributes: new { @class = "form-horizontal text-center mt-5 mb-5", @id = "passreset" }))
+    {
+        @Html.AntiForgeryToken()
+        <div class="form-group has-danger">
+            @Html.Label("Email","Email", htmlAttributes: new
+               {
+                   @class = "float-left"
+               })
+            @Html.TextBox("Email",null,               
+                htmlAttributes: new
+                {
+                    @id = "email",
+                    @class = "rounded-box size-lg form-control form-input",
+                    @placeholder="Email"
+                })
+        </div>
+       
+        <div class="form-group">
+            <p class="form-control-danger">@ViewBag.Message</p>
+            <button class="rounded-box size-lg form-button w-100">SUBMIT</button>
+            <p>If you still need help, contact <a>Support</a>.</p>
+        </div>
+
+    }
+</div>
+

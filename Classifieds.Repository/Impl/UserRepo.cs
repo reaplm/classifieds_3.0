@@ -121,6 +121,21 @@ namespace Classifieds.Repository.Impl
 
             return result;
         }
-        
+        public User ValidateEmailAddress(string email)
+        {
+            try
+            {
+                User user = context.Users
+                 .Where(x => x.Email == email)
+                 .SingleOrDefault();
+
+                return user;
+            }
+            catch (InvalidOperationException ex)
+            {
+                return null;
+            }
+
+        }
     }
 }

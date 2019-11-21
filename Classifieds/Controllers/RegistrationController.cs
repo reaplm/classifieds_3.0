@@ -130,7 +130,7 @@ namespace Classifieds.Web.Controllers
             string message = "<p>Click the url below to activate your registration<p><p>" +
                 "<a href='" + url + "'>" + url + "</a></p>";
 
-            return userService.SendVerificationEmailAsync(email, subject, message);
+            return userService.SendEmailAsync(email, subject, message);
         }
     }
 }

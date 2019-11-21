@@ -40,7 +40,7 @@ namespace Classifieds.XUnitTest.Controller
 
             mockUserService.Setup(m => m.CreateVerificationToken(It.IsAny<long>(),
                 It.IsAny<string>())).Returns(true);
-            mockUserService.Setup(m => m.SendVerificationEmailAsync(It.IsAny<string>(),
+            mockUserService.Setup(m => m.SendEmailAsync(It.IsAny<string>(),
                 It.IsAny<string>(), It.IsAny<string>())).Returns(Task.CompletedTask);
             mockUserService.Setup(m => m.Create(It.IsAny<User>()))
             .Returns(mapper.Map<User>(model.User));
