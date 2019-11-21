@@ -1,6 +1,8 @@
 ﻿using Classifieds.Domain.Model;
 using Classifieds.Service;
 using Classifieds.Web.Controllers;
+using Classifieds.Web.Models;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 using System;
@@ -22,7 +24,7 @@ namespace Classifieds.XUnitTest.Controller
         [Fact]
         public void Index_UserNotNull_POST()
         {
-            User user = new User { ID = 1, Email = "p@gmail.com" };
+            User user = new User { ID = 15, Email = "p@gmail.com" };
             mockUserService.Setup(m => m.ValidateEmailAddress(It.IsAny<string>()))
                 .Returns(user);
             mockUserService.Setup(m => m.RandomCodeGenerator())
@@ -30,11 +32,15 @@ namespace Classifieds.XUnitTest.Controller
             mockUserService.Setup(m => m.SendEmailAsync(It.IsAny<string>(),
                 It.IsAny<string>(), It.IsAny<string>())).Returns(Task.CompletedTask);
 
+
             var controller = new PasswordController(mockUserService.Object);
+            controller.ControllerContext.HttpContext = new DefaultHttpContext();
+            controller.Url = controller.Url = new Mock<IUrlHelper>().Object;
             var result = controller.Index("p@gmail.com") as RedirectToActionResult;
-
-            Assert.Equal("ResetSuccess", result.ActionName);
-
+            object id;
+            result.RouteValues.TryGetValue("id", out id);
+            Assert.Equal("Reset", result.ActionName);
+            Assert.Equal(15, (long)id);
         }
         [Fact]
         public void Index_UserIsNull_POST()
@@ -52,6 +58,105 @@ namespace Classifieds.XUnitTest.Controller
 
             Assert.Equal(resultMsg, result.ViewData["Message"]);
             Assert.True((bool)result.ViewData["Error"]);
+        }
+        [Fact]
+        public void Reset_GET()
+        {
+            User user = new User { ID = 15, Email = "p@gmail.com" };
+            mockUserService.Setup(m => m.Find(It.IsAny<long>())).Returns(user);
+            var controller = new PasswordController(mockUserService.Object);
+            var result = controller.Reset(15) as ViewResult;
+            var model = result.Model as PasswordResetViewModel;
+
+            Assert.Equal(15, model.ID);
+            Assert.Equal("p@gmail.com", model.Email);
+        }
+        [Fact]
+        public void Reset_ModelStateIsValid_POST()
+        {
+            User user = new User
+            {
+                ID = 15,
+                Email = "p@gmail.com",
+                ResetCode = "ZABGH52Y"
+            };
+
+            PasswordResetViewModel model = new PasswordResetViewModel
+            {
+                ID = 15,
+                Email = "p@gmail.com",
+                Password = "pass1",
+                ResetCode = "ZABGH52Y",
+                ConfirmPassword = "pass1"
+            };
+
+            mockUserService.Setup(m => m.Find(It.IsAny<long>())).Returns(user);
+            mockUserService.Setup(m => m.GetEncryptedPassword(It.IsAny<string>()))
+                .Returns(It.IsAny<string>());
+
+            var controller = new PasswordController(mockUserService.Object);
+
+            var result = controller.Reset(model) as RedirectToActionResult;
+
+            Assert.Equal("ResetSuccess", result.ActionName);
+        }
+        [Fact]
+        public void Reset_ModelStateIsInvalid_POST()
+        {
+            User user = new User
+            {
+                ID = 15,
+                Email = "p@gmail.com",
+                ResetCode = "ZABGH52Y"
+            };
+
+            PasswordResetViewModel model = new PasswordResetViewModel
+            {
+                ID = 15,
+                Email = "p@gmail.com",
+                Password = "pass1",
+                ResetCode = "ZABGH52Y",
+                ConfirmPassword = "pass"
+            };
+
+            mockUserService.Setup(m => m.Find(It.IsAny<long>())).Returns(user);
+
+            var controller = new PasswordController(mockUserService.Object);
+            controller.ModelState.AddModelError("ConfirmPassword", "Passwords must match");
+
+            var result = controller.Reset(model) as ViewResult;
+            var modelResult = result.Model as PasswordResetViewModel;
+
+            Assert.Equal(15, modelResult.ID);
+            Assert.Equal("p@gmail.com", modelResult.Email);
+        }
+        [Fact]
+        public void Reset_WrongResetCode_POST()
+        {
+            User user = new User
+            {
+                ID = 15,
+                Email = "p@gmail.com",
+                ResetCode = "ZABGH52Y"
+            };
+
+            PasswordResetViewModel model = new PasswordResetViewModel
+            {
+                ID = 15,
+                Email = "p@gmail.com",
+                Password = "pass1",
+                ResetCode = "ZABGH52X",
+                ConfirmPassword = "pass"
+            };
+
+            mockUserService.Setup(m => m.Find(It.IsAny<long>())).Returns(user);
+
+            var controller = new PasswordController(mockUserService.Object);
+            var result = controller.Reset(model) as ViewResult;
+            var modelResult = result.Model as PasswordResetViewModel;
+
+            Assert.Equal(15, modelResult.ID);
+            Assert.Equal("p@gmail.com", modelResult.Email);
         }
     }
 }

@@ -137,5 +137,31 @@ namespace Classifieds.Repository.Impl
             }
 
         }
+        public bool UpdateResetCode(long id, string code)
+        {
+            bool success = false;
+
+
+            try
+            {
+
+                User user = Find(id);
+
+                if (user != null)
+                {
+                    user.ResetCode = code;
+                    context.Entry(user).Property(x => x.ResetCode).IsModified = true;
+                    context.SaveChanges();
+                    success = true;
+                }
+
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error in CreateVerificationToken: \n" + ex.Message);
+            }
+
+            return success;
+        }
     }
 }

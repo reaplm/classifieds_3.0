@@ -1,0 +1,56 @@
+﻿@model Classifieds.Web.Models.PasswordResetViewModel
+
+@using (Html.BeginForm("Reset", "Password", new { }, FormMethod.Post, true,
+    new { @class = "form-horizontal mt-5 pb-3 w-50 bg-e9e m-auto", @id = "reset" })){
+    @Html.AntiForgeryToken();
+    <h3 class="text-center">Reset</h3>
+    <div class="form-group clearfix has-danger">
+        <div class="col-sm-12">
+            @Html.LabelFor(m => Model.ResetCode)
+            @Html.TextBoxFor(model => model.ResetCode, "",
+                new {@placeholder="Reset Code",
+                    @class = "rounded-box size-lg form-control form-input" })
+            @Html.ValidationMessageFor(model => model.ResetCode, "",
+                               htmlAttributes: new { @class = "float-left form-control-danger" })
+        </div>
+    </div>
+    <div class="form-group clearfix has-danger">
+        <div class="col-sm-12">
+            @Html.LabelFor(m => Model.Email)
+            @Html.TextBoxFor(model => model.Email, "",
+                new {@placeholder="Email",
+                    @class = "rounded-box size-lg form-control form-input",
+                @readonly="readonly"})
+            @Html.ValidationMessageFor(model => model.Email, "",
+                               htmlAttributes: new { @class = "float-left form-control-danger" })
+        </div>
+    </div>
+
+    <div class="form-group clearfix has-danger">
+        <div class="col-sm-12">
+            @Html.LabelFor(m => Model.Password)
+            @Html.TextBoxFor(model => model.Password, "",
+                new {@placeholder="Password",
+                    @class = "rounded-box size-lg form-control form-input" })
+            @Html.ValidationMessageFor(model => model.Password, "",
+                                htmlAttributes: new { @class = "float-left form-control-danger",
+                                    @disabled ="disabled" })
+        </div>
+    </div>
+    <div class="form-group clearfix has-danger">
+        <div class="col-sm-12">
+            @Html.LabelFor(m => Model.ConfirmPassword)
+            @Html.TextBoxFor(model => model.ConfirmPassword, "",
+                new {@placeholder="Confirm Password",
+                    @class = "rounded-box size-lg form-control form-input" })
+            @Html.ValidationMessageFor(model => model.ConfirmPassword, "",
+                                htmlAttributes: new { @class = "float-left form-control-danger" })
+        </div>
+    </div>
+    <div class="form-group clearfix has-danger">
+        @Html.HiddenFor(m => m.ID)
+    </div>
+    <div class="form-group">
+        <button class="rounded-box size-lg form-button w-100">SUBMIT</button>
+    </div>
+    }

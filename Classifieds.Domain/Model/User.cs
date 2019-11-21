@@ -25,6 +25,9 @@ namespace Classifieds.Domain.Model
         [Column(name: "activation_code")]
         public string ActivationCode { set; get; }
 
+        [Column(name: "reset_code")]
+        public string ResetCode { set; get; }
+
         [Column(name: "email")]
         public string Email { set; get; }
 

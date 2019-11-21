@@ -84,6 +84,10 @@ namespace Classifieds.Service.Impl
         {
             return userRepository.ValidateEmailAddress(email);
         }
+        public bool UpdateResetCode(long id, string code)
+        {
+            return userRepository.UpdateResetCode(id, code);
+        }
         public string RandomCodeGenerator()
         {
             StringBuilder sb = new StringBuilder();
