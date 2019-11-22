@@ -62,14 +62,19 @@ namespace Classifieds
                 {
                     options.LoginPath = "/Login";
                     options.LogoutPath = "/Login/Signout";
+                    //issues a new cookie if user i active before old cookie expires
+                    options.SlidingExpiration = true;
+                    //logs off the user if the browser is closed or inactive for more than 10 seconds
+                    options.ExpireTimeSpan = TimeSpan.FromSeconds(10);
                 }
                 );
 
             //session
             services.AddSession(options =>
             {
-                options.IdleTimeout = TimeSpan.FromMinutes(60);
+                options.IdleTimeout = TimeSpan.FromMinutes(5);
                 options.Cookie.HttpOnly = true;
+
             });
 
             //email settings
