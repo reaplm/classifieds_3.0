@@ -13,5 +13,6 @@ namespace Classifieds.Repository
         int ActivateAccount(long id, string token);
         User ValidateEmailAddress(string email);
         bool UpdateResetCode(long id, string code);
+        int CountAllUsers();
     }
 }

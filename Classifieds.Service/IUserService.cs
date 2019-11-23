@@ -17,5 +17,6 @@ namespace Classifieds.Service
         User ValidateEmailAddress(string email);
         string RandomCodeGenerator();
         bool UpdateResetCode(long id, string code);
+        int CountAllUsers();
     }
 }

@@ -101,5 +101,9 @@ namespace Classifieds.Service.Impl
             }
             return sb.ToString();
         }
+        public int CountAllUsers()
+        {
+            return userRepository.CountAllUsers();
+        }
     }
 }

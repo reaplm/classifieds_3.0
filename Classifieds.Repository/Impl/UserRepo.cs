@@ -163,5 +163,13 @@ namespace Classifieds.Repository.Impl
 
             return success;
         }
+        /// <summary>
+        /// Count all registered users
+        /// </summary>
+        /// <returns>Number of registered users</returns>
+        public int CountAllUsers()
+        {
+            return context.Users.Count();
+        }
     }
 }

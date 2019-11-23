@@ -10,5 +10,6 @@ namespace Classifieds.Repository
         IEnumerable<Advert> FindByCategory(int id);
         IEnumerable<Advert> FindBySubCategory(int id);
         int RemoveAllPictures(long id);
+        int CountAllAdverts();
     }
 }

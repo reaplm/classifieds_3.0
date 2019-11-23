@@ -69,7 +69,16 @@ namespace Classifieds.XUnitTest.Repository
 
             Assert.Equal("NewEmailToken", newUser.VerificationToken);
             Assert.True(result);
-    }
+         }
+        [Fact]
+        public void CountAllUsers()
+        {
+            var userRepo = new UserRepo(mockContext);
+
+            int result = userRepo.CountAllUsers();
+            Assert.Equal(3, result);
+
+        }
         /// <summary>
         /// Initialize context
         /// 

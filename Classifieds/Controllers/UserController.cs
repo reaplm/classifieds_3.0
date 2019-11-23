@@ -57,5 +57,6 @@ namespace Classifieds.Web.Controllers
 
             return PartialView(model);
         }
+       
     }
 }

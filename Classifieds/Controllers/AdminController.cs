@@ -54,6 +54,9 @@ namespace Classifieds.Web.Controllers
                     ReferenceLoopHandling = ReferenceLoopHandling.Ignore
                 }));
 
+            //Analytics
+            ViewBag.CountUsers =  userService.CountAllUsers();
+            ViewBag.CountAdverts = advertService.CountAllAdverts();
             return View();
         }
         public IActionResult Profile()

@@ -26,5 +26,13 @@ namespace Classifieds.Service.Impl
         {
             return advertRepo.RemoveAllPictures(id);
         }
+        /// <summary>
+        /// Count all registered users
+        /// </summary>
+        /// <returns>Number of registered users</returns>
+        public int CountAllAdverts()
+        {
+            return advertRepo.CountAllAdverts();
+        }
     }
 }

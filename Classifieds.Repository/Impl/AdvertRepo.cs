@@ -101,6 +101,14 @@ namespace Classifieds.Repository.Impl
 
             return JObject.Parse(ucare.DeleteBatch(uuidGroup));
         }
+        /// <summary>
+        /// Count all registered users
+        /// </summary>
+        /// <returns>Number of registered users</returns>
+        public int CountAllAdverts()
+        {
+            return context.Adverts.Count();
+        }
     }
 
 }
