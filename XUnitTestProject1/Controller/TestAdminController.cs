@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Classifieds.Domain.Data;
 using Classifieds.Domain.Model;
 using Classifieds.Service;
 using Classifieds.Web.Controllers;
@@ -65,6 +66,23 @@ namespace Classifieds.XUnitTest.Controller
             List<MenuViewModel> model = result.Model as List<MenuViewModel>;
 
             Assert.Equal(6, model.Count);
+        }
+        [Fact]
+        public void CountAdvertByStatus()
+        {
+            var data = new List<CountPercentSummary>
+            {
+                new CountPercentSummary{Column="APPROVED", Count=2,Percent=28.57},
+                new CountPercentSummary{Column="REJECTED", Count=1,Percent=14.29},
+                new CountPercentSummary{Column="SUBMITTED", Count=4,Percent=57.14}
+            };
+            mockAdvertService.Setup(m => m.AdvertCountByStatus()).Returns(data);
+            var controller = new AdminController(mockMenuService.Object, mockUserService.Object,
+                mockAdvertService.Object, mockCategoryService.Object, mapper);
+
+            var result = controller.CountAdvertByStatus() as List<CountPercentSummary>;
+
+            Assert.Equal(3, result.Count);
         }
         private IEnumerable<Menu> FindAll()
         {

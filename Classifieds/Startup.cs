@@ -65,7 +65,7 @@ namespace Classifieds
                     //issues a new cookie if user i active before old cookie expires
                     options.SlidingExpiration = true;
                     //logs off the user if the browser is closed or inactive for more than 10 seconds
-                    options.ExpireTimeSpan = TimeSpan.FromSeconds(10);
+                    options.ExpireTimeSpan = TimeSpan.FromMinutes(20);
                 }
                 );
 

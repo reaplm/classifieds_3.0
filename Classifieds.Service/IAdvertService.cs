@@ -1,4 +1,5 @@
-﻿using Classifieds.Domain.Model;
+﻿using Classifieds.Domain.Data;
+using Classifieds.Domain.Model;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -11,5 +12,7 @@ namespace Classifieds.Service
         IEnumerable<Advert> FindBySubCategory(int id);
         int RemoveAllPictures(long id);
         int CountAllAdverts();
+        List<CountPercentSummary> AdvertCountByStatus();
+        List<CountPercentSummary> AdvertCountByLocation();
     }
 }

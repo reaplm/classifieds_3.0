@@ -1,4 +1,5 @@
-﻿using Classifieds.Domain.Model;
+﻿using Classifieds.Domain.Data;
+using Classifieds.Domain.Model;
 using Classifieds.Domain.Uploadcare;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json.Linq;
@@ -45,7 +46,7 @@ namespace Classifieds.Repository.Impl
         {
 
             var entry = context.Adverts.Single(ad => ad.ID == advert.ID);
-           context.Entry(entry).Reference(p => p.Detail).Load();
+            context.Entry(entry).Reference(p => p.Detail).Load();
 
             context.Entry(entry).CurrentValues.SetValues(advert);
             context.Entry(entry.Detail).CurrentValues.SetValues(advert.Detail);
@@ -67,23 +68,23 @@ namespace Classifieds.Repository.Impl
             context.Entry(entry).Reference(p => p.Detail).Load();
             context.Entry(entry.Detail).Collection(p => p.AdPictures).Load();
 
-            if(entry.Detail.AdPictures != null)
+            if (entry.Detail.AdPictures != null)
             {
-                
+
                 foreach (var picture in entry.Detail.AdPictures)
                 {
                     //Delete from storage first
                     JObject response = DeleteFromStorage(picture.Uuid);
                     int status = (int)response.Property("status").Value;
 
-                    if(status == 400)
+                    if (status == 400)
                     {
                         //log this info to delete later
                     }
 
                     //delete from database
                     context.Entry(picture).State = EntityState.Deleted;
-    
+
                 }
                 changed = context.SaveChanges();
             }
@@ -108,6 +109,32 @@ namespace Classifieds.Repository.Impl
         public int CountAllAdverts()
         {
             return context.Adverts.Count();
+        }
+        public List<CountPercentSummary> AdvertCountByStatus()
+        {
+
+            var query = context.Adverts.GroupBy(a => new { a.Status })
+                        .Select(g => new CountPercentSummary
+                        {
+                            Column = g.Key.Status,
+                            Count = g.Count(),
+                            Percent = Math.Round(g.Count() * 100.0 / context.Adverts.Count(),2)
+                        })
+                        .OrderBy(a => a.Column);
+            return query.ToList();
+        }
+        public List<CountPercentSummary> AdvertCountByLocation()
+        {
+
+            var query = context.AdvertDetails.GroupBy(a => new { a.Location })
+                        .Select(g => new CountPercentSummary
+                        {
+                            Column = g.Key.Location,
+                            Count = g.Count(),
+                            Percent = Math.Round(g.Count() * 100.0 / context.AdvertDetails.Count(), 2)
+                        })
+                        .OrderBy(a => a.Column);
+            return query.ToList();
         }
     }
 

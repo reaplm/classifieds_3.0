@@ -12,6 +12,7 @@ using Newtonsoft.Json;
 using Microsoft.AspNetCore.Http;
 using Classifieds.Web.Models;
 using System.Linq;
+using Classifieds.Domain.Data;
 
 namespace Classifieds.Web.Controllers
 {
@@ -57,6 +58,8 @@ namespace Classifieds.Web.Controllers
             //Analytics
             ViewBag.CountUsers =  userService.CountAllUsers();
             ViewBag.CountAdverts = advertService.CountAllAdverts();
+
+          
             return View();
         }
         public IActionResult Profile()
@@ -149,6 +152,22 @@ namespace Classifieds.Web.Controllers
 
 
             return View(categories);
+        }
+        /// <summary>
+        /// Calculate percentage and count of adverts grouped by AdvertStatus column
+        /// </summary>
+        /// <returns>Listcontaining summary results</returns>
+        public List<CountPercentSummary> CountAdvertByStatus()
+        {
+            return advertService.AdvertCountByStatus();
+        }
+        /// <summary>
+        /// Calculate percentage and count of adverts grouped by AdvertStatus column
+        /// </summary>
+        /// <returns>Listcontaining summary results</returns>
+        public List<CountPercentSummary> CountAdvertByLocation()
+        {
+            return advertService.AdvertCountByLocation();
         }
     }
 }

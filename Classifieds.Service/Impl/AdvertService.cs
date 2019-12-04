@@ -1,4 +1,5 @@
-﻿using Classifieds.Domain.Model;
+﻿using Classifieds.Domain.Data;
+using Classifieds.Domain.Model;
 using Classifieds.Repository;
 using System;
 using System.Collections.Generic;
@@ -33,6 +34,14 @@ namespace Classifieds.Service.Impl
         public int CountAllAdverts()
         {
             return advertRepo.CountAllAdverts();
+        }
+        public List<CountPercentSummary> AdvertCountByStatus()
+        {
+            return advertRepo.AdvertCountByStatus();
+        }
+        public List<CountPercentSummary> AdvertCountByLocation()
+        {
+            return advertRepo.AdvertCountByLocation();
         }
     }
 }

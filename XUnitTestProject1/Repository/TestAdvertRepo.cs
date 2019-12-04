@@ -1,10 +1,12 @@
-﻿using Classifieds.Domain.Enumerated;
+﻿using Classifieds.Domain.Data;
+using Classifieds.Domain.Enumerated;
 using Classifieds.Domain.Model;
 using Classifieds.Repository;
 using Classifieds.Repository.Impl;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json.Linq;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -201,6 +203,48 @@ namespace Classifieds.XUnitTest.Repository
 
             return advert;
         }
+        [Fact]
+        public void AdvertCountByStatus()
+        {
+            var repo = new AdvertRepo(appContext);
+
+            var result = repo.AdvertCountByStatus();
+            var expected = new List<CountPercentSummary>
+            {
+                new CountPercentSummary{Column="APPROVED", Count=2,Percent=28.57},
+                new CountPercentSummary{Column="REJECTED", Count=1,Percent=14.29},
+                new CountPercentSummary{Column="SUBMITTED", Count=4,Percent=57.14}
+            };
+
+            Console.WriteLine("Expected - " + expected[0].Column);
+            Console.WriteLine("result - " + result[0].Column);
+
+            Assert.Equal(expected[0].Column, result[0].Column);
+            Assert.Equal(expected[1].Column, result[1].Column);
+            Assert.Equal(expected[2].Column, result[2].Column);
+            Assert.Equal(3, result.Count);
+
+        }
+        [Fact]
+        public void AdvertCountByLocation()
+        {
+            var repo = new AdvertRepo(appContext);
+
+            var result = repo.AdvertCountByLocation();
+            var expected = new List<CountPercentSummary>
+            {
+                new CountPercentSummary{Column="Gaborone", Count=3,Percent=42.86},
+                new CountPercentSummary{Column="Lobatse", Count=1,Percent=14.29},
+                new CountPercentSummary{Column="Mochudi", Count=1,Percent=14.29},
+                new CountPercentSummary{Column="Mogoditshane", Count=2,Percent=28.57}
+            };
+
+            Assert.Equal(expected[0].Column, result[0].Column);
+            Assert.Equal(expected[1].Column, result[1].Column);
+            Assert.Equal(expected[2].Column, result[2].Column);
+            Assert.Equal(4, result.Count);
+
+        }
         /// <summary>
         /// Initialize
         /// </summary>
@@ -223,15 +267,16 @@ namespace Classifieds.XUnitTest.Repository
 
             List<AdvertDetail> advertDetails = new List<AdvertDetail>
             {
-                new AdvertDetail{ID=1,Title="room for rent", Body="A LARGE ROOM- can be shared by 2 people", Email="my@email.com",AdvertID=1},
-                new AdvertDetail{ID=2,Title="2011 BMW120i", Body="2011 bmw120i Manual gear 150000km 80k", Email="my@email.com",AdvertID=2},
-                new AdvertDetail{ID=3,Title="Tyres, Mag Wheels", Body="Your Professional Tyre Fitment Centre", Email="my@email.com", AdvertID=3},
-                new AdvertDetail{ID=4,Title="GOLF POLO GTI MODEL 2013", Body="Full serviced car.Aircon sound system.Price 130000 negotiable", Email="my@email.com", AdvertID=4},
-                new AdvertDetail{ID=5,Title="Handheld Car Vacuum Cleaners", Body="Fine Living Handheld Vacuum Cleaner", Email="my@email.com", AdvertID=5},
-                new AdvertDetail{ID=6,Title="3 bedroom bhc house for Rent", Body="3 bedroom bhc house available in Gaborone ", Email="my@email.com", AdvertID=6},
+                new AdvertDetail{ID=1,Title="room for rent", Body="A LARGE ROOM- can be shared by 2 people", Email="my@email.com",AdvertID=1, Location="Gaborone"},
+                new AdvertDetail{ID=2,Title="2011 BMW120i", Body="2011 bmw120i Manual gear 150000km 80k", Email="my@email.com",AdvertID=2, Location="Mogoditshane"},
+                new AdvertDetail{ID=3,Title="Tyres, Mag Wheels", Body="Your Professional Tyre Fitment Centre", Email="my@email.com", AdvertID=3, Location="Gaborone"},
+                new AdvertDetail{ID=4,Title="GOLF POLO GTI MODEL 2013", Body="Full serviced car.Aircon sound system.Price 130000 negotiable", Email="my@email.com", AdvertID=4, Location="Gaborone"},
+                new AdvertDetail{ID=5,Title="Handheld Car Vacuum Cleaners", Body="Fine Living Handheld Vacuum Cleaner", Email="my@email.com", AdvertID=5, Location="Lobatse"},
+                new AdvertDetail{ID=6,Title="3 bedroom bhc house for Rent", Body="3 bedroom bhc house available in Gaborone ", Email="my@email.com", AdvertID=6, Location="Mogoditshane"},
                 new AdvertDetail
                 {
                     ID =7,Title="Samsung J1 Ace For Sale",Body="3month Samsung J1 Ace For Sale. P650 ", Email="my@email.com", AdvertID=7,
+                    Location="Mochudi",
                     AdPictures = new List<AdPicture>
                     {
                         new AdPicture
