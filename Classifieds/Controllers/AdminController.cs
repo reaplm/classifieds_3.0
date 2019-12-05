@@ -13,6 +13,7 @@ using Microsoft.AspNetCore.Http;
 using Classifieds.Web.Models;
 using System.Linq;
 using Classifieds.Domain.Data;
+using Classifieds.Domain.Enumerated;
 
 namespace Classifieds.Web.Controllers
 {
@@ -59,7 +60,19 @@ namespace Classifieds.Web.Controllers
             ViewBag.CountUsers =  userService.CountAllUsers();
             ViewBag.CountAdverts = advertService.CountAllAdverts();
 
-          
+            //get new adverts
+            Expression<Func<Advert, bool>> adPredicate = a => a.Status == EnumTypes.AdvertStatus.SUBMITTED.ToString();
+            Expression<Func<Advert, object>>[] adInclude = { a => a.Detail };
+            var newAds = mapper.Map<IEnumerable<AdvertViewModel>>(advertService.FindAll(adPredicate, adInclude));
+
+            Expression<Func<User, bool>> userPredicate = a => a.IsVerified == 0;
+            Expression<Func<User, object>>[] userInclude = { a => a.UserDetail };
+            var newUsers = mapper.Map <IEnumerable<UserViewModel>>(userService.FindAll(userPredicate, userInclude));
+
+            ViewBag.Adverts = newAds;
+            ViewBag.Users = newUsers;
+
+
             return View();
         }
         public IActionResult Profile()

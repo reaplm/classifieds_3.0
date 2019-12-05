@@ -82,9 +82,11 @@ d3.json("/Admin/CountAdvertByLocation").then(function (data) {
         domain[i] = data[i].column;
     }
 
-    var r = 0;
-    var colors = ["#6e40aa", "#963db3", "#bf3caf", "#e4419d", "#fe4b83",
+    var c = ["#6e40aa", "#963db3", "#bf3caf", "#e4419d", "#fe4b83",
         "#ff5e63", "#ff7847", "#fb9633", "#e2b72f", "#c6d63c", "#aff05b"];
+
+    var colors = ["#fff0a9", "#fee087", "#fec965", "#feab4b",
+        "#fd893c", "#fa5c2e", "#ec3023", "#d31121", "#af0225", "#800026"];
 
     var svg = d3.select("#ad-location-pie .card-body")
         .append("svg")

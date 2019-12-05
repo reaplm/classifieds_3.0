@@ -15,9 +15,9 @@ namespace Classifieds.Web.Models
 
         [Required(ErrorMessage = "Body cannot be empty")]
         [Display(Name = "Body")]
-        public String Body { set; get; }
+        public string Body { set; get; }
 
-        public String BodySubString
+        public string BodySubString
         {
             get
             {
@@ -27,6 +27,20 @@ namespace Classifieds.Web.Models
                         return Body.Substring(0, 200) + "...";
 
                     else return Body + "...";
+                }
+                else return "";
+            }
+        }
+        public string TitleSubString
+        {
+            get
+            {
+                if (Title != null)
+                {
+                    if (Title.Length > 15)
+                        return Title.Substring(0, 15) + "..";
+
+                    else return Title + "..";
                 }
                 else return "";
             }

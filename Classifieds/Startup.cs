@@ -44,7 +44,8 @@ namespace Classifieds
                     .ForMember(m => m.ParentID, opts => opts.Ignore());
                 cfg.CreateMap<AdvertDetailViewModel, AdvertDetail>();
                 cfg.CreateMap<AdvertDetail, AdvertDetailViewModel>()
-                    .ForMember(m => m.BodySubString, opts => opts.Ignore());
+                    .ForMember(m => m.BodySubString, opts => opts.Ignore())
+                    .ForMember(m => m.TitleSubString, opts => opts.Ignore());
                 cfg.CreateMap<AdPictureViewModel, AdPicture>();
                 cfg.CreateMap<AdPicture, AdPictureViewModel>();
                 cfg.CreateMap<Category, CategoryViewModel>();
