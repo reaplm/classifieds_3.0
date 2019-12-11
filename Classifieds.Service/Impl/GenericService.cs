@@ -19,6 +19,10 @@ namespace Classifieds.Service.Impl
         {
             genericRepo.Create(entity);
         }
+        public T CreateEntity(T entity)
+        {
+           return genericRepo.CreateEntity(entity);
+        }
         public void Update(T entity)
         {
             genericRepo.Update(entity);

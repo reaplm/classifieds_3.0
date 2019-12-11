@@ -41,6 +41,56 @@ namespace Classifieds.XUnitTest.Repository
 
         }
         /// <summary>
+        /// Test Method { public void Create(T entity) }
+        /// </summary>
+        [Fact]
+        public void Repository_CreateWithChildren()
+        {
+            List<Menu> subMenus = new List<Menu>
+            {
+                new Menu{ ID = 8, Name = "menu 8" },
+                new Menu{ ID = 9, Name = "menu 9" }
+            };
+            
+            var menu = new Menu {ID = 7, Name = "menu 7", SubMenus = subMenus };
+
+            var menuRepo = new MenuRepo(appContext);
+            menuRepo.Create(menu);
+            appContext.SaveChanges();
+
+            var menu7 = appContext.Menus.Find(7L);
+
+            Assert.Equal(8, appContext.Menus.Count());
+            Assert.Equal(2, menu7.SubMenus.Count());
+            Assert.Equal("menu 7", appContext.Menus.Find(7L).Name);
+            Assert.Equal("menu 8", appContext.Menus.Find(8L).Name);
+            Assert.Equal("menu 9", appContext.Menus.Find(9L).Name);
+
+        }
+        /// <summary>
+        /// Test Method { public void Create(T entity) }
+        /// </summary>
+        [Fact]
+        public void Repository_CreateEntity()
+        {
+            List<Menu> subMenus = new List<Menu>
+            {
+                new Menu{ ID = 8, Name = "menu 8" },
+                new Menu{ ID = 9, Name = "menu 9" }
+            };
+
+            var menu = new Menu { ID = 7, Name = "menu 7", SubMenus = subMenus };
+
+            var menuRepo = new MenuRepo(appContext);
+            var result = menuRepo.CreateEntity(menu);
+            appContext.SaveChanges();
+
+            Assert.Equal(8, appContext.Menus.Count());
+            Assert.Equal("menu 7", result.Name);
+            Assert.Equal(2, result.SubMenus.Count());
+
+        }
+        /// <summary>
         /// Test Method { public void Update(T entity) }
         /// </summary>
         [Fact]

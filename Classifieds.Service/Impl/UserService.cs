@@ -76,10 +76,10 @@ namespace Classifieds.Service.Impl
 
         }
 
-        User IUserService.Create(User user)
+        /*public User CreateEntity(User user)
         {
-            return userRepository.Create(user);
-        }
+            return userRepository.CreateEntity(user);
+        }*/
         public User ValidateEmailAddress(string email)
         {
             return userRepository.ValidateEmailAddress(email);
@@ -104,6 +104,11 @@ namespace Classifieds.Service.Impl
         public int CountAllUsers()
         {
             return userRepository.CountAllUsers();
+        }
+
+        User IUserService.Create(User user)
+        {
+            throw new NotImplementedException();
         }
     }
 }

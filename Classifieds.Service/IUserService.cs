@@ -15,6 +15,7 @@ namespace Classifieds.Service
         new User Create(User user);
         int ActivateAccount(long id, string token);
         User ValidateEmailAddress(string email);
+
         string RandomCodeGenerator();
         bool UpdateResetCode(long id, string code);
         int CountAllUsers();

@@ -33,6 +33,15 @@ namespace Classifieds.Repository.Impl
             context.Set<T>().Add(entity);
         }
         /// <summary>
+        /// Insert object into the database
+        /// </summary>
+        /// <param name="entity"></param>
+        public T CreateEntity(T entity)
+        {
+            context.Set<T>().Add(entity);
+            return entity;
+        }
+        /// <summary>
         /// Update an entity
         /// </summary>
         /// <param name="entity"></param>

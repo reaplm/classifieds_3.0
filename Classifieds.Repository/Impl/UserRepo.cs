@@ -80,12 +80,13 @@ namespace Classifieds.Repository.Impl
         /// </summary>
         /// <param name="user"></param>
         /// <returns></returns>
-        public new User Create(User user)
+        /*public new User Create(User user)
         {
-            context.Entry(user).State = EntityState.Added;
+            context.Set<User>().Add(user);
+            //context.Entry(user).State = EntityState.Added;
             context.SaveChanges();
             return user;
-        }
+        }*/
         /// <summary>
         /// User token to activate account
         /// </summary>

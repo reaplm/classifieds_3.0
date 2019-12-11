@@ -38,6 +38,7 @@ namespace Classifieds
                 cfg.CreateMap<User, UserViewModel>()
                 .ForMember(m => m.RoleList, opts => opts.Ignore());
                 cfg.CreateMap<UserDetailViewModel, UserDetail>();
+                cfg.CreateMap<UserDetail, UserDetailViewModel>();
                 cfg.CreateMap<MenuViewModel, Menu>();
                 cfg.CreateMap<AdvertViewModel, Advert>();
                 cfg.CreateMap<Advert, AdvertViewModel>()

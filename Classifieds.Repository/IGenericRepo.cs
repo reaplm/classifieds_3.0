@@ -12,6 +12,7 @@ namespace Classifieds.Repository
         /// </summary>
         /// <param name="entity">Object to add to the DB</param>
         void Create(T entity);
+        T CreateEntity(T entity);
         /// <summary>
         /// Retrieve an object from the database with the given primary key
         /// </summary>

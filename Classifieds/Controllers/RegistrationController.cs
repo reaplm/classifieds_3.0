@@ -48,7 +48,8 @@ namespace Classifieds.Web.Controllers
                 {
                     new RoleViewModel{ Name=EnumTypes.Roles.ROLE_USER.ToString()}
                 };
-                var user = userService.Create(mapper.Map<User>(model.User));
+                var user = userService.CreateEntity(mapper.Map<User>(model.User));
+                userService.Save();
 
                 if (user.ID > 0)
                 {
