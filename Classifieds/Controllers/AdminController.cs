@@ -166,6 +166,11 @@ namespace Classifieds.Web.Controllers
 
             return View(categories);
         }
+        public IActionResult Communication()
+        {
+
+            return null;
+        }
         /// <summary>
         /// Calculate percentage and count of adverts grouped by AdvertStatus column
         /// </summary>
