@@ -4,7 +4,7 @@
             <div id="" class="card small-card shadow nopadding">
                 <div class="card-body">
                     <div class="card-body">
-                        <h1 class="text-center">@ViewBag.CountUsers</h1>
+                        <h1 class="text-center counter-count">@ViewBag.CountUsers</h1>
                         <p class="card-text text-center">Users</p>
                     </div>
                 </div>
@@ -13,7 +13,7 @@
         <div class="col-lg-3">
             <div id="" class="card small-card shadow">
                 <div class="card-body">
-                        <h1 class="text-center mt-3">@ViewBag.CountAdverts</h1>
+                        <h1 class="text-center mt-3 counter-count">@ViewBag.CountAdverts</h1>
                         <p class="card-text text-center">Adverts</p>
                 </div>
             </div>
@@ -21,7 +21,7 @@
         <div class="col-lg-3">
             <div class="card small-card shadow">
                 <div id="" class="card-body">
-                    <h1 class="text-center mt-3">10</h1>
+                    <h1 class="text-center mt-3 counter-count">10</h1>
                     <p class="card-text text-center">New Adverts</p>
                 </div>
             </div>
@@ -29,7 +29,7 @@
         <div class="col-lg-3">
             <div id="" class="card small-card shadow">
                 <div class="card-body">
-                        <h1 class="text-center mt-3">500</h1>
+                        <h1 class="text-center mt-3 counter-count">500</h1>
                         <p class="card-text text-center">Visitors</p>
                 </div>
             </div>
@@ -63,7 +63,7 @@
                                     <tr>
                                         <th>Title</th>
                                         <th>Status</th>
-                                        <th>Date</th>
+                                        <th>Submitted</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -72,12 +72,12 @@
                                         if( i > ViewBag.Adverts.Count - 1) { break; }
                                         var advert = ViewBag.Adverts[i];
                                         @Html.Raw("<tr>")
-                                        @Html.Raw("<td class='text-capitalize  w-25'><a href = #>")
+                                        @Html.Raw("<td class='text-capitalize  w-20'><a href = #>")
                                         @Html.Raw(advert.Detail.TitleSubString)
-                                        @Html.Raw("</a></td><td class='w-25'>")
+                                        @Html.Raw("</a></td><td class='w-25  text-lowercase'>")
                                         @Html.Raw(advert.Status)
-                                        @Html.Raw("</td><td class='w-25'>")
-                                        @Html.Raw(advert.SubmittedDate)
+                                        @Html.Raw("</td><td class='w-20'>")
+                                        @Html.Raw(advert.SubmittedDate.ToString("dd MMM yyyy"))
                                         @Html.Raw("</td>")
                                         @Html.Raw("</tr>")
                                     }
@@ -98,7 +98,7 @@
                                         <tr>
                                             <th>Name</th>
                                             <th>Email</th>
-                                            <th>Date</th>
+                                            <th>Registered</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -109,18 +109,18 @@
                                             var user = ViewBag.Users[i];
                                             @Html.Raw("<tr>")
                                             @Html.Raw("<td class='text-capitalize  w-25'><a href = #>")
-                                            @Html.Raw(user.UserDetail.FirstName)
-                                            @Html.Raw(user.UserDetail.LastName)
+                                            @Html.Raw(user.UserDetail.FirstName + " " + user.UserDetail.LastName)
                                             @Html.Raw("</a></td><td class='w-25'>")
                                             @Html.Raw(user.Email)
                                             @Html.Raw("</td><td class='w-25'>")
-                                            @Html.Raw(user.RegDate)
+                                            @Html.Raw(user.RegDate.ToString("dd MMM yyyy"))
                                             @Html.Raw("</td>")
                                             @Html.Raw("</tr>")
                                         }
                                     </tbody>
                                 </table>
-                        </div>
+                                <a href="#" class="btn btn-primary">More</a>
+                            </div>
                 </div>
             </div>
         </div>
