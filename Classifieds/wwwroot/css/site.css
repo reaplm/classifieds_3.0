@@ -109,7 +109,11 @@ a:hover, a.active {
     border-color: #2c2a33;
     color: #fff;
 }
-
+.pg-button {
+    background-color: #f8d650;
+    border-color: #f8d650;
+    color: #fff;
+}
 .uploadcare--widget__button_type_open {
     background-color: #2e202b;
     width: 200px;
@@ -203,6 +207,9 @@ p{
 }
 .bg-transparent{
     background-color: transparent;
+}
+.color-fff {
+    color: #fff;
 }
 .shadow {
     /* offset-x | offset-y | blur-radius | spread-radius | color */
