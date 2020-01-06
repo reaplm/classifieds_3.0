@@ -153,7 +153,7 @@ p{
 /*-------------------------------------container-------------------------------------------*/
 .col-layout {
     column-count: 3;
-    column-gap: 10px;
+    column-gap: 20px;
 }
 .content {
     background-color: #fff;
@@ -429,6 +429,22 @@ label{
 .nomargin {
     margin: 0 !important;
 }
+.like input[type=checkbox] {
+    display: none; 
+}
+
+.like label::before {
+    content: url(../images/icons/heart_outline.png);
+    cursor: pointer;
+}
+
+.like input[type=checkbox]:checked + label::before {
+    content: url(../images/icons/heart_filled.png);
+    
+}
+
+
+
 /*========================================MEDIA QUERIES================================*/
 /* col-xs col-sm col-md*/
 @media only screen and (max-width: 991px) {

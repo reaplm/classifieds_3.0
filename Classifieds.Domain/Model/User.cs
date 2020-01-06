@@ -47,5 +47,6 @@ namespace Classifieds.Domain.Model
 
         public UserDetail UserDetail { set; get; }
         public IEnumerable<Role> Roles { set; get; }
+        public List<Like> Likes { set; get; }
     }
 }

@@ -57,6 +57,57 @@ namespace Classifieds.Web.Controllers
 
             return PartialView(model);
         }
-       
+        [Authorize]
+        public bool Like(long id, bool like)
+        {
+            bool success = false;
+            try
+            {
+                //get loggedin user
+                long userId = long.Parse(User.Claims.FirstOrDefault(x => x.Type == "UserId").Value);
+                var user = userService.Find(userId);
+
+                //add like
+                if (like)
+                {
+                    //get advert
+                    //var advert = advertService.Find(id);
+                    if (user.Likes == null)
+                    {
+                        user.Likes = new List<Like>();
+                    }
+                    user.Likes.Add(new Like { AdvertID = id });
+                }
+                else //remove like
+                {
+                    if (user.Likes != null)
+                    {
+                        var item = user.Likes.FirstOrDefault(x => x.AdvertID == id);
+
+                        if (item != null)
+                        {
+                            user.Likes.Remove(item);
+
+                        }
+                    }
+
+                }
+
+                //update user
+                userService.Update(user);
+
+                success = true;
+            }
+            catch (Exception ex)
+            {
+                //log error here
+                Console.WriteLine(ex.StackTrace);
+            }
+            finally
+            {
+            }
+            return success;
+
+        }
     }
 }

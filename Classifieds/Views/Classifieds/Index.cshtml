@@ -2,7 +2,7 @@
 @{
     ViewData["Title"] = "Index";
 }
-<div class="col-layout mt-5">
+<div class="col-layout mt-5 clearfix">
     @foreach(var advert in Model)
     {
         <h5 class="text-capitalize text-center">
@@ -10,6 +10,11 @@
             new {id=advert.ID},new {@class="modal-link",
                 @data_target= "#advert-detail-modal", @data_toggle="modal" })
         </h5>
+        <div class="clearfix w-100 like">
+            <p class="float-left font-weight-bold text-capitalize">@advert.Detail.Location</p>
+            <input type="checkbox" id="@advert.ID" />
+            <label for="@advert.ID" class="float-right mr-4"></label>
+        </div>
         <p>@advert.Detail.BodySubString</p>
         <hr />
     }
