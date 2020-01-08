@@ -12,7 +12,7 @@
         </h5>
         <div class="clearfix w-100 like">
             <p class="float-left font-weight-bold text-capitalize">@advert.Detail.Location</p>
-            <input type="checkbox" id="@advert.ID" />
+            <input type="checkbox" id="@advert.ID" onchange="LikeAd(this, @advert.ID)"/>
             <label for="@advert.ID" class="float-right mr-4"></label>
         </div>
         <p>@advert.Detail.BodySubString</p>

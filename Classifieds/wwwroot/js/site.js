@@ -43,6 +43,26 @@ function DeleteCategory(catId, parent) {
     }
 
 }
+function LikeAd(element, id) {
+    var checked = element.checked;
+
+    $.ajax({
+        url: '/User/Like/',
+        type: 'get',
+        dataType: 'json',
+        data: { id: id, like: checked }
+    }).done(function (data, textStatus, jqXHR) {
+        //alert(data);
+        //window.location.reload();
+    })
+    .fail(function (jqXHR, errorText, errorThrown) {
+        alert('Sorry there was an error');
+        //window.location.reload();
+    });
+
+
+}
+
 function DeleteMenu(menuId, parent) {
 
     var result = false;

@@ -63,9 +63,12 @@ namespace Classifieds.Web.Controllers
             bool success = false;
             try
             {
+
                 //get loggedin user
                 long userId = long.Parse(User.Claims.FirstOrDefault(x => x.Type == "UserId").Value);
-                var user = userService.Find(userId);
+
+                Expression<Func<User, object>>[] include = { u => u.Likes };
+                var user = userService.Find(userId,include);
 
                 //add like
                 if (like)
@@ -76,7 +79,12 @@ namespace Classifieds.Web.Controllers
                     {
                         user.Likes = new List<Like>();
                     }
-                    user.Likes.Add(new Like { AdvertID = id });
+                    var newLike = new Like { AdvertID = id };
+                    if (!user.Likes.Exists(a => a.AdvertID == newLike.AdvertID))
+                    {
+                        user.Likes.Add(newLike);
+                    }
+                    
                 }
                 else //remove like
                 {
@@ -95,6 +103,7 @@ namespace Classifieds.Web.Controllers
 
                 //update user
                 userService.Update(user);
+                userService.Save();
 
                 success = true;
             }
