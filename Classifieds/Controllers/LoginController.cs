@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 
 namespace Classifieds.Web.Controllers
 {
@@ -64,7 +65,11 @@ namespace Classifieds.Web.Controllers
                     new Claim(ClaimTypes.Email, authenticatedUser.Email),
                     new Claim(ClaimTypes.Role, "Administrator"),
                     new Claim("LastLoginDate", authenticatedUser.LastLogin.ToString()),
-                    new Claim("ImageCdn", authenticatedUser.UserDetail.ImageCdn)
+                    new Claim("ImageCdn", authenticatedUser.UserDetail.ImageCdn),
+                    new Claim("Likes", JsonConvert.SerializeObject(authenticatedUser.Likes,new JsonSerializerSettings
+                        {
+                            ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+                        }))
                 };
                 var claimsIdentity = new ClaimsIdentity(claims, 
                     CookieAuthenticationDefaults.AuthenticationScheme);

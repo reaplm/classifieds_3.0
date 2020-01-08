@@ -56,7 +56,7 @@ function LikeAd(element, id) {
         //window.location.reload();
     })
     .fail(function (jqXHR, errorText, errorThrown) {
-        alert('Sorry there was an error');
+        //alert('Sorry there was an error');
         //window.location.reload();
     });
 

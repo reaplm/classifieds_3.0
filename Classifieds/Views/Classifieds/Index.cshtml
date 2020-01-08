@@ -1,9 +1,26 @@
 ﻿@model IEnumerable<Classifieds.Web.Models.AdvertViewModel>
+@using Classifieds.Web.Models
+@using Newtonsoft.Json;
+
 @{
     ViewData["Title"] = "Index";
+
+    List<LikeViewModel> likes = null;
+    //Get loggedin user
+    if (User.Identity.IsAuthenticated)
+    {
+        likes = JsonConvert.DeserializeObject<List<LikeViewModel>>
+             (User.Claims.FirstOrDefault(u => u.Type == "Likes").Value);
+    }
+    else
+    {
+        likes = new List<LikeViewModel>();
+    }
+
 }
+
 <div class="col-layout mt-5 clearfix">
-    @foreach(var advert in Model)
+    @foreach (var advert in Model)
     {
         <h5 class="text-capitalize text-center">
             @Html.ActionLink(advert.Detail.Title, "Detail", "Classifieds",
@@ -12,7 +29,9 @@
         </h5>
         <div class="clearfix w-100 like">
             <p class="float-left font-weight-bold text-capitalize">@advert.Detail.Location</p>
-            <input type="checkbox" id="@advert.ID" onchange="LikeAd(this, @advert.ID)"/>
+            <input type="checkbox" id="@advert.ID" onchange="LikeAd(this, @advert.ID)" 
+                @(likes.Exists(a => a.AdvertID == advert.ID)? "checked='checked'" : string.Empty)
+                   />
             <label for="@advert.ID" class="float-right mr-4"></label>
         </div>
         <p>@advert.Detail.BodySubString</p>

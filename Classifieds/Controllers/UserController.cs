@@ -57,6 +57,12 @@ namespace Classifieds.Web.Controllers
 
             return PartialView(model);
         }
+        /// <summary>
+        /// Allows users to like adverts
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="like"></param>
+        /// <returns>success/failure</returns>
         [Authorize]
         public bool Like(long id, bool like)
         {
