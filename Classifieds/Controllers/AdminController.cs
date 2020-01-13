@@ -24,15 +24,18 @@ namespace Classifieds.Web.Controllers
         private IUserService userService;
         private IAdvertService advertService;
         private ICategoryService categoryService;
+        private ILikeService likeService;
         private IMapper mapper;
 
         public AdminController(IMenuService menuService, IUserService userService,
-            IAdvertService advertService, ICategoryService categoryService, IMapper mapper)
+            IAdvertService advertService, ICategoryService categoryService,
+            ILikeService likeService, IMapper mapper)
         {
             this.menuService = menuService;
             this.userService = userService;
             this.advertService = advertService;
             this.categoryService = categoryService;
+            this.likeService = likeService;
             this.mapper = mapper;
         }
         /// <summary>
@@ -170,6 +173,27 @@ namespace Classifieds.Web.Controllers
         {
 
             return null;
+        }
+        /// <summary>
+        /// Favourites Page
+        /// </summary>
+        /// <returns>Model and View</returns>
+        public IActionResult Favourites()
+        {
+            IEnumerable<LikeViewModel> favourites = null;
+            try
+            {
+                var userId = long.Parse(User.Claims.FirstOrDefault(x => x.Type == "UserId").Value);
+                favourites = mapper.Map<IEnumerable<LikeViewModel>>(likeService.FindByUser(userId));
+            }
+            catch(Exception ex)
+            {
+                //log exception
+                Console.WriteLine("Exception in Favourites" + ex.StackTrace);
+            }
+            
+
+            return View(favourites);
         }
         /// <summary>
         /// Calculate percentage and count of adverts grouped by AdvertStatus column

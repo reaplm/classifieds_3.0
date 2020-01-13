@@ -18,6 +18,7 @@ namespace Classifieds.Repository
         public virtual DbSet<Category> Categories { set; get; }
         public virtual DbSet<Address> Addresses { set; get; }
         public virtual DbSet<Role> Roles { set; get; }
+        public virtual DbSet<Like> Likes { set; get; }
 
         public ApplicationContext(DbContextOptions<ApplicationContext> options) : base(options)
         {

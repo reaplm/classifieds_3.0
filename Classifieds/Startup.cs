@@ -53,6 +53,8 @@ namespace Classifieds
                 cfg.CreateMap<Address, AddressViewModel>();
                 cfg.CreateMap<AddressViewModel, Address>();
                 cfg.CreateMap<RoleViewModel, Role>();
+                cfg.CreateMap<LikeViewModel, Like>();
+                cfg.CreateMap<Like, LikeViewModel>();
             });
 
             IMapper mapper = config.CreateMapper();
@@ -103,6 +105,8 @@ namespace Classifieds
             services.AddScoped<IAddressRepo, AddressRepo>();
             services.AddScoped<IUserDetailService, UserDetailService>();
             services.AddScoped<IUserDetailRepo, UserDetailRepo>();
+            services.AddScoped<ILikeRepo, LikeRepo>();
+            services.AddScoped<ILikeService, LikeService>();
             services.AddSingleton<IEmailService, EmailService>();
         }
 

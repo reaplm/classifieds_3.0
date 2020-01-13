@@ -1,0 +1,55 @@
+﻿
+@model IEnumerable<Classifieds.Web.Models.LikeViewModel>
+
+
+<div id="favourites" class="container-fluid pl-0 m-2">
+    <h3 class="pb-4">
+        Favourites
+    </h3>
+    <div class="table-responsive-sm">
+        <table class="table w-100">
+            <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Location</th>
+                    <th>Body</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @{ bool odd = true; }
+                @foreach (var like in Model)
+                {
+                    if (odd)
+                    {
+                        @Html.Raw("<tr class='odd-row'>")
+                    }
+                    else
+                    {
+                        @Html.Raw("<tr class='even-row'>")
+                    }
+
+
+                    @Html.Raw("<td class='text-capitalize  w-25'>")
+                    @Html.ActionLink(like.Advert.Detail.Title, "Detail", "Classifieds",
+                             new { id = like.Advert.ID }, new
+                             {
+                                 @class = "modal-link",
+                                 @data_target = "#advert-detail-modal",
+                                 @data_toggle = "modal"
+                             })
+                    @Html.Raw("</td><td class='w-25'>")
+                    @Html.DisplayFor(model => like.Advert.Detail.Location)
+                    @Html.Raw("</td><td class='w-25'>")
+                    @Html.DisplayFor(model => like.Advert.Detail.BodySubString)
+                    @Html.Raw("</td><td>")
+                    @Html.Raw("<button type='button' class='close' title='Delete' " +
+                            "onclick='DeleteLike(" + like.ID + ")'><span>&times</span></button></td>")
+                    @Html.Raw("</td></tr>")
+
+                    odd = !odd;
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
