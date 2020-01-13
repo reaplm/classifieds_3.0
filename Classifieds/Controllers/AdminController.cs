@@ -44,20 +44,6 @@ namespace Classifieds.Web.Controllers
         /// <returns></returns>
         public IActionResult Index()
         {
-            Expression<Func<Menu, bool>> where = m => m.ParentID == null;
-            Expression<Func<Menu, object>>[] include =
-            {
-                m => m.SubMenus
-            };
-
-            IEnumerable<MenuViewModel> menus = mapper.Map<IEnumerable<MenuViewModel>>
-                    (menuService.FindAll(where, include));
-
-            HttpContext.Session.SetString("SideMenus", JsonConvert.SerializeObject(menus,
-                Formatting.Indented, new JsonSerializerSettings
-                {
-                    ReferenceLoopHandling = ReferenceLoopHandling.Ignore
-                }));
 
             //Analytics
             ViewBag.CountUsers =  userService.CountAllUsers();

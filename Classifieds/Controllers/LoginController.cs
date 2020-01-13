@@ -10,6 +10,7 @@ using Classifieds.Service;
 using Classifieds.Web.Models;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
@@ -19,11 +20,13 @@ namespace Classifieds.Web.Controllers
     public class LoginController : Controller
     {
         private IUserService userService;
+        private IMenuService menuService;
         private IMapper mapper;
 
-        public LoginController(IUserService userService, IMapper mapper)
+        public LoginController(IUserService userService, IMenuService menuService, IMapper mapper)
         {
             this.userService = userService;
+            this.menuService = menuService;
             this.mapper = mapper;
         }
         /// <summary>
@@ -82,8 +85,12 @@ namespace Classifieds.Web.Controllers
                         CookieAuthenticationDefaults.AuthenticationScheme,
                         new ClaimsPrincipal(claimsIdentity), authProperties);
 
-                    return RedirectToLocal(ReturnUrl);
+                SetSessionVariables();
+
+                return RedirectToLocal(ReturnUrl);
             }
+
+
             ViewBag.ReturnUrl = ReturnUrl;
             return View("Index", user);
         }
@@ -111,6 +118,23 @@ namespace Classifieds.Web.Controllers
             }
             else { return RedirectToAction("Index", "Home"); }
         }
-        
+        private void SetSessionVariables()
+        {
+
+            Expression<Func<Menu, bool>> where = m => m.ParentID == null;
+            Expression<Func<Menu, object>>[] include =
+            {
+                m => m.SubMenus
+            };
+
+            IEnumerable<MenuViewModel> menus = mapper.Map<IEnumerable<MenuViewModel>>
+                    (menuService.FindAll(where, include));
+
+            HttpContext.Session.SetString("SideMenus", JsonConvert.SerializeObject(menus,
+                Formatting.Indented, new JsonSerializerSettings
+                {
+                    ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+                }));
+        }
     }
 }
