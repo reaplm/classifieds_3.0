@@ -124,5 +124,51 @@ namespace Classifieds.Web.Controllers
             return success;
 
         }
+        /// <summary>
+        /// Allows user to remove like from favourites
+        /// </summary>
+        /// <param name="id">the id of the like to remove</param>
+        /// <returns>success/failure</returns>
+        [Authorize]
+        public bool DeleteLike(long id)
+        {
+            bool success = false;
+            try
+            {
+
+                //get loggedin user
+                long userId = long.Parse(User.Claims.FirstOrDefault(x => x.Type == "UserId").Value);
+
+                Expression<Func<User, object>>[] include = { u => u.Likes };
+                var user = userService.Find(userId, include);
+
+                if (user.Likes != null)
+                {
+                    var item = user.Likes.FirstOrDefault(x => x.ID == id);
+
+                    if (item != null)
+                    {
+                        user.Likes.Remove(item);
+
+                    }
+                }
+
+                //update user
+                userService.Update(user);
+                userService.Save();
+
+                success = true;
+            }
+            catch (Exception ex)
+            {
+                //log error here
+                Console.WriteLine(ex.StackTrace);
+            }
+            finally
+            {
+            }
+            return success;
+
+        }
     }
 }

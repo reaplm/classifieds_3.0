@@ -7,6 +7,26 @@ function OpenSidebar() {
 function CloseSidebar() {
     document.getElementById("sideNavigation").style.width = "0";
 }
+function DeleteLike(id) {
+
+        $.ajax({
+            url: '/User/DeleteLike/' + id,
+            type: 'get',
+            dataType: 'json'
+
+        }).done(function (data, textStatus, jqXHR) {
+
+            if (data === false) {
+                alert('Sorry there was an error');
+            }
+            window.location.reload();
+        })
+            .fail(function (jqXHR, errorText, errorThrown) {
+                alert('Sorry there was an error');
+                window.location.reload();
+            });
+
+}
 /**
  * Delete a category
  * @param {id} catId category id
