@@ -155,10 +155,10 @@ namespace Classifieds.Web.Controllers
 
             return View(categories);
         }
-        public IActionResult Communication()
+        public IActionResult Preferences()
         {
 
-            return null;
+            return View();
         }
         /// <summary>
         /// Favourites Page
