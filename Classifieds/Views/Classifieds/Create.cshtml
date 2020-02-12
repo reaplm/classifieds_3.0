@@ -101,15 +101,10 @@
         </div>
         <div class="row form-group">
             <div class="col-sm-12">
-                <input name="uploadCareUrl"
-                       id="uploadcareWidget"
-                       type="hidden"
-                       role="uploadcare-uploader"
-                       data-image-shrink="1024x1024"
-                       data-multiple="true"
-                       data-multiple-min="1"
-                       data-multiple-max="4" />
-                <button id="submit-ad" class="image-button"> <img src="~/images/send.png" title="submit" /></button>
+                <img id="upload-dialog" class="image-button btn" onclick="UploadImageDialog()"
+                     src="~/images/camera.png" title="Upload Images" width="60"/>
+
+                <button id="submit-ad" class="image-button">Submit</button>
             </div>
         </div>
         <div class="form-group">

@@ -1,0 +1,36 @@
+﻿
+<div class="modal fade" id="capture-image-modal" tabindex="-1"
+     role="dialog" aria-labelledby="CaptureImageModal" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1>
+                    Camera
+                </h1>
+                <button type="button" class="close" data-dismiss="modal"
+                        aria-label="close" onclick="ModalDismiss('capture-image-modal')">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="camera">
+                    <video id="video">Video stream not available.</video>
+                    <button id="startbutton">Take photo</button>
+                </div>
+
+                <canvas id="canvas"></canvas>
+                <div class="output">
+                    <img id="photo" alt="The screen capture will appear in this box.">
+                </div>
+                <div class="modal-footer">
+
+                    <button id="upload-img-btn" type="button" class="btn btn-primary"
+                            onclick=""
+                            data-dismiss="modal">
+                        Submit
+                    </button>
+
+                </div>
+            </div>
+        </div>
+    </div>

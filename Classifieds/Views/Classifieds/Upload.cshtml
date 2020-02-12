@@ -1,0 +1,74 @@
+﻿<div class="modal fade" id="upload-image-modal" tabindex="-1"
+     role="dialog" aria-labelledby="UploadImageModal" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1>
+                    Upload Images
+                </h1>
+                <button type="button" class="close" data-dismiss="modal"
+                        aria-label="close" onclick="ModalDismiss('upload-image-modal')">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="container color-e9e mt-2">
+                    @using (Html.BeginForm("Upload", "Classifieds", new { }, FormMethod.Post, true,
+                htmlAttributes: new { @id = "upload-images", @class = "form-horizontal modal-form" }))
+                    {
+                        @Html.AntiForgeryToken()
+                    <div id="upload-dialog-icons" class="">
+                        <div id="image-src" class="float-left pt-3 pb-3 w-25 bg-e9e rounded-box text-center">
+                            <label for="local-upload" class="d-block">
+                                <img src="~/images/upload/pc-screen.png"
+                                     class="center-block" width="60" title="Local"/>
+                            </label>
+                            <input type="file" id="local-upload" name="files[]" multiple maxlength="3"
+                                   onchange="LocalUploadOnChange()" size="3"/>
+                            <hr />
+                            <label for="camera-upload">
+                                <img src="~/images/upload/camera.png"
+                                     class="center-block" width="60" title="Camera" />
+                            </label>
+                            <input type="file" id="camera-upload" accept="image/*" capture/>
+                            <hr />
+                            <label for="dropbox-upload">
+                                <img src="~/images/upload/dropbox.png"
+                                     class="center-block" width="60" title="Dropbox"/>
+                            </label>
+                            <input type="file" id="dropbox-upload" />
+                            <hr />
+                            <label for="drive-upload">
+                                <img src="~/images/upload/drive.png"
+                                     class="center-block" width="60" title="drive"/>
+                            </label>
+                            <input type="file" id="drive-upload" />
+                        </div>
+                        
+                    </div>
+ 
+                        <div class="row form-group">
+                            <ul id="preview" class="float-left w-100 mt-3 clearfix list-unstyled"></ul>
+                        </div>
+
+                        <div class="row form-group">
+                            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+   
+                            </div>
+                        </div>            
+                    }
+                </div>
+            </div>
+
+            <div class="modal-footer">
+
+                <button id="upload-img-btn" type="button" class="btn btn-primary"
+                        onclick="SubmitForm('upload-images')"
+                        data-dismiss="modal">
+                    Submit
+                </button>
+
+            </div>
+        </div>
+    </div>
+</div>

@@ -7,6 +7,18 @@ function OpenSidebar() {
 function CloseSidebar() {
     document.getElementById("sideNavigation").style.width = "0";
 }
+function UploadImageDialog() {
+
+    var url = "/Classifieds/Upload";
+
+    $("#upload-image-modal").remove();
+
+
+    GetPartialView(url, function (data) {
+        $(data).modal();
+    });
+     
+}
 function DeleteLike(id) {
 
         $.ajax({
@@ -333,6 +345,52 @@ function GetSubCategories(categoryId,url, callback) {
         alert("Failed to load sub-categories!");
     });
 }
+function ReadURL(input) {
+    if (input.files && input.files[0]) {
+        var reader = new FileReader();
+
+        reader.onload = function (e) {
+            $('#blah').attr('src', e.target.result);
+        }
+
+        reader.readAsDataURL(input.files[0]);
+    }
+}
+
+$("#imgInp").change(function () {
+    ReadURL(this);
+});
+function LocalUploadOnChange() {
+    var preview = document.getElementById("preview");
+    var fileInput = document.getElementById("local-upload");
+
+    for (var i = 0; i < fileInput.files.length; i++) {
+
+        // Add img element in <div id='preview'>
+        var reader = new FileReader();
+        reader.onload = function (e) {
+            var listItem = document.createElement("li");
+
+            listItem.innerHTML =
+                '<div class="file-container w-100 d-flex flex-row align-items-center mb-3">' +
+                    '<div class="w-20 h-100 thumb pl-2"><img src="' + e.target.result + '"/></div>' +
+                    '<div class="progress w-70" ><div class="progress-bar w-75"' +
+                        'role="progressbar" aria-valuenow="75" aria-valuemin="0"' +
+                        'aria-valuemax="100" ></div></div>' +
+                    '<div class="w-10"><button type="button"' +
+                        'class= "close" data-dismiss="modal" aria-label="close"' +
+                        'onclick = "ModalDismiss("advert-detail-modal")" >' +
+                '<span aria-hidden="true">&times;</span></button ></div>' +
+            '</div> ';
+            
+            preview.append(listItem);
+        };
+
+        reader.readAsDataURL(fileInput.files[i]);
+       
+        
+    }
+}
 
 $(document).ready(function () {
     $(document).on('hidden.bs.modal', '.modal', function () {
@@ -522,5 +580,15 @@ $(document).ready(function () {
     $('.like-button').click(function () {
         $(this).toggleClass('is-active');
     });
-   
+   //======================================Image Upload==================================
+    $('input[name=files]').change(function (e) { 
+        for (var index = 0; index < files.length; index++) {
+            var src = files[index];
+
+            // Add img element in <div id='preview'>
+            $('#preview').append('<div class=""><img src="' + src + '" width="200px;" height="200px"></div>');
+        }
+    });
+
+    
 });

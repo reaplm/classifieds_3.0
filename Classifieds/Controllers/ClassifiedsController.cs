@@ -220,6 +220,11 @@ namespace Classifieds.Web.Controllers
 
             return new JsonResult("success");
         }
+        [Authorize]
+        public IActionResult Upload()
+        {
+            return PartialView();
+        }
         /// <summary>
         /// Fetch parent categories
         /// </summary>
