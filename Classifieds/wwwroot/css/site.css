@@ -458,7 +458,14 @@ label{
 .file-container .thumb img{
     width: 80%;
 }
-.list-unstyled{
+.progress-bar-success{
+    background-color: #f8d650;
+}
+.progress-bar-error {
+    background-color: #ccc;
+}
+/*========================================COMMON CLASSES================================*/
+.list-unstyled {
     list-style: none;
 }
 /*========================================MEDIA QUERIES================================*/

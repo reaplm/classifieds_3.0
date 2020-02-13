@@ -345,47 +345,83 @@ function GetSubCategories(categoryId,url, callback) {
         alert("Failed to load sub-categories!");
     });
 }
-function ReadURL(input) {
-    if (input.files && input.files[0]) {
-        var reader = new FileReader();
 
-        reader.onload = function (e) {
-            $('#blah').attr('src', e.target.result);
-        }
+function handleEvent(event) {
+    //eventLog.textContent = eventLog.textContent + '${event.type}: ${event.loaded} bytes transferred\n';
+   /* var percent = event.loaded / event.total * 100;
+    
+    if (event.type === "progress") {
+        var filename = event.target.name;
+        $(".progress-bar").width(Math.round(percent) + '%');
 
-        reader.readAsDataURL(input.files[0]);
     }
+    if (event.type === "loadend") {
+        if (event.type === "progress") {
+            $(".thumb").append('<img src="' + event.target.result + '" />');
+
+        }
+    }*/
 }
 
-$("#imgInp").change(function () {
-    ReadURL(this);
-});
+function addListeners(reader) {
+    reader.addEventListener('loadstart', handleEvent);
+    reader.addEventListener('load', handleEvent);
+    reader.addEventListener('loadend', handleEvent);
+    reader.addEventListener('progress', handleEvent);
+    reader.addEventListener('error', handleEvent);
+    reader.addEventListener('abort', handleEvent);
+}
+
 function LocalUploadOnChange() {
     var preview = document.getElementById("preview");
     var fileInput = document.getElementById("local-upload");
+    //clear uploader
+    $(preview).empty();
 
     for (var i = 0; i < fileInput.files.length; i++) {
-
+        //image counter
+        var counter = 0;
         // Add img element in <div id='preview'>
         var reader = new FileReader();
-        reader.onload = function (e) {
-            var listItem = document.createElement("li");
+        addListeners(reader);
 
-            listItem.innerHTML =
-                '<div class="file-container w-100 d-flex flex-row align-items-center mb-3">' +
-                    '<div class="w-20 h-100 thumb pl-2"><img src="' + e.target.result + '"/></div>' +
-                    '<div class="progress w-70" ><div class="progress-bar w-75"' +
-                        'role="progressbar" aria-valuenow="75" aria-valuemin="0"' +
-                        'aria-valuemax="100" ></div></div>' +
-                    '<div class="w-10"><button type="button"' +
-                        'class= "close" data-dismiss="modal" aria-label="close"' +
-                        'onclick = "ModalDismiss("advert-detail-modal")" >' +
-                '<span aria-hidden="true">&times;</span></button ></div>' +
-            '</div> ';
-            
-            preview.append(listItem);
+        var listItem = document.createElement("li");
+
+        listItem.innerHTML =
+            '<div id="upload' + i + '" class="file-container w-100 d-flex flex-row align-items-center mb-3">' +
+            '<div class="w-20 h-100 thumb pl-2"></div>' +
+            '<div class="progress w-70" ><div class="progress-bar"' +
+            'role="progressbar"  aria-valuemin="0"' +
+            'aria-valuemax="100"></div></div>' +
+            '<div class="w-10"><button type="button"' +
+            'class= "close" data-dismiss="modal" aria-label="close"' +
+            'onclick = "ModalDismiss("advert-detail-modal")" >' +
+            '<span aria-hidden="true">&times;</span></button ></div>' +
+            '</div>';
+
+        preview.append(listItem);
+
+        reader.onloadend = function (event) {
+            var element = '#upload' + counter + " .thumb";
+            $(element).append('<img src="' + event.target.result + '" />');
+            counter++;
         };
+        reader.onprogress = function (event) {
 
+                var percent = event.loaded / event.total * 100;
+                var element = '#upload' + counter + " .progress-bar";
+                $(element).addClass("progress-bar-success");
+
+                $(element).width(Math.round(percent) + '%');
+            
+        };
+        reader.onerror = function(event){
+            var percent = event.loaded / event.total * 100;
+            var element = '#upload' + counter + " .progress-bar";
+
+            $(element).addClass("progress-bar-error");
+            $(element).width(Math.round(percent) + '%');
+        };
         reader.readAsDataURL(fileInput.files[i]);
        
         
