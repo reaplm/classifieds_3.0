@@ -34,9 +34,8 @@
                             <hr />
                             <label for="dropbox-upload">
                                 <img src="~/images/upload/dropbox.png"
-                                     class="center-block" width="60" title="Dropbox"/>
+                                     class="center-block" width="60" title="Dropbox" onclick="DropboxUploadClick()"/>
                             </label>
-                            <input type="file" id="dropbox-upload" />
                             <hr />
                             <label for="drive-upload">
                                 <img src="~/images/upload/drive.png"
@@ -48,7 +47,7 @@
                     </div>
  
                         <div class="row form-group">
-                            <ul id="preview" class="float-left w-100 mt-3 clearfix list-unstyled">
+                            <ul id="preview" class="float-left w-100 mt-3 clearfix list-unstyled overflow-hidden">
                                
                             </ul>
                         </div>

@@ -416,18 +416,111 @@ function LocalUploadOnChange() {
             
         };
         reader.onerror = function(event){
-            var percent = event.loaded / event.total * 100;
             var element = '#upload' + counter + " .progress-bar";
 
+            $(element).removeClass("progress-bar-error");
             $(element).addClass("progress-bar-error");
-            $(element).width(Math.round(percent) + '%');
         };
         reader.readAsDataURL(fileInput.files[i]);
        
         
     }
 }
+/**
+ * Upload from Dropbox
+ * 
+ * */
+function DropboxUploadClick() {
+    var options = {
+        success: function (files) {
+            var preview = document.getElementById("preview");
+            //clear uploader
+            $(preview).empty();
+            $.each(files, function (index, file) {
+                var listItem = document.createElement("li");
 
+                listItem.innerHTML =
+                    '<div id="upload' + index + '" class="file-container w-100 d-flex flex-row align-items-center mb-3">' +
+                    '<div class="w-20 h-100 thumb pl-2"><img src="' + file.thumbnailLink + '" /></div>' +
+                    '<div class="progress w-70" ><div class="progress-bar"' +
+                    'role="progressbar"  aria-valuemin="0"' +
+                    'aria-valuemax="100"></div></div>' +
+                    '<div class="w-10"><button type="button"' +
+                    'class= "close" data-dismiss="modal" aria-label="close"' +
+                    'onclick = "ModalDismiss("advert-detail-modal")" >' +
+                    '<span aria-hidden="true">&times;</span></button ></div>' +
+                    '</div>';
+
+                preview.append(listItem);
+
+                //Now let's download the image
+                var token = "JEOmBQHOAn4AAAAAAAABd64q45R4S3J6hF4fmWXamyIdlsEEi84RlK_mLla5KBKc";
+                var url = file.link;
+
+                var result;
+                var xhr = new XMLHttpRequest();
+                xhr.onreadystatechange = function () {
+                    if (xhr.readyState === 4 && xhr.status === 200) {
+                        result = xhr.responseText;
+                    }
+                };
+                 
+                xhr.open("GET", url, true);
+
+                //Update the progress bar
+                xhr.onprogress = function(event){
+                    var percent = event.loaded / event.total * 100;
+                    var element = '#upload' + index + " .progress-bar";
+                    $(element).addClass("progress-bar-success");
+
+                    $(element).width(Math.round(percent) + '%');
+                };
+                xhr.onerror = function (event) {
+                    var element = '#upload' + index + " .progress-bar";
+                    $(element).removeClass("progress-bar-success");
+                    $(element).addClass("progress-bar-error");
+                };
+
+                xhr.setRequestHeader("Authorization", "Bearer " + token);
+                xhr.send();
+
+            });
+          
+        },
+        // Optional. Called when the user closes the dialog without selecting a file
+        // and does not include any parameters.
+        cancel: function () {
+
+        },
+
+        // Optional. "preview" (default) is a preview link to the document for sharing,
+        // "direct" is an expiring link to download the contents of the file. For more
+        // information about link types, see Link types below.
+        linkType: "direct", // or "direct"
+
+        // Optional. A value of false (default) limits selection to a single file, while
+        // true enables multiple file selection.
+        multiselect: true, // or true
+
+        // Optional. This is a list of file extensions. If specified, the user will
+        // only be able to select files with these extensions. You may also specify
+        // file types, such as "video" or "images" in the list. For more information,
+        // see File types below. By default, all extensions are allowed.
+        extensions: ['.jpg', '.jpeg', '.png', '.PNG'],
+
+        // Optional. A value of false (default) limits selection to files,
+        // while true allows the user to select both folders and files.
+        // You cannot specify `linkType: "direct"` when using `folderselect: true`.
+        folderselect: false // or true
+
+        // Optional. A limit on the size of each file that may be selected, in bytes.
+        // If specified, the user will only be able to select files with size
+        // less than or equal to this limit.
+        // For the purposes of this option, folders have size zero.
+
+    };
+    Dropbox.choose(options);
+}
 $(document).ready(function () {
     $(document).on('hidden.bs.modal', '.modal', function () {
         $(".modal-dialog").remove();
