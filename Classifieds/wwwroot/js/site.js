@@ -454,7 +454,6 @@ function DropboxUploadClick() {
                 preview.append(listItem);
 
                 //Now let's download the image
-                var token = "JEOmBQHOAn4AAAAAAAABd64q45R4S3J6hF4fmWXamyIdlsEEi84RlK_mLla5KBKc";
                 var url = file.link;
 
                 var result;
