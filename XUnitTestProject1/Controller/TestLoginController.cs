@@ -24,13 +24,18 @@ namespace Classifieds.XUnitTest.Controller
     public class TestLoginController
     {
         private Mock<IUserService> mockUserService;
+        private Mock<IMenuService> mockMenuService;
+        private Mock<INotificationCategoryService> mockNcService;
+        private Mock<INotificationTypeService> mockNtService;
         private IMapper mapper;
 
         public TestLoginController()
         {
             Initialize();
             mockUserService = new Mock<IUserService>(MockBehavior.Strict);
-
+            mockMenuService = new Mock<IMenuService>();
+            mockNcService = new Mock<INotificationCategoryService>();
+            mockNtService = new Mock<INotificationTypeService>();
         }
         /// <summary>
         /// Test { public IActionResult Index(String ReturnUrl) }
@@ -39,7 +44,8 @@ namespace Classifieds.XUnitTest.Controller
         [Fact]
         public void Index()
         {
-            var controller = new LoginController(mockUserService.Object, mapper);
+            var controller = new LoginController(mockUserService.Object, mockMenuService.Object, 
+                mockNcService.Object, mockNtService.Object, mapper);
             String returnUrl = "/Classifieds/Create";
             var result = controller.Index(returnUrl) as ViewResult;
 
@@ -57,7 +63,8 @@ namespace Classifieds.XUnitTest.Controller
             mockUserService.Setup(m => m.AuthenticateUser(It.IsAny<String>(), It.IsAny<String>()))
                .Returns(It.IsAny<User>());
 
-            var controller = new LoginController(mockUserService.Object, mapper);
+            var controller = new LoginController(mockUserService.Object, mockMenuService.Object,
+                mockNcService.Object, mockNtService.Object, mapper);
             controller.ModelState.AddModelError("email", "email is invalid");
 
             UserViewModel user = new UserViewModel
@@ -89,7 +96,8 @@ namespace Classifieds.XUnitTest.Controller
             mockUserService.Setup(m => m.AuthenticateUser(It.IsAny<String>(), It.IsAny<String>()))
                .Returns((User)null);
 
-            var controller = new LoginController(mockUserService.Object, mapper);
+            var controller = new LoginController(mockUserService.Object, mockMenuService.Object,
+                mockNcService.Object, mockNtService.Object, mapper);
 
             UserViewModel userModel = new UserViewModel
             {
@@ -131,7 +139,8 @@ namespace Classifieds.XUnitTest.Controller
             var urlHelper = new Mock<IUrlHelper>();
             urlHelper.Setup(m => m.IsLocalUrl(It.IsAny<string>())).Returns(false);
 
-            var controller = new LoginController(mockUserService.Object, mapper);
+            var controller = new LoginController(mockUserService.Object, mockMenuService.Object,
+                mockNcService.Object, mockNtService.Object, mapper);
             controller.Url = urlHelper.Object;
             controller.ControllerContext = new ControllerContext();
             controller.ControllerContext.HttpContext = new DefaultHttpContext()
@@ -142,6 +151,7 @@ namespace Classifieds.XUnitTest.Controller
             var result = controller.Login(userViewModel, null).Result;
             var redirect = (RedirectToActionResult)result;
 
+            
             Assert.Equal("Index", redirect.ActionName);
             Assert.Equal("Home", redirect.ControllerName);
         }
@@ -173,7 +183,8 @@ namespace Classifieds.XUnitTest.Controller
             mockUrlHelper.Setup(m => m.IsLocalUrl(It.IsAny<string>()))
                 .Returns(true);
 
-            var controller = new LoginController(mockUserService.Object, mapper);
+            var controller = new LoginController(mockUserService.Object, mockMenuService.Object,
+                mockNcService.Object, mockNtService.Object, mapper);
             controller.Url = mockUrlHelper.Object;
             controller.ControllerContext = new ControllerContext();
             controller.ControllerContext.HttpContext = new DefaultHttpContext()
@@ -193,7 +204,8 @@ namespace Classifieds.XUnitTest.Controller
         [Fact]
         public void SignOut()
         {
-            var controller = new LoginController(mockUserService.Object, mapper);
+            var controller = new LoginController(mockUserService.Object, mockMenuService.Object,
+                mockNcService.Object, mockNtService.Object, mapper);
 
             controller.ControllerContext = new ControllerContext();
             controller.ControllerContext.HttpContext = new DefaultHttpContext()

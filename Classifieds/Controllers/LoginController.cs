@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using Classifieds.Domain.Model;
 using Classifieds.Service;
+using Classifieds.Web.Model;
 using Classifieds.Web.Models;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
@@ -21,12 +22,18 @@ namespace Classifieds.Web.Controllers
     {
         private IUserService userService;
         private IMenuService menuService;
+        private INotificationCategoryService ncService;
+        private INotificationTypeService ntService;
         private IMapper mapper;
 
-        public LoginController(IUserService userService, IMenuService menuService, IMapper mapper)
+        public LoginController(IUserService userService, IMenuService menuService, 
+            INotificationCategoryService ncService, INotificationTypeService ntService,
+            IMapper mapper)
         {
             this.userService = userService;
             this.menuService = menuService;
+            this.ncService = ncService;
+            this.ntService = ntService;
             this.mapper = mapper;
         }
         /// <summary>
@@ -118,6 +125,9 @@ namespace Classifieds.Web.Controllers
             }
             else { return RedirectToAction("Index", "Home"); }
         }
+        /// <summary>
+        /// Set session variables
+        /// </summary>
         private void SetSessionVariables()
         {
 
@@ -130,11 +140,31 @@ namespace Classifieds.Web.Controllers
             IEnumerable<MenuViewModel> menus = mapper.Map<IEnumerable<MenuViewModel>>
                     (menuService.FindAll(where, include));
 
+            IEnumerable<NotificationTypeViewModel> notificationTypes = mapper.Map<IEnumerable<NotificationTypeViewModel>>
+                (ntService.FindAll());
+
+            IEnumerable<NotificationCategoryViewModel> notificationCategories =
+                mapper.Map<IEnumerable<NotificationCategoryViewModel>>(ncService.FindAll());
+
             HttpContext.Session.SetString("SideMenus", JsonConvert.SerializeObject(menus,
                 Formatting.Indented, new JsonSerializerSettings
                 {
                     ReferenceLoopHandling = ReferenceLoopHandling.Ignore
                 }));
+
+            HttpContext.Session.SetString("NotificationTypes", JsonConvert.SerializeObject(notificationTypes,
+                Formatting.Indented, new JsonSerializerSettings
+                {
+                    ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+                }));
+
+            HttpContext.Session.SetString("NotificationCategories", JsonConvert.SerializeObject(notificationCategories,
+                Formatting.Indented, new JsonSerializerSettings
+                {
+                    ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+                }));
+
+
         }
     }
 }

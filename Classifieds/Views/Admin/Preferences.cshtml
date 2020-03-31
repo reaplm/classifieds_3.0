@@ -1,95 +1,48 @@
-﻿
+﻿@using Microsoft.AspNetCore.Http;
+@using Classifieds.Web.Models;
+@using Newtonsoft.Json;
+
+@{
+    IEnumerable<NotificationTypeViewModel> notificationTypes = new List<NotificationTypeViewModel>();
+    IEnumerable<NotificationCategoryViewModel> notificationCategories = new List<NotificationCategoryViewModel>();
+
+    if (ViewContext.HttpContext.Session.GetString("NotificationTypes") != null)
+    {
+        notificationTypes = JsonConvert.DeserializeObject<List<NotificationTypeViewModel>>
+            (ViewContext.HttpContext.Session.GetString("NotificationTypes"));
+    }
+    if (ViewContext.HttpContext.Session.GetString("NotificationCategories") != null)
+    {
+        notificationCategories = JsonConvert.DeserializeObject<List<NotificationCategoryViewModel>>
+            (ViewContext.HttpContext.Session.GetString("NotificationCategories"));
+    }
+}
 
 <div id="favourites" class="container-fluid pl-0 m-2">
     <h3 class="pb-4">
         Preferences
     </h3>
-
-    <div class="card mt-3">
-        <h5 class="card-header">Notifications</h5>
-        <div class="card-body">
-            <h5 class="card-title">Notifications about adverts you post</h5>
-            <ul class="list-group list-group-flush">
-                <li class="list-group-item">
-                    <p class="float-left">Push</p>
-                    <div class="custom-control custom-switch float-right">
-                        <input type="checkbox" class="custom-control-input" id="n-push">
-                        <label class="custom-control-label" for="n-push"></label>
-                    </div>
-                </li>
-                <li class="list-group-item">
-                    <p class="float-left">Email</p>
-                    <div class="custom-control custom-switch float-right">
-                        <input type="checkbox" class="custom-control-input" id="n-email">
-                        <label class="custom-control-label" for="n-email"></label>
-                    </div>
-                </li>
-                <li class="list-group-item">
-                    <p class="float-left">SMS</p>
-                    <div class="custom-control custom-switch float-right">
-                        <input type="checkbox" class="custom-control-input" id="n-sms">
-                        <label class="custom-control-label" for="n-sms"></label>
-                    </div>
-                </li>
-            </ul>
+    @foreach (var ncategory in notificationCategories)
+    {
+        <div class="card mt-3">
+            <h5 class="card-header text-capitalize">@ncategory.Name</h5>
+            <div class="card-body">
+                <h5 class="card-title">@ncategory.Description</h5>
+                <ul class="list-group list-group-flush">
+                    @foreach (var ntype in notificationTypes)
+                    {
+                        <li class="list-group-item">
+                            <p class="float-left">@ntype.Name</p>
+                            <div class="custom-control custom-switch float-right">
+                                @Html.Raw("<input type='checkbox' class='custom-control-input' id='n-" + ntype.Name + "'/>")
+                                @Html.Raw("<label class='custom-control-label' for='n-" + ntype.Name + "'></label>")
+                            </div>
+                        </li>
+                    }
+                </ul>
+            </div>
         </div>
+    }
+    <br />
     </div>
-    <div class="card mt-3">
-        <h5 class="card-header">Activity</h5>
-        <div class="card-body">
-            <h5 class="card-title">Notifications about account activity such as logins password change etc</h5>
-            <ul class="list-group list-group-flush">
-                <li class="list-group-item">
-                    <p class="float-left">Push</p>
-                    <div class="custom-control custom-switch float-right">
-                        <input type="checkbox" class="custom-control-input" id="n-push">
-                        <label class="custom-control-label" for="n-push"></label>
-                    </div>
-                </li>
-                <li class="list-group-item">
-                    <p class="float-left">Email</p>
-                    <div class="custom-control custom-switch float-right">
-                        <input type="checkbox" class="custom-control-input" id="n-email">
-                        <label class="custom-control-label" for="n-email"></label>
-                    </div>
-                </li>
-                <li class="list-group-item">
-                    <p class="float-left">SMS</p>
-                    <div class="custom-control custom-switch float-right">
-                        <input type="checkbox" class="custom-control-input" id="n-sms">
-                        <label class="custom-control-label" for="n-sms"></label>
-                    </div>
-                </li>
-            </ul>
-        </div>
-    </div>
-    <div class="card mt-3">
-        <h5 class="card-header">Events</h5>
-        <div class="card-body">
-            <h5 class="card-title">Notifications about events you are following or interested in</h5>
-            <ul class="list-group list-group-flush">
-                <li class="list-group-item">
-                    <p class="float-left">Push</p>
-                    <div class="custom-control custom-switch float-right">
-                        <input type="checkbox" class="custom-control-input" id="n-push">
-                        <label class="custom-control-label" for="n-push"></label>
-                    </div>
-                </li>
-                <li class="list-group-item">
-                    <p class="float-left">Email</p>
-                    <div class="custom-control custom-switch float-right">
-                        <input type="checkbox" class="custom-control-input" id="n-email">
-                        <label class="custom-control-label" for="n-email"></label>
-                    </div>
-                </li>
-                <li class="list-group-item">
-                    <p class="float-left">SMS</p>
-                    <div class="custom-control custom-switch float-right">
-                        <input type="checkbox" class="custom-control-input" id="n-sms">
-                        <label class="custom-control-label" for="n-sms"></label>
-                    </div>
-                </li>
-            </ul>
-        </div>
-    </div>
-</div>
+    
