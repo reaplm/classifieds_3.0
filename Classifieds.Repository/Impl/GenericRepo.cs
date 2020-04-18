@@ -47,6 +47,7 @@ namespace Classifieds.Repository.Impl
         /// <param name="entity"></param>
         public void Update(T entity)
         {
+            context.Entry(entity).State = EntityState.Detached;
             context.Entry(entity).State = EntityState.Modified;
         }
         /// <summary>

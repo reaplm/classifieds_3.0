@@ -87,14 +87,37 @@ function LikeAd(element, id) {
         //alert(data);
         //window.location.reload();
     })
-    .fail(function (jqXHR, errorText, errorThrown) {
-        //alert('Sorry there was an error');
-        //window.location.reload();
-    });
-
-
+        .fail(function (jqXHR, errorText, errorThrown) {
+            //alert('Sorry there was an error');
+            //window.location.reload();
+        });
 }
+/**
+* Add or remove a notification. Server returns json message on OK status
+* @param {checkbox} element checkbox element
+* @param {id} deviceId deviceId
+* @param {id} categoryId categoryId
+* @param {id} typeId typeID
+*/
+function ChangeNotification(element, deviceId, categoryId, typeId) {
+    //Get checked state of checkbox
+    var checked = element.checked;
 
+    $.ajax({
+        url: '/Notification/Add/',
+        type: 'post',
+        dataType: 'json',
+        data: { add: checked, deviceId: deviceId, categoryId: categoryId, typeId: typeId }
+
+    }).done(function (data, textStatus, jqXHR) {
+        alert(data);
+        window.location.reload();
+    })
+    .fail(function (jqXHR, errorText, errorThrown) {
+        alert('Sorry there was an error');
+        window.location.reload();
+    });
+}
 function DeleteMenu(menuId, parent) {
 
     var result = false;

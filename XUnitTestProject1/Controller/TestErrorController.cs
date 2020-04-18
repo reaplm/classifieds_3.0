@@ -1,5 +1,5 @@
-﻿using Classifieds.Models;
-using Classifieds.Web.Controllers;
+﻿using Classifieds.Web.Controllers;
+using Classifieds.Web.Models;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;

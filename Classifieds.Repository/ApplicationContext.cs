@@ -21,6 +21,10 @@ namespace Classifieds.Repository
         public virtual DbSet<Like> Likes { set; get; }
         public virtual DbSet<NotificationCategory> NotificationCategories { set; get; }
         public virtual DbSet<NotificationType> NotificationTypes { set; get; }
+        public virtual DbSet<Notification> Notifications { set; get; }
+        public virtual DbSet<DeviceType> DeviceTypes { set; get; }
+
+
 
         public ApplicationContext(DbContextOptions<ApplicationContext> options) : base(options)
         {

@@ -12,7 +12,7 @@ namespace Classifieds.Domain.Model
     {
         [Key]
         [ReadOnly(true)]
-        [Column(name: "pk_device_id")]
+        [Column(name: "pk_dev_typ_id")]
         public long ID { set; get; }
         [Column(name: "name")]
         public string Name { set; get; }

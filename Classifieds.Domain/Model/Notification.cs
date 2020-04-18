@@ -6,11 +6,17 @@ using System.Text;
 
 namespace Classifieds.Domain.Model
 {
+    [Table(name: "notification")]
     public class Notification
     {
         [Key]
         [Column(name: "pk_not_id")]
         public long ID { set; get; }
+
+        [ForeignKey("UserID")]
+        public User User { set; get; }
+        [Column(name: "fk_user_id")]
+        public long UserID { set; get; }
 
         [ForeignKey("DeviceID")]
         public Device Device { set; get; }

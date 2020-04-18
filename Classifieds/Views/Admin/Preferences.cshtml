@@ -5,6 +5,7 @@
 @{
     IEnumerable<NotificationTypeViewModel> notificationTypes = new List<NotificationTypeViewModel>();
     IEnumerable<NotificationCategoryViewModel> notificationCategories = new List<NotificationCategoryViewModel>();
+    IEnumerable<DeviceTypeViewModel> deviceTypes = new List<DeviceTypeViewModel>();
 
     if (ViewContext.HttpContext.Session.GetString("NotificationTypes") != null)
     {
@@ -16,33 +17,97 @@
         notificationCategories = JsonConvert.DeserializeObject<List<NotificationCategoryViewModel>>
             (ViewContext.HttpContext.Session.GetString("NotificationCategories"));
     }
+    if (ViewContext.HttpContext.Session.GetString("DeviceTypes") != null)
+    {
+        deviceTypes = JsonConvert.DeserializeObject<List<DeviceTypeViewModel>>
+            (ViewContext.HttpContext.Session.GetString("DeviceTypes"));
+    }
+
+    List<NotificationViewModel> notifications = null;
+    //Get loggedin user
+    if (User.Identity.IsAuthenticated)
+    {
+        notifications = JsonConvert.DeserializeObject<List<NotificationViewModel>>
+             (User.Claims.FirstOrDefault(u => u.Type == "Notifications").Value);
+    }
+    else
+    {
+        notifications = new List<NotificationViewModel>();
+    }
+
+    int i = 1;
+    int j = 0;
 }
 
-<div id="favourites" class="container-fluid pl-0 m-2">
+<div id="preferences" class="container-fluid pl-0 m-2">
     <h3 class="pb-4">
         Preferences
     </h3>
-    @foreach (var ncategory in notificationCategories)
-    {
-        <div class="card mt-3">
-            <h5 class="card-header text-capitalize">@ncategory.Name</h5>
-            <div class="card-body">
-                <h5 class="card-title">@ncategory.Description</h5>
-                <ul class="list-group list-group-flush">
-                    @foreach (var ntype in notificationTypes)
+    <div class="accordion text-capitalize" id="pref-sb-accordion">
+        @foreach (var device in deviceTypes)
+        {
+            string heading = "devheading" + i.ToString();
+            string target = "devcollapse" + i.ToString();
+
+        <div class="card">
+            <div class="card-header" id="@heading">
+                <h2 class="mb-0">
+                    <button  type="button" 
+                             @if (j == 0)
+                            { @Html.Raw("class='btn btn-link text-capitalize' ")  }
+                            else
+                            { @Html.Raw("class='btn btn-link text-capitalize collapsed'") }
+                            data-toggle="collapse"
+                            data-target="#@target"
+                            @if (j == 0)
+                            { @Html.Raw("aria-expanded='true' ")  }
+                            else
+                            { @Html.Raw("aria-expanded='false'") }
+                            aria-controls="@target">
+                        @device.Name
+                    </button>
+                </h2>
+            </div>
+            <div id="@target" 
+                 @if (j == 0) { @Html.Raw("class='collapse show'")  }
+                 else {@Html.Raw("class='collapse'")  }
+                aria-labelledby="@heading"
+                 data-parent="#pref-sb-accordion">
+                <div class="card-body">
+                    @foreach (var ncategory in notificationCategories)
                     {
-                        <li class="list-group-item">
-                            <p class="float-left">@ntype.Name</p>
-                            <div class="custom-control custom-switch float-right">
-                                @Html.Raw("<input type='checkbox' class='custom-control-input' id='n-" + ntype.Name + "'/>")
-                                @Html.Raw("<label class='custom-control-label' for='n-" + ntype.Name + "'></label>")
+                        
+                        <div class="card mt-3">
+
+                            <div class="card-body">
+                                <h5 class="card-title text-capitalize">@ncategory.Name</h5>
+                                <p class="card-title">@ncategory.Description</p>
+                                <ul class="list-group list-group-flush">
+                                    @foreach (var ntype in notificationTypes)
+                                    {
+                                        <li class="list-group-item">
+                                            <p class="float-left">@ntype.Name</p>
+                                            <div class="custom-control custom-switch float-right">
+                                                <input type='checkbox' class='custom-control-input' id='n-@ntype.Name'
+                              onclick='ChangeNotification(this, @device.ID, @ncategory.ID , @ntype.ID )'
+                                                @(notifications.Exists(n => n.DeviceID == device.ID &&
+                                                    n.NotificationCatID == ncategory.ID && n.NotificationTypeID == ntype.ID) ? 
+                                                    "checked='checked'" : string.Empty) 
+                                                />
+                                                @Html.Raw("<label class='custom-control-label' for='n-" + ntype.Name + "'></label>")
+                                            </div>
+                                        </li>
+                                     }
+                                </ul>
                             </div>
-                        </li>
+                        </div>
                     }
-                </ul>
+                </div>
             </div>
         </div>
-    }
-    <br />
+            i++;
+            j++;
+        }
+            <br />
     </div>
-    
+</div>

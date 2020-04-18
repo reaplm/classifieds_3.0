@@ -32,6 +32,7 @@ namespace Classifieds.Repository.Impl
                 .Where(x => x.Email == email && x.Password == password)
                 .Include(x => x.UserDetail)
                 .Include(x => x.Likes)
+                .Include(x => x.Notifications)
                 .SingleOrDefault();
 
                 return user;

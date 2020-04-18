@@ -1,6 +1,6 @@
 using System;
 
-namespace Classifieds.Models
+namespace Classifieds.Web.Models
 {
     public class ErrorViewModel
     {

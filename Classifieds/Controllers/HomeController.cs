@@ -4,7 +4,6 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Classifieds.Models;
 using Classifieds.Service;
 using Classifieds.Domain.Model;
 using AutoMapper;

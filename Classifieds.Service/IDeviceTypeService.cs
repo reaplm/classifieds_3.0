@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Classifieds.Service
 {
-    public interface INotificationService : IGenericService<Notification>
+    public interface IDeviceTypeService : IGenericService<DeviceType>
     {
     }
 }

@@ -3,9 +3,9 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Classifieds.Service
+namespace Classifieds.Repository
 {
-    public interface INotificationService : IGenericService<Notification>
+    public interface INotificationRepo : IGenericRepo<Notification>
     {
     }
 }

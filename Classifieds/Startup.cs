@@ -8,7 +8,6 @@ using Classifieds.Repository;
 using Classifieds.Repository.Impl;
 using Classifieds.Service;
 using Classifieds.Service.Impl;
-using Classifieds.Web.Model;
 using Classifieds.Web.Models;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
@@ -58,6 +57,8 @@ namespace Classifieds
                 cfg.CreateMap<Like, LikeViewModel>();
                 cfg.CreateMap<NotificationType, NotificationTypeViewModel>();
                 cfg.CreateMap<NotificationCategory, NotificationCategoryViewModel>();
+                cfg.CreateMap<Notification, NotificationViewModel>();
+                cfg.CreateMap<NotificationViewModel, Notification>();
             });
 
             IMapper mapper = config.CreateMapper();
@@ -115,6 +116,10 @@ namespace Classifieds
             services.AddScoped<INotificationCategoryService, NotificationCategoryService>();
             services.AddScoped<INotificationTypeRepo, NotificationTypeRepo>();
             services.AddScoped<INotificationTypeService, NotificationTypeService>();
+            services.AddScoped<INotificationRepo, NotificationRepo>();
+            services.AddScoped<INotificationService, NotificationService>();
+            services.AddScoped<IDeviceTypeRepo, DeviceTypeRepo>();
+            services.AddScoped<IDeviceTypeService, DeviceTypeService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

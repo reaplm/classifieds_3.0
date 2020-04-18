@@ -1,7 +1,7 @@
 ﻿using System;
 
 
-namespace Classifieds.Web.Model
+namespace Classifieds.Web.Models
 {
     public class DeviceTypeViewModel
     {

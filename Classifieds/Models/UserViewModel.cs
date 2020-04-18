@@ -37,6 +37,7 @@ namespace Classifieds.Web.Models
         public virtual UserDetailViewModel UserDetail{set;get;}
         public List<LikeViewModel> Likes { set; get; }
         public virtual List<RoleViewModel> Roles { set; get; }
+        public virtual  List<NotificationViewModel> Notifications { set; get; }
 
         [Display(Name ="Roles")]
         public string RoleList

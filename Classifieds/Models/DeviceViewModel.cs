@@ -4,23 +4,17 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
 
-namespace Classifieds.Domain.Model
+namespace Classifieds.Web.Models
 {
-    [Table(name: "device")]
-    public class Device
+    public class DeviceViewModel
     {
-        [Key]
         public long ID { set; get; }
         public bool IsEnabled { set; get; }
 
-        [ForeignKey("UserID")]
-        public User User { set; get; }
-        [Column(name: "fk_user_id")]
+        public UserViewModel User { set; get; }
         public long UserID { set; get; }
 
-        [ForeignKey("DeviceTypeID")]
-        public DeviceType DeviceType { set; get; }
-        [Column(name: "fk_dev_type_id")]
+        public DeviceTypeViewModel DeviceType { set; get; }
         public long DeviceTypeID { set; get; }
     }
 }

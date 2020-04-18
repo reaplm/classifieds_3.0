@@ -7,7 +7,6 @@ using System.Threading.Tasks;
 using AutoMapper;
 using Classifieds.Domain.Model;
 using Classifieds.Service;
-using Classifieds.Web.Model;
 using Classifieds.Web.Models;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
@@ -24,16 +23,18 @@ namespace Classifieds.Web.Controllers
         private IMenuService menuService;
         private INotificationCategoryService ncService;
         private INotificationTypeService ntService;
+        private IDeviceTypeService dtService;
         private IMapper mapper;
 
         public LoginController(IUserService userService, IMenuService menuService, 
             INotificationCategoryService ncService, INotificationTypeService ntService,
-            IMapper mapper)
+            IDeviceTypeService dtService, IMapper mapper)
         {
             this.userService = userService;
             this.menuService = menuService;
             this.ncService = ncService;
             this.ntService = ntService;
+            this.dtService = dtService;
             this.mapper = mapper;
         }
         /// <summary>
@@ -77,9 +78,13 @@ namespace Classifieds.Web.Controllers
                     new Claim("LastLoginDate", authenticatedUser.LastLogin.ToString()),
                     new Claim("ImageCdn", authenticatedUser.UserDetail.ImageCdn),
                     new Claim("Likes", JsonConvert.SerializeObject(authenticatedUser.Likes,new JsonSerializerSettings
-                        {
-                            ReferenceLoopHandling = ReferenceLoopHandling.Ignore
-                        }))
+                    {
+                        ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+                    })),
+                    new Claim("Notifications", JsonConvert.SerializeObject(authenticatedUser.Notifications,new JsonSerializerSettings
+                    {
+                        ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+                    }))
                 };
                 var claimsIdentity = new ClaimsIdentity(claims, 
                     CookieAuthenticationDefaults.AuthenticationScheme);
@@ -146,6 +151,9 @@ namespace Classifieds.Web.Controllers
             IEnumerable<NotificationCategoryViewModel> notificationCategories =
                 mapper.Map<IEnumerable<NotificationCategoryViewModel>>(ncService.FindAll());
 
+            IEnumerable<DeviceTypeViewModel> deviceTypes =
+               mapper.Map<IEnumerable<DeviceTypeViewModel>>(dtService.FindAll());
+
             HttpContext.Session.SetString("SideMenus", JsonConvert.SerializeObject(menus,
                 Formatting.Indented, new JsonSerializerSettings
                 {
@@ -159,6 +167,12 @@ namespace Classifieds.Web.Controllers
                 }));
 
             HttpContext.Session.SetString("NotificationCategories", JsonConvert.SerializeObject(notificationCategories,
+                Formatting.Indented, new JsonSerializerSettings
+                {
+                    ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+                }));
+
+            HttpContext.Session.SetString("DeviceTypes", JsonConvert.SerializeObject(deviceTypes,
                 Formatting.Indented, new JsonSerializerSettings
                 {
                     ReferenceLoopHandling = ReferenceLoopHandling.Ignore
