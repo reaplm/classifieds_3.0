@@ -95,19 +95,19 @@ function LikeAd(element, id) {
 /**
 * Add or remove a notification. Server returns json message on OK status
 * @param {checkbox} element checkbox element
-* @param {id} deviceId deviceId
-* @param {id} categoryId categoryId
-* @param {id} typeId typeID
+* @param {id} device deviceId
+* @param {id} category categoryId
+* @param {id} type typeId
 */
-function ChangeNotification(element, deviceId, categoryId, typeId) {
+function ChangeNotification(element, device, category, type) {
     //Get checked state of checkbox
-    var checked = element.checked;
+     var checked = element.checked;
 
     $.ajax({
         url: '/Notification/Add/',
         type: 'post',
         dataType: 'json',
-        data: { add: checked, deviceId: deviceId, categoryId: categoryId, typeId: typeId }
+        data: { add: checked, deviceId: device, categoryId: category, typeId: type }
 
     }).done(function (data, textStatus, jqXHR) {
         alert(data);

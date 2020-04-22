@@ -2,13 +2,17 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using AutoMapper;
 using Classifieds.Domain.Model;
 using Classifieds.Service;
 using Classifieds.Web.Models;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 
 namespace Classifieds.Web.Controllers
 {
@@ -37,7 +41,7 @@ namespace Classifieds.Web.Controllers
         /// <param name="typeId">notification type (sms/pnone)</param>
         /// <returns></returns>
         [HttpPost]
-        public IActionResult Add(bool add, long deviceId, long categoryId, long typeId)
+        public async Task<IActionResult> Add(bool add, long deviceId, long categoryId, long typeId)
         {
             bool success = false;
 
@@ -88,6 +92,31 @@ namespace Classifieds.Web.Controllers
                 userService.Update(user);
                 userService.Save();
 
+                //Update Claims
+                var claim = new Claim("Notifications", JsonConvert.SerializeObject(user.Notifications, new JsonSerializerSettings
+                {
+                    ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+                }));
+
+                //Remove Notifications Claim
+                var principal = User;
+                var customIdentity = principal.Identities.FirstOrDefault(x => x.Claims.Any(y => y.Type == "Notifications"));
+                if (customIdentity != null)
+                {
+                    customIdentity.RemoveClaim(customIdentity.Claims.First(x => x.Type == "Notifications"));
+                    customIdentity.AddClaim(claim);
+
+                }
+                var claimsIdentity = new ClaimsIdentity(principal.Claims,
+                    CookieAuthenticationDefaults.AuthenticationScheme);
+                var authProperties = new AuthenticationProperties
+                {
+                    AllowRefresh = true
+                };
+                await HttpContext.SignInAsync(
+                           CookieAuthenticationDefaults.AuthenticationScheme,
+                           new ClaimsPrincipal(principal), authProperties);
+
                 success = true;
             }
             catch (Exception ex)
@@ -99,6 +128,6 @@ namespace Classifieds.Web.Controllers
             if (success) { return new JsonResult("Done!"); }
             else { return new JsonResult("Failed to update notification. Sorry."); }
         }
-    }
+}
 
 }

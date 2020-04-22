@@ -37,6 +37,8 @@
 
     int i = 1;
     int j = 0;
+    int count = 1;
+
 }
 
 <div id="preferences" class="container-fluid pl-0 m-2">
@@ -88,16 +90,18 @@
                                         <li class="list-group-item">
                                             <p class="float-left">@ntype.Name</p>
                                             <div class="custom-control custom-switch float-right">
-                                                <input type='checkbox' class='custom-control-input' id='n-@ntype.Name'
-                              onclick='ChangeNotification(this, @device.ID, @ncategory.ID , @ntype.ID )'
+                                                <input type='checkbox' class='custom-control-input' id='switch-@count'
+                                                    onchange='ChangeNotification(this, @device.ID, @ncategory.ID , @ntype.ID )'
                                                 @(notifications.Exists(n => n.DeviceID == device.ID &&
                                                     n.NotificationCatID == ncategory.ID && n.NotificationTypeID == ntype.ID) ? 
                                                     "checked='checked'" : string.Empty) 
-                                                />
-                                                @Html.Raw("<label class='custom-control-label' for='n-" + ntype.Name + "'></label>")
+                                                >
+                                                @Html.Raw("<label class='custom-control-label' for='n-" + ntype.Name + count.ToString() + "'></label>")
                                             </div>
                                         </li>
-                                     }
+                                        count++;
+
+                                    }
                                 </ul>
                             </div>
                         </div>

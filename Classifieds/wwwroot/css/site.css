@@ -464,6 +464,10 @@ label{
 .progress-bar-error {
     background-color: #ccc;
 }
+.custom-switch .custom-control-input:checked ~ .custom-control-label::before {
+    background-color: #f8d650;
+    border-color: #f8d650;
+}
 /*========================================COMMON CLASSES================================*/
 .list-unstyled {
     list-style: none;
