@@ -683,6 +683,7 @@ $(document).ready(function () {
     }
     
     //=======================================ACCORDION ACTIVE============================
+    //-------------------------------------------SideBar Menu----------------------------
     $(".acc-nav-link").each(function () {
         
         var url = window.location.href;
@@ -714,7 +715,17 @@ $(document).ready(function () {
         }
         
     });
-   //=============================================================
+    //-------------------------------------------Preferences Menu----------------------------
+    if (window.location.pathname === "/Admin/Preferences") {
+
+        $("#pref-sb-accordion button").attr("aria-expanded", "false");
+        $("#pref-sb-accordion .collapse").removeClass("show");
+
+        $("#devheading1 button").attr("aria-expanded", "true");
+        $("#devcollapse1").addClass("show");
+
+    }
+   //========================================================================================
    
     $('.counter-count').each(function () {
         $(this).prop('Counter', 0).animate({

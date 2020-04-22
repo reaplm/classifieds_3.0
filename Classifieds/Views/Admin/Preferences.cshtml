@@ -36,7 +36,6 @@
     }
 
     int i = 1;
-    int j = 0;
     int count = 1;
 
 }
@@ -55,24 +54,17 @@
             <div class="card-header" id="@heading">
                 <h2 class="mb-0">
                     <button  type="button" 
-                             @if (j == 0)
-                            { @Html.Raw("class='btn btn-link text-capitalize' ")  }
-                            else
-                            { @Html.Raw("class='btn btn-link text-capitalize collapsed'") }
+                            class="btn btn-link text-capitalize"
                             data-toggle="collapse"
                             data-target="#@target"
-                            @if (j == 0)
-                            { @Html.Raw("aria-expanded='true' ")  }
-                            else
-                            { @Html.Raw("aria-expanded='false'") }
+                            aria-expanded="false"
                             aria-controls="@target">
                         @device.Name
                     </button>
                 </h2>
             </div>
             <div id="@target" 
-                 @if (j == 0) { @Html.Raw("class='collapse show'")  }
-                 else {@Html.Raw("class='collapse'")  }
+                 class="collapse"
                 aria-labelledby="@heading"
                  data-parent="#pref-sb-accordion">
                 <div class="card-body">
@@ -110,7 +102,6 @@
             </div>
         </div>
             i++;
-            j++;
         }
             <br />
     </div>

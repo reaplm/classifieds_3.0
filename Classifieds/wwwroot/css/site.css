@@ -468,6 +468,9 @@ label{
     background-color: #f8d650;
     border-color: #f8d650;
 }
+#pref-sb-accordion .btn-link{
+    color: #666;
+}
 /*========================================COMMON CLASSES================================*/
 .list-unstyled {
     list-style: none;
