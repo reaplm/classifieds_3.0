@@ -33,6 +33,7 @@ namespace Classifieds.Repository.Impl
                 .Include(x => x.UserDetail)
                 .Include(x => x.Likes)
                 .Include(x => x.Notifications)
+                .Include(x => x.Roles)
                 .SingleOrDefault();
 
                 return user;
@@ -173,6 +174,10 @@ namespace Classifieds.Repository.Impl
         public int CountAllUsers()
         {
             return context.Users.Count();
+        }
+        public int CountVerifiedUsers()
+        {
+            return context.Users.Count(x => x.IsVerified == 1);
         }
     }
 }

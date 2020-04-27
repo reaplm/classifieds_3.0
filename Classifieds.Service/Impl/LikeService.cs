@@ -42,5 +42,9 @@ namespace Classifieds.Service.Impl
         {
             return likeRepository.FindByUser(id);
         }
+        public int CountLikesByUser(long id)
+        {
+            return likeRepository.CountLikesByUser(id);
+        }
     }
 }

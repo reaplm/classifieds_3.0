@@ -19,5 +19,6 @@ namespace Classifieds.Service
         string RandomCodeGenerator();
         bool UpdateResetCode(long id, string code);
         int CountAllUsers();
+        int CountVerifiedUsers();
     }
 }

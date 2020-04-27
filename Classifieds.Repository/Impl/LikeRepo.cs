@@ -48,5 +48,9 @@ namespace Classifieds.Repository.Impl
                 .Include(x => x.Advert.Detail)
                 .ToList();
         }
+        public int CountLikesByUser(long id)
+        {
+            return context.Likes.Count(x => x.UserID == id);
+        }
     }
 }

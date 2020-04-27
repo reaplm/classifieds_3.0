@@ -103,13 +103,29 @@ namespace Classifieds.Repository.Impl
             return JObject.Parse(ucare.DeleteBatch(uuidGroup));
         }
         /// <summary>
-        /// Count all registered users
+        /// Count adverts based on status. 
+        /// If status is string.Empty then count all adverts
         /// </summary>
         /// <returns>Number of registered users</returns>
-        public int CountAllAdverts()
+        public int CountAdverts(string status)
         {
-            return context.Adverts.Count();
+            if (status == string.Empty)
+                return context.Adverts.Count();
+            else
+                return context.Adverts.Count(x => x.Status == status.ToUpper());
         }
+        public int CountAdvertsByUser(long id)
+        {
+            return context.Adverts.Count(x => x.UserID == id);
+        }
+        public int CountAdvertsByUserByStatus(long id, string status)
+        {
+            return context.Adverts.Count(x => x.UserID == id && x.Status == status.ToUpper());
+        }
+        /// <summary>
+        /// Summary of adverts grouped by status
+        /// </summary>
+        /// <returns>Summary List</returns>
         public List<CountPercentSummary> AdvertCountByStatus()
         {
 
@@ -123,6 +139,28 @@ namespace Classifieds.Repository.Impl
                         .OrderBy(a => a.Column);
             return query.ToList();
         }
+        /// <summary>
+        /// Summary of adverts pers advert status for given user
+        /// </summary>
+        /// <param name="id">PK/ID of the user</param>
+        /// <returns></returns>
+        public List<CountPercentSummary> AdvertCountByStatusByUser(long id)
+        {
+
+            var query = context.Adverts.GroupBy(a => new { a.Status })
+                        .Select(g => new CountPercentSummary
+                        {
+                            Column = g.Key.Status,
+                            Count = g.Count(x => x.UserID == id),
+                            Percent = Math.Round(g.Count(x => x.UserID == id) * 100.0 / context.Adverts.Count(x => x.UserID == id), 2)
+                        })
+                        .OrderBy(a => a.Column);
+            return query.ToList();
+        }
+        /// <summary>
+        /// Summary of adverts grouped by location
+        /// </summary>
+        /// <returns>summary list</returns>
         public List<CountPercentSummary> AdvertCountByLocation()
         {
 
@@ -132,6 +170,48 @@ namespace Classifieds.Repository.Impl
                             Column = g.Key.Location,
                             Count = g.Count(),
                             Percent = Math.Round(g.Count() * 100.0 / context.AdvertDetails.Count(), 2)
+                        })
+                        .OrderBy(a => a.Column);
+            return query.ToList();
+        }
+        /// <summary>
+        /// Count and percentage of adverts grouped by category
+        /// </summary>
+        /// <returns>Summary list</returns>
+        public List<CountPercentSummary> AdvertCountByCategory()
+        {
+            //Get a list of adverts and their categories
+            var adverts = context.Adverts
+                .Join(
+                     context.Categories,
+                     advert => advert.CategoryID,
+                     category => category.ID,
+                     (advert, category) => new
+                     {
+                         AdvertID = advert.ID,
+                         CategoryID = category.ID,
+                         ParentID = category.ParentID
+                     }
+                )
+                .Join(
+                    context.Categories,
+                     category => category.ParentID,
+                     parent => parent.ID,
+                     (category, parent) => new
+                     {
+                         AdvertID = category.AdvertID,
+                         CategoryID = parent.ID,
+                         CaregoryName = parent.Name
+                     }
+                ).ToList();
+                           
+            //Perform summary
+            var query = adverts.GroupBy(x => new { x.CaregoryName})
+                        .Select(g => new CountPercentSummary
+                        {
+                            Column = g.Key.CaregoryName,
+                            Count = g.Count(),
+                            Percent = Math.Round(g.Count() * 100.0 / context.Adverts.Count(), 2)
                         })
                         .OrderBy(a => a.Column);
             return query.ToList();

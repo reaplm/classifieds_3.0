@@ -10,5 +10,6 @@ namespace Classifieds.Repository
         IEnumerable<Like> FindAll();
         IEnumerable<Like> FindByUser(long id);
         Like Find(long id);
+        int CountLikesByUser(long id);
     }
 }

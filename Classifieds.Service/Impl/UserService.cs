@@ -105,6 +105,10 @@ namespace Classifieds.Service.Impl
         {
             return userRepository.CountAllUsers();
         }
+        public int CountVerifiedUsers()
+        {
+            return userRepository.CountVerifiedUsers();
+        }
 
         User IUserService.Create(User user)
         {

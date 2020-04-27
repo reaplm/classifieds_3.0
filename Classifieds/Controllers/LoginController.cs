@@ -74,9 +74,12 @@ namespace Classifieds.Web.Controllers
                     new Claim("UserId", authenticatedUser.ID.ToString()),
                     new Claim(ClaimTypes.Name, authenticatedUser.UserDetail.FirstName),
                     new Claim(ClaimTypes.Email, authenticatedUser.Email),
-                    new Claim(ClaimTypes.Role, "Administrator"),
                     new Claim("LastLoginDate", authenticatedUser.LastLogin.ToString()),
                     new Claim("ImageCdn", authenticatedUser.UserDetail.ImageCdn),
+                    new Claim(ClaimTypes.Role, JsonConvert.SerializeObject(authenticatedUser.Roles,new JsonSerializerSettings
+                    {
+                        ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+                    })),
                     new Claim("Likes", JsonConvert.SerializeObject(authenticatedUser.Likes,new JsonSerializerSettings
                     {
                         ReferenceLoopHandling = ReferenceLoopHandling.Ignore

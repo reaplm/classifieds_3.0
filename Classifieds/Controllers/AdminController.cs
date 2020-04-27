@@ -14,6 +14,7 @@ using Classifieds.Web.Models;
 using System.Linq;
 using Classifieds.Domain.Data;
 using Classifieds.Domain.Enumerated;
+using System.Security.Claims;
 
 namespace Classifieds.Web.Controllers
 {
@@ -44,25 +45,69 @@ namespace Classifieds.Web.Controllers
         /// <returns></returns>
         public IActionResult Index()
         {
+            var userId = User.Claims.FirstOrDefault(x => x.Type == "UserId").Value;
+            var roleClaims = User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Role).Value;
+            List<RoleViewModel> roles = null;
+            bool admin = false;
 
-            //Analytics
-            ViewBag.CountUsers =  userService.CountAllUsers();
-            ViewBag.CountAdverts = advertService.CountAllAdverts();
+            if(roleClaims != null)
+            {
+                roles = JsonConvert.DeserializeObject<List<RoleViewModel>>(roleClaims);
+            }
+            else
+            {
+                roles = new List<RoleViewModel>
+                {
+                    new RoleViewModel
+                    {
+                        UserID = userId == null ? 0 : long.Parse(userId),
+                        Name = "ROLE_USER"
+                    }
+                };
+            }
 
             //get new adverts
             Expression<Func<Advert, bool>> adPredicate = a => a.Status == EnumTypes.AdvertStatus.SUBMITTED.ToString();
             Expression<Func<Advert, object>>[] adInclude = { a => a.Detail };
             var newAds = mapper.Map<IEnumerable<AdvertViewModel>>(advertService.FindAll(adPredicate, adInclude));
 
-            Expression<Func<User, bool>> userPredicate = a => a.IsVerified == 0;
-            Expression<Func<User, object>>[] userInclude = { a => a.UserDetail };
-            var newUsers = mapper.Map <IEnumerable<UserViewModel>>(userService.FindAll(userPredicate, userInclude));
+            List<CountPercentSummary> advertSummary = CountAdvertByStatus();
 
-            ViewBag.Adverts = newAds;
-            ViewBag.Users = newUsers;
+            //Admin Analytics
+            if (roles.Any(r => r.Name == "ROLE_ADMIN"))
+            {
+                admin = true;
 
+                //Total users and adverts
+                ViewBag.CountUsers = userService.CountAllUsers();
+                ViewBag.CountAdverts = advertService.CountAdverts(string.Empty);
+                ViewBag.CountNewAdverts = advertService.CountAdverts("submitted");
 
-            return View();
+                ViewBag.AdvertSummary = advertSummary;
+
+                //Get New Users
+                Expression<Func<User, bool>> userPredicate = a => a.IsVerified == 0;
+                Expression<Func<User, object>>[] userInclude = { a => a.UserDetail };
+                var newUsers = mapper.Map<IEnumerable<UserViewModel>>(userService.FindAll(userPredicate, userInclude));
+
+                ViewBag.Adverts = newAds;
+                ViewBag.Users = newUsers;
+
+            }
+            else if (roles.Any(r => r.UserID > 0))
+            {
+                //User Analytics
+                ViewBag.CountAdverts = advertService.CountAdvertsByUser(long.Parse(userId));
+                ViewBag.CountApprovedAds = advertService.CountAdvertsByUserByStatus(long.Parse(userId), "approved");
+                ViewBag.CountFavourites = likeService.CountLikesByUser(long.Parse(userId));
+
+                ViewBag.AdvertSummary = advertSummary;
+
+                ViewBag.Adverts = newAds;
+
+            }
+
+            return admin ? View("Index") : View("Dashboard");
         }
         public IActionResult Profile()
         {
@@ -187,7 +232,21 @@ namespace Classifieds.Web.Controllers
         /// <returns>Listcontaining summary results</returns>
         public List<CountPercentSummary> CountAdvertByStatus()
         {
-            return advertService.AdvertCountByStatus();
+            var userId = User.Claims.FirstOrDefault(x => x.Type == "UserId").Value;
+            var roleClaims = User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Role).Value;
+
+            if (roleClaims.Contains("ROLE_ADMIN"))
+            {
+                return advertService.AdvertCountByStatus();
+            }
+            else
+            {
+                long id = userId == null ? 0 : long.Parse(userId);
+
+                return advertService.AdvertCountByStatusByUser(id);
+            }
+
+            
         }
         /// <summary>
         /// Calculate percentage and count of adverts grouped by AdvertStatus column
@@ -196,6 +255,26 @@ namespace Classifieds.Web.Controllers
         public List<CountPercentSummary> CountAdvertByLocation()
         {
             return advertService.AdvertCountByLocation();
+        }
+        /// <summary>
+        /// Calculate percentage and count of adverts grouped by AdvertStatus column
+        /// </summary>
+        /// <returns>Listcontaining summary results</returns>
+        public List<CountPercentSummary> CountAdvertsByStatusByUser()
+        {
+            var userId = User.Claims.FirstOrDefault(x => x.Type == "UserId").Value;
+
+            long id = userId == null ? 0 : long.Parse(userId);
+
+            return advertService.AdvertCountByStatusByUser(id);
+        }
+        /// <summary>
+        /// Calculate percentage and count of adverts grouped by AdvertStatus column
+        /// </summary>
+        /// <returns>Listcontaining summary results</returns>
+        public List<CountPercentSummary> CountAdvertByCategory()
+        {
+            return advertService.AdvertCountByCategory();
         }
     }
 }

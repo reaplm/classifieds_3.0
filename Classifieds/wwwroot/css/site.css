@@ -209,6 +209,9 @@ p{
 .color-fff {
     color: #fff;
 }
+.color-666 {
+    color: #666;
+}
 .shadow {
     /* offset-x | offset-y | blur-radius | spread-radius | color */
     -webkit-box-shadow: 1px 2px 1px 1px #ccc; /* Safari 3-4, iOS 4.0.2 - 4.2, Android 2.3+ */
@@ -355,6 +358,9 @@ label{
         background-color: #ccc;
     }
 /*====================================DASHBOARD PAGE===============*/
+.xsmall-card {
+    height: 100px;
+}
 .small-card{
     height: 150px;
 }
@@ -363,6 +369,10 @@ label{
 }
 .large-card {
     width: 100%;
+}
+.text-xsmall{
+    font-size: x-small;
+   
 }
 /*====================================PROFILE PAGE===============*/
 .card-profile-img{
@@ -475,6 +485,7 @@ label{
 .list-unstyled {
     list-style: none;
 }
+
 /*========================================MEDIA QUERIES================================*/
 /* col-xs col-sm col-md*/
 @media only screen and (max-width: 991px) {

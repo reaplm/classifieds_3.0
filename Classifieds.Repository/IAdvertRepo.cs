@@ -11,8 +11,12 @@ namespace Classifieds.Repository
         IEnumerable<Advert> FindByCategory(int id);
         IEnumerable<Advert> FindBySubCategory(int id);
         int RemoveAllPictures(long id);
-        int CountAllAdverts();
+        int CountAdverts(string status);
+        int CountAdvertsByUser(long id);
+        int CountAdvertsByUserByStatus(long id, string status);
         List<CountPercentSummary> AdvertCountByStatus();
+        List<CountPercentSummary> AdvertCountByStatusByUser(long id);
         List<CountPercentSummary> AdvertCountByLocation();
+        List<CountPercentSummary> AdvertCountByCategory();
     }
 }

@@ -544,6 +544,8 @@ function DropboxUploadClick() {
     Dropbox.choose(options);
 }
 $(document).ready(function () {
+    $('[data-toggle="tooltip"]').tooltip();
+
     $(document).on('hidden.bs.modal', '.modal', function () {
         $(".modal-dialog").remove();
     });

@@ -7,8 +7,8 @@
 
 
 <div class="container color-e9e mt-5">
-    @using (Html.BeginForm("Create", "Classifieds", "", FormMethod.Post, true,
-    htmlAttributes: new { @id = "create-ad", @class = "form-horizontal" }))
+    @using (Html.BeginForm("Create", "Classifieds", new { }, FormMethod.Post, true,
+   htmlAttributes: new { @id = "create-ad", @class = "form-horizontal" }))
     {
         @Html.AntiForgeryToken()
         @Html.ValidationMessageFor(model => model.UserID, "",

@@ -1,4 +1,8 @@
-﻿<div class="container-fluid pl-0 p-2">
+﻿@{ 
+    string[] color = { "#fdae61", "#f46d43", "#d53e4f" };
+    int colorCnt = 0;
+}
+<div class="container-fluid pl-0 p-2">
     <div class="row mt-3">
         <div class="col-lg-3">
             <div id="" class="card small-card shadow nopadding">
@@ -41,13 +45,29 @@
             <div id="ad-status-graph" class="medium-card card shadow">
                 <div class="card-body">
                     <h5 class="card-title text-center">Advert Status</h5>
+                    <div class="donut"></div>
+                    <div class="progress-bars">
+                        @foreach (var summary in ViewBag.AdvertSummary)
+                        {
+                            <p class="text-xsmall color-666">@summary.Column @summary.Percent%</p>
+                            <div class="progress mb-3" style="height: 2px;">
+                                <div class="progress-bar" role="progressbar"
+                                     style="width: @summary.Percent%; background-color: @color[colorCnt]"
+                                     aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+                            </div>
+                            colorCnt++;
+                        }
+
+                    </div>
                 </div>
             </div>
         </div>
         <div class="col-lg-8">
-            <div id="ad-location-pie" class="medium-card card shadow">
-                <div class="card-body">
-                    <h5 class="card-title text-center">Advert Location</h5>
+            <div id="ad-category-pie" class="medium-card card shadow">
+                <div class="card-body text-capitalize">
+                    <h5 class="card-title text-center">Categories</h5>
+                    <div class="donut w-100"></div>
+                    <div class="tip"></div>
                 </div>
             </div>
         </div>

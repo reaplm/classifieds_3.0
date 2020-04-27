@@ -14,5 +14,6 @@ namespace Classifieds.Repository
         User ValidateEmailAddress(string email);
         bool UpdateResetCode(long id, string code);
         int CountAllUsers();
+        int CountVerifiedUsers();
     }
 }

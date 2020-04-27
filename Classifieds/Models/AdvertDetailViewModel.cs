@@ -69,7 +69,7 @@ namespace Classifieds.Web.Models
         public AdvertViewModel Advert { set; get; }
 
         public String GroupCdn { set; get; }
-        public int GroupCount { set; get; }
+        public int? GroupCount { set; get; }
         public long? GroupSize { set; get; }
         public String GroupUuid { set; get; }
 

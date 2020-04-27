@@ -11,5 +11,6 @@ namespace Classifieds.Service
         IEnumerable<Like> FindAll();
         Like Find(long id);
         IEnumerable<Like> FindByUser(long id);
+        int CountLikesByUser(long id);
     }
 }
