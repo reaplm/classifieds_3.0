@@ -47,5 +47,15 @@ namespace Classifieds.Web.Models
                 return Roles == null ? null : string.Join(",", Roles.Select(x => x.Name).ToList());
             }
         }
+
+        public int Days
+        {
+            get
+            {
+                var today = DateTime.Now;
+                TimeSpan days = today - RegDate;
+                return days.Days;
+            }
+        }
     }
 }

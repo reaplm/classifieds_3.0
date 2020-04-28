@@ -15,6 +15,7 @@ using System.Linq;
 using Classifieds.Domain.Data;
 using Classifieds.Domain.Enumerated;
 using System.Security.Claims;
+using PagedList;
 
 namespace Classifieds.Web.Controllers
 {
@@ -71,6 +72,9 @@ namespace Classifieds.Web.Controllers
             Expression<Func<Advert, object>>[] adInclude = { a => a.Detail };
             var newAds = mapper.Map<IEnumerable<AdvertViewModel>>(advertService.FindAll(adPredicate, adInclude));
 
+            var likes = mapper.Map<IEnumerable<LikeViewModel>>
+                (likeService.FindByUser(long.Parse(userId)));
+
             List<CountPercentSummary> advertSummary = CountAdvertByStatus();
 
             //Admin Analytics
@@ -78,7 +82,7 @@ namespace Classifieds.Web.Controllers
             {
                 admin = true;
 
-                //Total users and adverts
+                //Advert and User Smmaries
                 ViewBag.CountUsers = userService.CountAllUsers();
                 ViewBag.CountAdverts = advertService.CountAdverts(string.Empty);
                 ViewBag.CountNewAdverts = advertService.CountAdverts("submitted");
@@ -86,12 +90,12 @@ namespace Classifieds.Web.Controllers
                 ViewBag.AdvertSummary = advertSummary;
 
                 //Get New Users
-                Expression<Func<User, bool>> userPredicate = a => a.IsVerified == 0;
+                //Expression<Func<User, bool>> userPredicate = a => a.IsVerified == 0;
                 Expression<Func<User, object>>[] userInclude = { a => a.UserDetail };
-                var newUsers = mapper.Map<IEnumerable<UserViewModel>>(userService.FindAll(userPredicate, userInclude));
+                var newUsers = mapper.Map<IEnumerable<UserViewModel>>(userService.FindAll(null, userInclude));
 
-                ViewBag.Adverts = newAds;
-                ViewBag.Users = newUsers;
+                ViewBag.Adverts = newAds.OrderBy(x => x.Days).Take(4);
+                ViewBag.Users = newUsers.OrderBy(x => x.Days).Take(4);
 
             }
             else if (roles.Any(r => r.UserID > 0))
@@ -103,7 +107,8 @@ namespace Classifieds.Web.Controllers
 
                 ViewBag.AdvertSummary = advertSummary;
 
-                ViewBag.Adverts = newAds;
+                ViewBag.Adverts = newAds.OrderBy(x => x.Days).Take(4); //latest ads
+                ViewBag.Likes = likes.OrderBy(x => x.Days).Take(4);//user's likes
 
             }
 

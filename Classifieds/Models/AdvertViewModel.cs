@@ -41,5 +41,16 @@ namespace Classifieds.Web.Models
         public virtual UserViewModel User { set; get; }
 
         public AdvertDetailViewModel Detail { set; get; }
+
+        public int Days
+        {
+            get
+            {
+               DateTime now = DateTime.Now;
+                TimeSpan days = now - SubmittedDate;
+                return days.Days;
+            }
+        }
+
     }
 }

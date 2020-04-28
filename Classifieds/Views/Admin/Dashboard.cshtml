@@ -1,4 +1,4 @@
-﻿@{ 
+﻿@{
     string[] color = { "#fdae61", "#f46d43", "#d53e4f" };
     int colorCnt = 0;
 }
@@ -10,7 +10,7 @@
                     <h3 class="card-title text-center">Calendar</h3>
                 </div>
             </div>
-            
+
         </div>
         <div class="col-lg-3">
             <div id="" class="card xsmall-card shadow">
@@ -43,15 +43,15 @@
                         @foreach (var summary in ViewBag.AdvertSummary)
                         {
                             <p class="text-xsmall color-666">@summary.Column @summary.Percent%</p>
-                            <div class="progress mb-3" style="height: 2px;" >
-                                <div class="progress-bar" role="progressbar" 
+                            <div class="progress mb-3" style="height: 2px;">
+                                <div class="progress-bar" role="progressbar"
                                      style="width: @summary.Percent%; background-color: @color[colorCnt]"
                                      aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
                             </div>
                             colorCnt++;
                         }
-                            
-                        </div>
+
+                    </div>
                 </div>
             </div>
         </div>
@@ -73,46 +73,82 @@
         </div>
     </div>
     <div class="row mt-3">
-        <div class="col-lg-6">
-            <div id="new-posts" class="mt-3 large-card card shadow">
-                <div class="card-header">Recent Adverts</div>
+        <div class="col-lg-12">
+            <div id="new-ads" class="mt-3 large-card card shadow">
                 <div class="card-body">
-                    <div class="table-responsive-sm">
-                        <table class="table w-100">
-                            <thead>
-                                <tr>
-                                    <th>Title</th>
-                                    <th>Status</th>
-                                    <th>Submitted</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                              
-                            </tbody>
-                        </table>
+                    <h5 class="card-title text-center">Recent Ads</h5>
+                    <div class="list-group list-group list-group-flush">
+                        @foreach (var advert in ViewBag.Adverts)
+                        {
+                            <div class="list-group-item">
+                                <div class="d-flex w-100 justify-content-between">
+                                    <p class="mb-1 font-weight-bold text-capitalize">
+                                        @if (advert.Detail.Title.Length < 35)
+                                        {
+                                            @advert.Detail.Title
+                                        }
+                                        else
+                                        {@advert.Detail.Title.Substring(0, 35)}
+
+                                    </p>
+                                    <small>@advert.Days days ago</small>
+                                </div>
+                                <div class="d-flex w-100 justify-content-between">
+                                    <small class="mb-1 w-75">
+                                        @advert.Detail.BodySubString
+                                    </small>
+                                    <div>
+                                        
+                                    </div>
+
+                                </div>
+
+
+
+                            </div>
+                        }
+                        <a href="#" class="text-right mr-3">more</a>
+
                     </div>
-                    <a href="/Admin/Adverts" class="btn pg-button">More</a>
                 </div>
             </div>
         </div>
-        <div class="col-lg-6 pl-0">
-            <div id="new-users" class="mt-3 large-card card shadow">
-                <div class="card-header">Favourites</div>
+    </div>
+    <div class="row mt-3">
+        <div class="col-lg-12">
+            <div id="likes" class="mt-3 large-card card shadow">
                 <div class="card-body">
-                    <div class="table-responsive-sm">
-                        <table class="table w-100">
-                            <thead>
-                                <tr>
-                                    <th>Name</th>
-                                    <th>Email</th>
-                                    <th>Registered</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                               
-                            </tbody>
-                        </table>
-                        <a href="/Admin/Users" class="btn pg-button">More</a>
+                    <h5 class="card-title text-center">Liked Ads</h5>
+                    <div class="list-group list-group list-group-flush">
+                        @foreach (var like in ViewBag.Likes)
+                        {
+                            <div class="list-group-item">
+                                <div class="d-flex w-100 justify-content-between">
+                                    <p class="mb-1 font-weight-bold text-capitalize">
+                                        @if (like.Advert.Detail.Title.Length < 35)
+                                        {
+                                            @like.Advert.Detail.Title
+                                        }
+                                        else
+                                        {@like.Advert.Detail.Title.Substring(0, 35)}
+
+                                    </p>
+                                    <small>@like.Days days ago</small>
+                                </div>
+                                <div class="d-flex w-100 justify-content-between">
+                                    <small class="mb-1 w-75">
+                                        @like.Advert.Detail.BodySubString
+                                    </small>
+                                    <div class="like">
+                                        <input type="checkbox" id="@like.Advert.ID" onchange="LikeAd(this, @like.Advert.ID)" 
+                                               checked="checked"/>
+                                        <label for="@like.Advert.ID" class="float-right mr-4"></label>
+                                    </div>
+
+                                </div>
+                            </div>
+                        }
+                        <a href="#" class="text-right mr-3">more</a>
                     </div>
                 </div>
             </div>

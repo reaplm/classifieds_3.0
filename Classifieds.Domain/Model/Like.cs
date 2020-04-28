@@ -13,6 +13,9 @@ namespace Classifieds.Domain.Model
         [Column(name: "pk_like_id")]
         public long ID { set; get; }
 
+        [Column(name: "like_date")]
+        public DateTime LikeDate { set; get; }
+
         [Column(name: "fk_user_id")]
         public long UserID { set; get; }
         [ForeignKey("UserID")]
