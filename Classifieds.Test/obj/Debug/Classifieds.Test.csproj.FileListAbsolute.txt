@@ -1,2 +1,0 @@
-C:\Users\pmolefe.BEC\source\repos\Classifieds\Classifieds.Test\obj\Debug\Classifieds.Test.csprojResolveAssemblyReference.cache
-C:\Users\pmolefe.BEC\source\repos\Classifieds\Classifieds.Test\obj\Debug\Classifieds.Test.csproj.CoreCompileInputs.cache

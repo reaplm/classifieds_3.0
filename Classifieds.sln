@@ -1,22 +1,17 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.27428.2037
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30717.126
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Classifieds.Web", "Classifieds\Classifieds.Web.csproj", "{107ACF3A-5CA7-49DC-873F-46B50269FE5E}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Classifieds.Test", "Classifieds.Test\Classifieds.Test.csproj", "{32AE80FB-BB1F-4B41-8D9C-A08AEF0F7E41}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Classifieds.XUnitTest", "XUnitTestProject1\Classifieds.XUnitTest.csproj", "{2985B0FF-DDBD-44B9-88D2-BEC3C31B89D1}"
-	ProjectSection(ProjectDependencies) = postProject
-		{82888783-6FAE-4452-982C-39703C978105} = {82888783-6FAE-4452-982C-39703C978105}
-	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Classifieds.Domain", "Classifieds.Domain\Classifieds.Domain.csproj", "{92552E0D-F8FE-40CF-BB4C-58BB110090B1}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Classifieds.Service", "Classifieds.Service\Classifieds.Service.csproj", "{066ED132-0A74-4073-8F74-2ED8D82EF479}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Classifieds.Repository", "Classifieds.Repository\Classifieds.Repository.csproj", "{82888783-6FAE-4452-982C-39703C978105}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Classifieds.XUnitTest", "XUnitTestProject1\Classifieds.XUnitTest.csproj", "{F287BFBD-9E0C-4171-8381-35198675BAF4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -28,14 +23,6 @@ Global
 		{107ACF3A-5CA7-49DC-873F-46B50269FE5E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{107ACF3A-5CA7-49DC-873F-46B50269FE5E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{107ACF3A-5CA7-49DC-873F-46B50269FE5E}.Release|Any CPU.Build.0 = Release|Any CPU
-		{32AE80FB-BB1F-4B41-8D9C-A08AEF0F7E41}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{32AE80FB-BB1F-4B41-8D9C-A08AEF0F7E41}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{32AE80FB-BB1F-4B41-8D9C-A08AEF0F7E41}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{32AE80FB-BB1F-4B41-8D9C-A08AEF0F7E41}.Release|Any CPU.Build.0 = Release|Any CPU
-		{2985B0FF-DDBD-44B9-88D2-BEC3C31B89D1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{2985B0FF-DDBD-44B9-88D2-BEC3C31B89D1}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{2985B0FF-DDBD-44B9-88D2-BEC3C31B89D1}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{2985B0FF-DDBD-44B9-88D2-BEC3C31B89D1}.Release|Any CPU.Build.0 = Release|Any CPU
 		{92552E0D-F8FE-40CF-BB4C-58BB110090B1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{92552E0D-F8FE-40CF-BB4C-58BB110090B1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{92552E0D-F8FE-40CF-BB4C-58BB110090B1}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -48,6 +35,10 @@ Global
 		{82888783-6FAE-4452-982C-39703C978105}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{82888783-6FAE-4452-982C-39703C978105}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{82888783-6FAE-4452-982C-39703C978105}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F287BFBD-9E0C-4171-8381-35198675BAF4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F287BFBD-9E0C-4171-8381-35198675BAF4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F287BFBD-9E0C-4171-8381-35198675BAF4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F287BFBD-9E0C-4171-8381-35198675BAF4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

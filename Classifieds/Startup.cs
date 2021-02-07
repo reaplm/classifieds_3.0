@@ -89,8 +89,10 @@ namespace Classifieds
             services.AddOptions();
             services.Configure<EmailSettings>(Configuration.GetSection("EmailSettings"));
 
-            services.AddMvc()
-                .AddJsonOptions(opts => opts.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
+            services.AddControllers()
+                .AddNewtonsoftJson(opts => opts.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
+
+            services.AddRazorPages();
 
             //MySQL Connection
             var connectionString = Configuration.GetSection("mysqlconnection")["connectionString"];
@@ -143,10 +145,37 @@ namespace Classifieds
             //Authentication
             app.UseAuthentication();
 
-            //session
-            app.UseSession();
+            app.UseRouting();
 
-            app.UseMvc(routes =>
+            //session
+            //app.UseSession();
+
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapRazorPages();
+
+                endpoints.MapControllerRoute(
+                    name: "default",
+                    pattern: "{controller=Home}/{action=Index}/{id?}"
+                 );
+                endpoints.MapControllerRoute(
+                    name: "StatusUpdate",
+                    pattern: "Classifieds/Status/{id}/{status}",
+                    new { controller = "Classifieds", Action = "Status" }
+                 );
+                endpoints.MapControllerRoute(
+                    name: "ErrorHandler",
+                    pattern: "Error/{statusCode}",
+                    new { controller = "Error", Action = "HandleErrorCode" }
+                );
+                endpoints.MapControllerRoute(
+                    name: "ErrorHandler",
+                    pattern: "Error/{statusCode}",
+                    new { controller = "Error", Action = "Error500" }
+                );
+            });
+
+            /*app.UseMvc(routes =>
             {
                 routes.MapRoute(
                     name: "default",
@@ -167,9 +196,9 @@ namespace Classifieds
                "Error/500",
                new { controller = "Error", Action = "Error500" }
               );
-            });
+            });*/
 
-            
+
         }
     }
 }

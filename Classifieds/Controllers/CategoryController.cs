@@ -12,7 +12,6 @@ using Classifieds.Web.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.Data.OData.Query.SemanticAst;
 
 namespace Classifieds.Web.Controllers
 {

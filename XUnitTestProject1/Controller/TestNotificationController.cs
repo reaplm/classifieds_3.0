@@ -35,7 +35,7 @@ namespace Classifieds.XUnitTest.Controller
         /// Test Add when add is true
         /// </summary>
         [Fact]
-        public void Add_AddIsTrue()
+        public async void Add_AddIsTrue()
         {
             //Mock Claims object
             var mockIdentity = new GenericIdentity("User");
@@ -61,7 +61,7 @@ namespace Classifieds.XUnitTest.Controller
             var controller = new NotificationController(mapper, mockUserService.Object, mockNotificationService.Object);
             controller.ControllerContext.HttpContext = mockHttpContext.Object;
 
-            var result = controller.Add(true, 2, 1, 3) as JsonResult;
+            var result = await controller.Add(true, 2, 1, 3) as JsonResult;
 
             Assert.Equal("Done!", result.Value);
         }
@@ -69,7 +69,7 @@ namespace Classifieds.XUnitTest.Controller
         /// Test Add when add is false
         /// </summary>
         [Fact]
-        public void Add_AddIsFalse()
+        public async void Add_AddIsFalse()
         {
             //Mock Claims object
             var mockIdentity = new GenericIdentity("User");
@@ -113,7 +113,7 @@ namespace Classifieds.XUnitTest.Controller
             var controller = new NotificationController(mapper, mockUserService.Object, mockNotificationService.Object);
             controller.ControllerContext.HttpContext = mockHttpContext.Object;
 
-            var result = controller.Add(false, 2, 1, 3) as JsonResult;
+            var result = await controller.Add(false, 2, 1, 3) as JsonResult;
 
             Assert.Equal("Done!", result.Value);
         }
@@ -121,7 +121,7 @@ namespace Classifieds.XUnitTest.Controller
         /// Test Add when there's an exception (FormatException)
         /// </summary>
         [Fact]
-        public void Add_ExceptionThrown()
+        public async void Add_ExceptionThrown()
         {
             //Mock Claims object
             var mockIdentity = new GenericIdentity("User");
@@ -165,7 +165,7 @@ namespace Classifieds.XUnitTest.Controller
             var controller = new NotificationController(mapper, mockUserService.Object, mockNotificationService.Object);
             controller.ControllerContext.HttpContext = mockHttpContext.Object;
 
-            var result = controller.Add(false, 2, 1, 3) as JsonResult;
+            var result = await controller.Add(false, 2, 1, 3) as JsonResult;
 
             Assert.Equal("Failed to update notification. Sorry.", result.Value);
         }
